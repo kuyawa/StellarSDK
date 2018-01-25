@@ -1,0 +1,6 @@
+TODO:
+
+- Finish xdr encodable struct
+- Start adding classes
+x extension data.base32
+
