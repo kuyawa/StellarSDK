@@ -39,6 +39,30 @@ func ChecksumXmodem(_ buffer: [UInt8]) -> UInt16 {
 //}
 
 
+/*
+// Extension for base32
+public extension CSArrayType where Iterator.Element == UInt8 {
+ 
+    public func toBase32() -> String? {
+        guard let bytesArray = self as? Array<UInt8> else {
+            return nil
+        }
+     
+        return Data(bytes: bytesArray).base32EncodedString()
+    }
+     
+    public init(base32: String) {
+        self.init()
+     
+        guard let decodedData = Data(base32Encoded: base32) else {
+            return
+        }
+     
+        self.append(contentsOf: decodedData.bytes)
+    }
+}
+*/
+
 
 //
 //  Base32.swift

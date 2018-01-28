@@ -13,13 +13,16 @@
 		F41A86972017A4E3008E73ED /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41A86962017A4E3008E73ED /* Test.swift */; };
 		F41A86C82017D90D008E73ED /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41A86C72017D90D008E73ED /* Utils.swift */; };
 		F41A86CA2017EA54008E73ED /* KeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41A86C92017EA54008E73ED /* KeyPair.swift */; };
+		F482D926201D221F00ED84E1 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = F482D925201D221F00ED84E1 /* Types.swift */; };
 		F4A9BDEA20182C7A00742C73 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F41A86BE2017B116008E73ED /* CryptoSwift.framework */; };
 		F4CE53622018A76600A24780 /* Xdr.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CE53612018A76600A24780 /* Xdr.swift */; };
 		F4CE53672018DC2A00A24780 /* XdrTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CE53662018DC2A00A24780 /* XdrTests.swift */; };
 		F4D03B8820198C480024797E /* Horizon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8720198C480024797E /* Horizon.swift */; };
 		F4D03B8C20198CB60024797E /* StellarSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8B20198CB60024797E /* StellarSDK.swift */; };
 		F4D03B8E20198E5C0024797E /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8D20198E5C0024797E /* Operations.swift */; };
-		F4D03B902019919B0024797E /* ed25519.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8F2019919B0024797E /* ed25519.swift */; };
+		F4D03B92201992960024797E /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B91201992960024797E /* Transactions.swift */; };
+		F4D03B94201992E20024797E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B93201992E20024797E /* Account.swift */; };
+		F4D03BA12019A3E10024797E /* HorizonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03BA02019A3E10024797E /* HorizonTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,12 +61,15 @@
 		F41A86C12017B905008E73ED /* ToDo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToDo.txt; sourceTree = "<group>"; };
 		F41A86C72017D90D008E73ED /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		F41A86C92017EA54008E73ED /* KeyPair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyPair.swift; sourceTree = "<group>"; };
+		F482D925201D221F00ED84E1 /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		F4CE53612018A76600A24780 /* Xdr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Xdr.swift; sourceTree = "<group>"; };
 		F4CE53662018DC2A00A24780 /* XdrTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XdrTests.swift; sourceTree = "<group>"; };
-		F4D03B8720198C480024797E /* Horizon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Horizon.swift; sourceTree = "<group>"; };
+		F4D03B8720198C480024797E /* Horizon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Horizon.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		F4D03B8B20198CB60024797E /* StellarSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StellarSDK.swift; sourceTree = "<group>"; };
 		F4D03B8D20198E5C0024797E /* Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operations.swift; sourceTree = "<group>"; };
-		F4D03B8F2019919B0024797E /* ed25519.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ed25519.swift; sourceTree = "<group>"; };
+		F4D03B91201992960024797E /* Transactions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transactions.swift; sourceTree = "<group>"; };
+		F4D03B93201992E20024797E /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		F4D03BA02019A3E10024797E /* HorizonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizonTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,14 +115,16 @@
 		F41A86742017A448008E73ED /* StellarSDK */ = {
 			isa = PBXGroup;
 			children = (
-				F4D03B8F2019919B0024797E /* ed25519.swift */,
 				F41A86762017A448008E73ED /* Info.plist */,
 				F41A86752017A448008E73ED /* StellarSDK.h */,
-				F41A86C92017EA54008E73ED /* KeyPair.swift */,
+				F4D03B93201992E20024797E /* Account.swift */,
 				F4D03B8720198C480024797E /* Horizon.swift */,
+				F41A86C92017EA54008E73ED /* KeyPair.swift */,
 				F4D03B8D20198E5C0024797E /* Operations.swift */,
 				F4D03B8B20198CB60024797E /* StellarSDK.swift */,
+				F4D03B91201992960024797E /* Transactions.swift */,
 				F41A86962017A4E3008E73ED /* Test.swift */,
+				F482D925201D221F00ED84E1 /* Types.swift */,
 				F41A86C72017D90D008E73ED /* Utils.swift */,
 				F4CE53612018A76600A24780 /* Xdr.swift */,
 			);
@@ -127,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				F41A86822017A449008E73ED /* Info.plist */,
+				F4D03BA02019A3E10024797E /* HorizonTests.swift */,
 				F41A86802017A449008E73ED /* StellarSDKTests.swift */,
 				F4CE53662018DC2A00A24780 /* XdrTests.swift */,
 			);
@@ -288,12 +297,14 @@
 			files = (
 				F4D03B8C20198CB60024797E /* StellarSDK.swift in Sources */,
 				F41A86CA2017EA54008E73ED /* KeyPair.swift in Sources */,
+				F4D03B92201992960024797E /* Transactions.swift in Sources */,
+				F482D926201D221F00ED84E1 /* Types.swift in Sources */,
 				F4D03B8820198C480024797E /* Horizon.swift in Sources */,
 				F4D03B8E20198E5C0024797E /* Operations.swift in Sources */,
+				F4D03B94201992E20024797E /* Account.swift in Sources */,
 				F41A86972017A4E3008E73ED /* Test.swift in Sources */,
 				F4CE53622018A76600A24780 /* Xdr.swift in Sources */,
 				F41A86C82017D90D008E73ED /* Utils.swift in Sources */,
-				F4D03B902019919B0024797E /* ed25519.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,6 +312,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4D03BA12019A3E10024797E /* HorizonTests.swift in Sources */,
 				F4CE53672018DC2A00A24780 /* XdrTests.swift in Sources */,
 				F41A86812017A449008E73ED /* StellarSDKTests.swift in Sources */,
 			);
@@ -420,7 +432,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = W7PMV9XFGM;

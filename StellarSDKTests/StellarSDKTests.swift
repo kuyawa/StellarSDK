@@ -129,6 +129,47 @@ class StellarSDKTests: XCTestCase {
     }
     
 
+    func testChallenge() {
+        enum VersionBytes: UInt8 {
+            case publicKey   = 0x030  // G  48
+            case secretKey   = 0x090  // S 144
+            case transaction = 0x091  // T 145
+            case sha256hash  = 0x095  // X 149
+        }
+        
+        let code:[UInt8] = [0,0,0,19,101,99,100,115,97,45,115,104,97,50,45,110,105,115,116,112,50,53,54,0,0,0,8,110,105,115,116,112]
+        let key2 = KeyPair.fromSeed(code)!
+
+        // Public key
+        let pBytes   = code
+        let pPrefix  = [VersionBytes.publicKey.rawValue]
+        let pCrc     = ChecksumXmodem(pPrefix+pBytes)
+        let pByte0   = UInt8(pCrc >> 8)
+        let pByte1   = UInt8(pCrc & 0x00ff)
+        let pCrc8    = [pByte1, pByte0]
+        let pKey     = pPrefix + pBytes + pCrc8
+        let pResult  = pKey.base32
+        
+        // Secret key
+        let sBytes   = code
+        let sPrefix  = [VersionBytes.secretKey.rawValue]
+        let sCrc     = ChecksumXmodem(sPrefix+sBytes)
+        let sByte0   = UInt8(sCrc >> 8)
+        let sByte1   = UInt8(sCrc & 0x00ff)
+        let sCrc8    = [sByte0, sByte1]
+        let sKey     = sPrefix + sBytes + sCrc8
+        let sResult  = sKey.base32
+    
+        //let key2 = KeyPair.fromSecret(code)!
+        //let key2 = KeyPair.fromSecret(sKey)!
+        
+        print("PKey ", pResult)
+        print("SKey ", sResult)
+        print("PKy2 ", key2.publicKey.base32)
+        print("SKy2 ", key2.secretKey.base32)
+    }
+    
+
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {

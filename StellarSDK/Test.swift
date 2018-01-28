@@ -51,26 +51,22 @@ func testingEd25519() {
     print("Key: ", key)
 }
 
-/*
-// Extension for base32
-public extension CSArrayType where Iterator.Element == UInt8 {
-    
-    public func toBase32() -> String? {
-        guard let bytesArray = self as? Array<UInt8> else {
-            return nil
-        }
-        
-        return Data(bytes: bytesArray).base32EncodedString()
-    }
-    
-    public init(base32: String) {
-        self.init()
-        
-        guard let decodedData = Data(base32Encoded: base32) else {
-            return
-        }
-        
-        self.append(contentsOf: decodedData.bytes)
+func testGetAccount() {
+    print("\n---- \(#function)\n")
+    let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+    let server  = StellarSDK.Horizon.test
+    server.account(address: publicKey) { response in
+        print("Raw:", response.text)
     }
 }
-*/
+
+func testFriendbot() {
+    print("\n---- \(#function)\n")
+    let address = KeyPair.random().publicKey.base32
+    let server  = StellarSDK.Horizon.test
+    server.fundTestAccount(address: address) { response in
+        print("Raw:", response.text)
+    }
+}
+
+// END

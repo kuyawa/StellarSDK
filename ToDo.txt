@@ -1,5 +1,6 @@
 TODO:
 
+- Throw errors, define error strategy (code, text)
 - Finish xdr encodable struct
 - Start adding classes
 x extension data.base32
