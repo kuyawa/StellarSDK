@@ -21,7 +21,7 @@ public struct Response {
     public var list    = [Any]()
 }
 
-enum HorizonErrors: Error {
+enum HorizonErrors {
     case connectionError
     case serverError
     case insufficientParameters
@@ -33,7 +33,7 @@ extension StellarSDK {
     
     open class Horizon {
         
-        enum HorizonServer { case test, live }
+        public enum Network { case test, live }
         
         let HORIZON_LIVE = "https://horizon.stellar.org"
         let HORIZON_TEST = "https://horizon-testnet.stellar.org"
@@ -43,7 +43,7 @@ extension StellarSDK {
         
         var serverUrl = ""
         
-        init(_ horizon: HorizonServer){
+        init(_ horizon: Network){
             if horizon == .live {
                 serverUrl = HORIZON_LIVE
             } else {
@@ -59,11 +59,17 @@ extension StellarSDK {
             
             //---- Public methods
             
-            static func get(_ url: String, _ params: Parameters?, _ callback: @escaping Callback) {
-                //print("GET: ", url)
-                //let request = Request.URLBuild(url, params)
-                var request = URLRequest(url: URL(string: url)!)
-                print("GET",request.url!)
+            static func get(_ uri: String, _ params: Parameters?, _ callback: @escaping Callback) {
+                //print("GET: ", uri)
+                guard let url = URL(string: uri) else {
+                    callback(errorResponse(code: 500, text: "Invalid url"))
+                    return
+                }
+
+                var request = URLRequest(url: url)
+                if let params = params { request = Request.URLBuild(uri, params) }
+                print("GET", request.url!)
+                
                 URLSession.shared.dataTask(with: request) { data, response, error in
                     let result = self.handleResponse(data, response, error)
                     callback(result)
@@ -108,10 +114,10 @@ extension StellarSDK {
             }
             
             static private func URLBuild(_ uri: String, _ params: Parameters?) -> URLRequest {
-                let agent   = "Stellar Bot 1.0"
+                //let agent   = "Stellar Bot 1.0"
                 let encoded = URLEncode(uri, params)
-                var request = URLRequest(url: encoded)
-                request.setValue(agent, forHTTPHeaderField: "User-Agent")
+                let request = URLRequest(url: encoded)
+                //request.setValue(agent, forHTTPHeaderField: "User-Agent")
                 return request
             }
             
@@ -127,17 +133,29 @@ extension StellarSDK {
                 
                 if let data = data, let text = String(data: data, encoding: .utf8) {
                     print("API RESPONSE")
-                    result.text = text
+                    result.raw  = text
+                    //result.text = text
                     // Accept both objects or arrays, arrays will be assigned to result.list
                     let json = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
                     if let dixy = json as? [String:Any] {
                         result.json = dixy
-                        print(dixy)
+                        //print(dixy)
                     } else if let list = json as? [Any] {
                         result.list = list
-                        print(list)
+                        //print(list)
                     }
                 }
+                
+                return result
+            }
+
+            static private func errorResponse(code: Int, text: String) -> Response {
+                print("API ERROR: ", text)
+                
+                var result = Response()
+                result.error   = true
+                result.status  = code
+                result.message = text
                 
                 return result
             }
@@ -156,38 +174,176 @@ extension StellarSDK {
                     print("Server error")
                     //throw "Account not found"
                     let account = AccountResponse()
-                    account._server = self
-                    account.error = ErrorMessage(code: 500, text: "Server error")
+                    account.server = self
+                    account.error  = ErrorMessage(code: 500, text: "Server error")
+                    account.raw    = response.raw
                     callback(account)
                 }
                 if let status = response.json["status"] as? Int, status == 404 {
                     print("Account not found")
                     let account = AccountResponse()
-                    account._server = self
-                    account.error = ErrorMessage(code: 404, text: "Account not found")
+                    account.server = self
+                    account.error  = ErrorMessage(code: 404, text: "Account not found")
+                    account.raw    = response.raw
                     callback(account)
                 } else {
-                    let account = StellarSDK.AccountResponse(response.json)
-                    account._server = self
+                    let account = AccountResponse(response.json)
+                    account.server = self
+                    account.error  = nil
+                    account.raw    = response.raw
                     callback(account)
                 }
             }
         }
         
-        public func loadAccountTransactions(address: String, options: ListOptions?, callback: @escaping (_ transactions: TransactionsResponse) -> Void) {
-            // TODO: Options cursor, order, limit
-            let url = serverUrl + "/accounts/" + address + "/transactions/"
-            Request.get(url, nil) { response in
+        public func loadAccountOperations(address: String, options: ListOptions?, callback: @escaping (_ operations: OperationsResponse) -> Void) {
+            let url = serverUrl + "/accounts/" + address + "/operations/"
+            var params: Parameters? = nil
+            if let options = options {
+                params = Parameters()
+                if !options.cursor.isEmpty { params!["cursor"] = options.cursor }
+                if options.limit > 0       { params!["limit"]  = options.limit }
+                if options.order == .desc  { params!["order"]  = "desc" }
+            }
+            Request.get(url, params) { response in
                 if let status = response.json["status"] as? Int, status == 404 {
-                    print("Transactions not found")
+                    print("Account not found")
+                    let operations = OperationsResponse()
+                    operations.server = self
+                    operations.error  = ErrorMessage(code: 404, text: "Account not found")
+                    operations.raw    = response.raw
+                    callback(operations)
+                } else {
+                    let operations = OperationsResponse(response.json)
+                    operations.server = self
+                    operations.error  = nil
+                    operations.raw    = response.raw
+                    callback(operations)
+                }
+            }
+        }
+        
+        public func loadAccountPayments(address: String, options: ListOptions?, callback: @escaping (_ payments: PaymentsResponse) -> Void) {
+            let url = serverUrl + "/accounts/" + address + "/payments/"
+            var params: Parameters? = nil
+            if let options = options {
+                params = Parameters()
+                if !options.cursor.isEmpty { params!["cursor"] = options.cursor }
+                if options.limit > 0       { params!["limit"]  = options.limit }
+                if options.order == .desc  { params!["order"]  = "desc" }
+            }
+            Request.get(url, params) { response in
+                if let status = response.json["status"] as? Int, status == 404 {
+                    print("Account not found")
+                    let payments = PaymentsResponse()
+                    payments.server = self
+                    payments.error  = ErrorMessage(code: 404, text: "Account not found")
+                    payments.raw    = response.raw
+                    callback(payments)
+                } else {
+                    let payments = PaymentsResponse(response.json)
+                    payments.server = self
+                    payments.error  = nil
+                    payments.raw    = response.raw
+                    callback(payments)
+                }
+            }
+        }
+        
+        public func loadAccountTransactions(address: String, options: ListOptions?, callback: @escaping (_ transactions: TransactionsResponse) -> Void) {
+            let url = serverUrl + "/accounts/" + address + "/transactions/"
+            var params: Parameters? = nil
+            if let options = options {
+                params = Parameters()
+                if !options.cursor.isEmpty { params!["cursor"] = options.cursor }
+                if options.limit > 0       { params!["limit"]  = options.limit }
+                if options.order == .desc  { params!["order"]  = "desc" }
+            }
+            Request.get(url, params) { response in
+                if let status = response.json["status"] as? Int, status == 404 {
+                    print("Account not found")
                     let transactions = TransactionsResponse()
-                    transactions._server = self
-                    transactions.error = ErrorMessage(code: 404, text: "Transactions not found")
+                    transactions.server = self
+                    transactions.error  = ErrorMessage(code: 404, text: "Account not found")
+                    transactions.raw    = response.raw
                     callback(transactions)
                 } else {
-                    let transactions = StellarSDK.TransactionsResponse(response.json)
-                    transactions._server = self
+                    let transactions = TransactionsResponse(response.json)
+                    transactions.server = self
+                    transactions.error  = nil
+                    transactions.raw    = response.raw
                     callback(transactions)
+                }
+            }
+        }
+
+        public func loadAccountEffects(address: String, options: ListOptions?, callback: @escaping (_ effects: EffectsResponse) -> Void) {
+            let url = serverUrl + "/accounts/" + address + "/effects/"
+            var params: Parameters? = nil
+            if let options = options {
+                params = Parameters()
+                if !options.cursor.isEmpty { params!["cursor"] = options.cursor }
+                if options.limit > 0       { params!["limit"]  = options.limit }
+                if options.order == .desc  { params!["order"]  = "desc" }
+            }
+            Request.get(url, params) { response in
+                if let status = response.json["status"] as? Int, status == 404 {
+                    print("Account not found")
+                    let effects = EffectsResponse()
+                    effects.server = self
+                    effects.error  = ErrorMessage(code: 404, text: "Account not found")
+                    effects.raw    = response.raw
+                    callback(effects)
+                } else {
+                    let effects = EffectsResponse(response.json)
+                    effects.server = self
+                    effects.error  = nil
+                    effects.raw    = response.raw
+                    callback(effects)
+                }
+            }
+        }
+        
+        public func loadAccountOffers(address: String, options: ListOptions?, callback: @escaping (_ effects: OffersResponse) -> Void) {
+            let url = serverUrl + "/accounts/" + address + "/offers/"
+            var params: Parameters? = nil
+            if let options = options {
+                params = Parameters()
+                if !options.cursor.isEmpty { params!["cursor"] = options.cursor }
+                if options.limit > 0       { params!["limit"]  = options.limit }
+                if options.order == .desc  { params!["order"]  = "desc" }
+            }
+            Request.get(url, params) { response in
+                if let status = response.json["status"] as? Int, status == 404 {
+                    print("Account not found")
+                    let offers = OffersResponse()
+                    offers.server = self
+                    offers.error  = ErrorMessage(code: 404, text: "Account not found")
+                    offers.raw    = response.raw
+                    callback(offers)
+                } else {
+                    let offers = OffersResponse(response.json)
+                    offers.server = self
+                    offers.error  = nil
+                    offers.raw    = response.raw
+                    callback(offers)
+                }
+            }
+        }
+    
+        public func loadAccountData(address: String, key: String, callback: @escaping (_ value: String) -> Void) {
+            let url = serverUrl + "/accounts/" + address + "/data/"+key
+            Request.get(url, nil) { response in
+                if let status = response.json["status"] as? Int, status == 404 {
+                    print("Account not found")
+                    callback("")
+                } else {
+                    var value = ""
+                    if let str  = response.json["value"] as? String,
+                       let data = Data(base64Encoded: str) {
+                          value = String(data: data, encoding: .utf8)!
+                    }
+                    callback(value)
                 }
             }
         }
@@ -337,7 +493,7 @@ extension StellarSDK {
         }
         
         // TESTNET ONLY
-        public func fundTestAccount(address: String, _ callback: @escaping Callback) {
+        public func friendbot(address: String, _ callback: @escaping Callback) {
             let url = serverUrl + "/friendbot?addr=" + address
             Request.get(url, nil, callback)
         }

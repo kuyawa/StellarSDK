@@ -10,16 +10,83 @@ import Foundation
 
 extension StellarSDK {
 
-    typealias JsonType = [String: Any?]
-    typealias JsonList = [Any?]
-    
+    public typealias JsonType = [String: Any?]
+    public typealias JsonList = [Any?]
+
     open class Types {
 
-        struct Link {
-            var url: String
-            var templated: Bool = false
+        open class Operations {
             
-            init(_ json: JsonType) {
+            open class CreateAccount {
+                var source      = ""
+                var destination = ""
+                var balance     = 0.0
+                
+                init() {}
+                
+                func toXDR() -> Data {
+                    return Data()
+                }
+                
+            }
+            
+            open class Payment {
+                var source  = ""
+                var target  = ""
+                var asset   = ""
+                var amount  = 0.0
+                
+                init() {}
+                
+                func toXDR() -> Data {
+                    return Data()
+                }
+            }
+            
+            open class PathPayment {
+                // TODO:
+            }
+            
+            open class ManageOffer {
+                // TODO:
+            }
+            
+            open class CreatePassiveOffer {
+                // TODO:
+            }
+            
+            open class SetOptions {
+                // TODO:
+            }
+            
+            open class ChangeTrust {
+                // TODO:
+            }
+            
+            open class AllowTrust {
+                // TODO:
+            }
+            
+            open class AccountMerge {
+                // TODO:
+            }
+            
+            open class Inflation {
+                // TODO: 
+            }
+            
+            open class ManageData { 
+                // TODO: 
+            }
+
+
+        }
+        
+        public struct Link {
+            public var url: String
+            public var templated: Bool = false
+            
+            public init(_ json: JsonType) {
                 url = json["href"] as! String
                 if let temp = json["templated"] as? Bool {
                     templated = temp
@@ -27,99 +94,65 @@ extension StellarSDK {
             }
         }
 
-        struct NavigationLinks {
-            var myself : Types.Link?
-            var next   : Types.Link?
-            var prev   : Types.Link?
+        public struct NavigationLinks {
+            public var myself : Types.Link?
+            public var next   : Types.Link?
+            public var prev   : Types.Link?
 
-            init(_ json: JsonType) {
+            public init(_ json: JsonType) {
                 if let link = json["self"] as? JsonType { myself = Types.Link(link) }
                 if let link = json["next"] as? JsonType { next   = Types.Link(link) }
                 if let link = json["prev"] as? JsonType { prev   = Types.Link(link) }
             }
         }
         
-        struct AccountLinks {
-            var myself       : Types.Link?
-            var transactions : Types.Link?
-            var operations   : Types.Link?
-            var payments     : Types.Link?
-            var effects      : Types.Link?
-            var offers       : Types.Link?
-            var trades       : Types.Link?
-            var data         : Types.Link?
+        public struct Thresholds {
+            public var low  : Int = 0
+            public var med  : Int = 0
+            public var high : Int = 0
             
-            init(_ json: JsonType) {
-                if let link = json["self"]         as? JsonType { myself       = Types.Link(link) }
-                if let link = json["transactions"] as? JsonType { transactions = Types.Link(link) }
-                if let link = json["operations"]   as? JsonType { operations   = Types.Link(link) }
-                if let link = json["payments"]     as? JsonType { payments     = Types.Link(link) }
-                if let link = json["effects"]      as? JsonType { effects      = Types.Link(link) }
-                if let link = json["offers"]       as? JsonType { offers       = Types.Link(link) }
-                if let link = json["trades"]       as? JsonType { trades       = Types.Link(link) }
-                if let link = json["data"]         as? JsonType { data         = Types.Link(link) }
-            }
-        }
-        
-        struct TransactionLinks {
-            var myself       : Types.Link?
-            var account      : Types.Link?
-            var ledger       : Types.Link?
-            var operations   : Types.Link?
-            var effects      : Types.Link?
-            var precedes     : Types.Link?
-            var succeeds     : Types.Link?
-            
-            init(_ json: JsonType) {
-                if let link = json["self"]         as? JsonType { myself     = Types.Link(link) }
-                if let link = json["account"]      as? JsonType { account    = Types.Link(link) }
-                if let link = json["ledger"]       as? JsonType { ledger     = Types.Link(link) }
-                if let link = json["operations"]   as? JsonType { operations = Types.Link(link) }
-                if let link = json["effects"]      as? JsonType { effects    = Types.Link(link) }
-                if let link = json["precedes"]     as? JsonType { precedes   = Types.Link(link) }
-                if let link = json["succeeds"]     as? JsonType { succeeds   = Types.Link(link) }
-            }
-        }
-        
-        struct Thresholds {
-            var low  : Int = 0
-            var med  : Int = 0
-            var high : Int = 0
-            
-            init(_ json: JsonType) {
+            public init(_ json: JsonType) {
                 if let num = json["low_threshold"]  as? Int { low  = num }
                 if let num = json["mid_threshold"]  as? Int { med  = num }
                 if let num = json["high_threshold"] as? Int { high = num }
             }
         }
         
-        struct Flags {
-            var authRequired  : Bool = false
-            var authRevocable : Bool = false
+        public struct Flags {
+            public var authRequired  : Bool = false
+            public var authRevocable : Bool = false
+            public var authImmutable : Bool = false
 
-            init(_ json: JsonType) {
+            public init(_ json: JsonType) {
                 if let flag = json["auth_required"]  as? Bool { authRequired  = flag }
                 if let flag = json["auth_revocable"] as? Bool { authRevocable = flag }
+                if let flag = json["auth_immutable"] as? Bool { authImmutable = flag }
             }
         }
         
-        struct Balance {
-            var balance   : String = ""
-            var assetType : String = "native"
+        public struct Balance {
+            public var balance     : String = ""
+            public var limit       : String = ""
+            public var assetType   : String = "native"
+            public var assetCode   : String = "XLM"
+            public var assetIssuer : String = ""
 
-            init(_ json: JsonType) {
-                if let str = json["balance"]    as? String { balance   = str }
-                if let str = json["asset_type"] as? String { assetType = str }
+            public init(_ json: JsonType) {
+                if let str = json["balance"]      as? String { balance     = str }
+                if let str = json["limit"]        as? String { limit       = str }
+                if let str = json["asset_type"]   as? String { assetType   = str }
+                if let str = json["asset_code"]   as? String { assetCode   = str } else { assetCode = "XLM" }
+                if let str = json["asset_issuer"] as? String { assetIssuer = str }
             }
         }
         
-        struct Signer {
-            var publicKey : String?
-            var weight    : Int = 0
-            var key       : String?
-            var type      : String = "ed25519_public_key"
+        public struct Signer {
+            public var publicKey : String?
+            public var weight    : Int = 0
+            public var key       : String?
+            public var type      : String = "ed25519_public_key"
 
-            init(_ json: JsonType) {
+            public init(_ json: JsonType) {
                 if let str = json["public_key"] as? String { publicKey = str }
                 if let num = json["weight"]     as? Int    { weight    = num }
                 if let str = json["key"]        as? String { key       = str }
@@ -128,9 +161,31 @@ extension StellarSDK {
 
         }
         
-        struct DataPair {
-            var key   : String
-            var value : String
+        public struct Asset {
+            public var assetType   : String?
+            public var assetCode   : String?
+            public var assetIssuer : String?
+
+            public init(_ json: JsonType) {
+                if let str = json["asset_type"]   as? String { assetType   = str }
+                if let str = json["asset_code"]   as? String { assetCode   = str }
+                if let str = json["asset_issuer"] as? String { assetIssuer = str }
+            }
+        }
+        
+        public struct PriceRate {
+            public var numerator   : Int?
+            public var denominator : Int?
+
+            public init(_ json: JsonType) {
+                if let num = json["n"] as? Int { numerator   = num }
+                if let den = json["d"] as? Int { denominator = den }
+            }
+        }
+        
+        public struct DataPair {
+            public var key   : String
+            public var value : String
         }
         
        

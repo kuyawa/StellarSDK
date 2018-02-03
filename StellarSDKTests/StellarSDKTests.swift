@@ -169,7 +169,23 @@ class StellarSDKTests: XCTestCase {
         print("SKy2 ", key2.secretKey.base32)
     }
     
+    func testSignature() {
+        let key = KeyPair.random()
+        //let pub = key.publicKey
+        let sec = key.secretKey
+        //let sed = key.startSeed
+        let msg = "Hello world"
+        let buf = Array(msg.utf8)
+        
+        let sha = HMAC(key: Array(sec), variant: .sha256)
+        let sig = try? sha.authenticate(buf)
+        print()
+        print(sig!)
+        print(sig!.toBase64()!)
+        print()
 
+    }
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {

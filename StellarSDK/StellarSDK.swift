@@ -11,20 +11,20 @@ import Foundation
 public typealias Callback   = (_ response: Response) -> Void
 public typealias Parameters = [String: Any?]
 
-struct ErrorMessage {
-    var code : Int    = 0
-    var text : String = ""
+public struct ErrorMessage {
+    public var code : Int    = 0
+    public var text : String = ""
 }
 
-enum SortOrder {
+public enum SortOrder {
     case asc
     case desc
 }
 
 public struct ListOptions {
-    var cursor : String    = ""
-    var limit  : Int       = 10
-    var order  : SortOrder = .desc
+    public var cursor : String    = ""
+    public var limit  : Int       = 10
+    public var order  : SortOrder = .desc
 }
 
 

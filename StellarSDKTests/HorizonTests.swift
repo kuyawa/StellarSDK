@@ -27,7 +27,7 @@ class HorizonTests: XCTestCase {
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let server    = StellarSDK.Horizon.test
         server.account(address: publicKey) { response in
-            //print("Raw:", response.text)
+            //print("Raw:", response.raw)
             let account = StellarSDK.AccountResponse(response.json)
             print("Id"           , account.id            ?? "?")
             print("Account id"   , account.accountId     ?? "?")
@@ -54,7 +54,7 @@ class HorizonTests: XCTestCase {
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let server    = StellarSDK.Horizon.test
         server.loadAccount(publicKey) { account in
-            //print("Raw:", response.text)
+            //print("Raw:", response.raw)
             //let account = StellarSDK.AccountResponse(response.json)
             if account.error != nil {
                 print(account.error!.text)
@@ -104,8 +104,8 @@ class HorizonTests: XCTestCase {
         let expect    = expectation(description: "FUND ACCOUNT")
         let publicKey = KeyPair.random().publicKey.base32
         let server    = StellarSDK.Horizon.test
-        server.fundTestAccount(address: publicKey) { response in
-            print("Raw:", response.text)
+        server.friendbot(address: publicKey) { response in
+            print("Raw:", response.raw)
             XCTAssert(response.status == 200, "Error in server request")
             expect.fulfill()
         }

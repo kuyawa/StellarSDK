@@ -64,7 +64,7 @@ func testFriendbot() {
     print("\n---- \(#function)\n")
     let address = KeyPair.random().publicKey.base32
     let server  = StellarSDK.Horizon.test
-    server.fundTestAccount(address: address) { response in
+    server.friendbot(address: address) { response in
         print("Raw:", response.text)
     }
 }

@@ -10,10 +10,11 @@ import Foundation
 
 extension StellarSDK {
 
-    public class Transaction {
-        var id       = ""
-        var hash     = ""
-        var envelope = ""
+/*
+    open class Transaction {
+        public var id       = ""
+        public var hash     = ""
+        public var envelope = ""
         
         init(_ account: Account) {
             //
@@ -39,13 +40,15 @@ extension StellarSDK {
             //
         }
     }
-    
-    public class TransactionsResponse {
-        var _server   : Horizon?
-        var error     : ErrorMessage?
-        var accountId : String = ""
-        var links     : Types.NavigationLinks?
-        var records   : [TransactionResponse] = []
+*/
+    open class TransactionsResponse {
+        public var server    : Horizon?
+        public var error     : ErrorMessage?
+        public var raw       : String?
+        //
+        public var accountId : String = ""
+        public var links     : Types.NavigationLinks?
+        public var records   : [TransactionResponse] = []
         
         init() {}
         
@@ -61,28 +64,29 @@ extension StellarSDK {
         }
     }
     
-    public class TransactionResponse {
-        var links                 : Types.TransactionLinks?
-        var id                    : String?
-        var pagingToken           : String?
-        var hash                  : String?
-        var ledger                : Int = 0
-        var createdAt             : String?
-        var sourceAccount         : String?
-        var sourceAccountSequence : String?
-        var feePaid               : Int = 0
-        var operationCount        : Int = 0
-        var envelopeXdr           : String?
-        var resultXdr             : String?
-        var resultMetaXdr         : String?
-        var feeMetaXdr            : String?
-        var memoType              : String?
-        var memo                  : String?
-        var signatures            : [String]?
+    open class TransactionResponse {
+        public var links                 : TransactionLinks?
+        public var id                    : String?
+        public var pagingToken           : String?
+        public var hash                  : String?
+        public var ledger                : Int = 0
+        public var createdAt             : String?
+        public var sourceAccount         : String?
+        public var sourceAccountSequence : String?
+        public var feePaid               : Int = 0
+        public var operationCount        : Int = 0
+        public var envelopeXdr           : String?
+        public var resultXdr             : String?
+        public var resultMetaXdr         : String?
+        public var feeMetaXdr            : String?
+        public var memoType              : String?
+        public var memo                  : String?
+        public var signatures            : [String]?
         
         init(_ json: JsonType) {
-            if let list = json["_links"] as? JsonType { links = Types.TransactionLinks(list) }
-            id                    = json["id"] as? String
+            if let list = json["_links"] as? JsonType { links = TransactionLinks(list) }
+            
+            id                    = json["id"]                      as? String
             pagingToken           = json["paging_token"]            as? String
             hash                  = json["hash"]                    as? String
             ledger                = json["ledger"]                  as? Int ?? 0
@@ -100,6 +104,27 @@ extension StellarSDK {
             signatures            = json["signatures"]              as? [String]
         }
     }
+    
+    public struct TransactionLinks {
+        public var myself       : Types.Link?
+        public var account      : Types.Link?
+        public var ledger       : Types.Link?
+        public var operations   : Types.Link?
+        public var effects      : Types.Link?
+        public var precedes     : Types.Link?
+        public var succeeds     : Types.Link?
+        
+        init(_ json: JsonType) {
+            if let link = json["self"]         as? JsonType { myself     = Types.Link(link) }
+            if let link = json["account"]      as? JsonType { account    = Types.Link(link) }
+            if let link = json["ledger"]       as? JsonType { ledger     = Types.Link(link) }
+            if let link = json["operations"]   as? JsonType { operations = Types.Link(link) }
+            if let link = json["effects"]      as? JsonType { effects    = Types.Link(link) }
+            if let link = json["precedes"]     as? JsonType { precedes   = Types.Link(link) }
+            if let link = json["succeeds"]     as? JsonType { succeeds   = Types.Link(link) }
+        }
+    }
+    
 }
 
 // END

@@ -1,7 +1,9 @@
-TODO:
+TODO: MACAPP
 
-- Throw errors, define error strategy (code, text)
+- Cache tx, op, py details since they don't change
+? Throw errors, define error strategy (code, text)
 - Finish xdr encodable struct
 - Start adding classes
 x extension data.base32
 
+ref: http://cryptoswift.io
