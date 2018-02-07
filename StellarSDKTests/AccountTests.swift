@@ -239,6 +239,30 @@ class AccountTests: XCTestCase {
         }
     }
     
+    func testAccountFund() {
+        print("\n---- \(#function)\n")
+        let expect  = expectation(description: "ACCOUNT FUND")
+        //let source  = "GAMMLP3BRHWAIRNNSAKD7UXWFITNI3YODZV4CFQ7FSILIL7E6SKQWTTX"
+        let secret  = "SDS54DFAILKMUWZOVIPN4Q4SSE33T4FEJP2MLOBEBNGFKINO46ZXXZDN"
+        let keypair = KeyPair.random()
+        let destin  = keypair.stellarPublicKey
+        let account = StellarSDK.Account.fromSecret(secret)!
+        print(account.keyPair!.publicKey)
+        print(account.keyPair!.publicKey.xdr.base64)
+        print("Funding account", destin)
+        
+        account.useTestNetwork()
+        account.fund(address: destin, amount: 100, memo: "Hello") { response in
+            print("\nResponse", response.raw)
+            XCTAssert(!response.error, "Error funding account")
+            expect.fulfill()
+        }
+        
+        waitForExpectations(timeout: 20){ error in
+            if let error = error { print("Error: \(error.localizedDescription)") }
+        }
+    }
+    
     func testPerformanceExample() {
         self.measure {
             // Put the code you want to measure the time of here.

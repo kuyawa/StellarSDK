@@ -6,10 +6,7 @@
 //  Copyright © 2018 Armonia. All rights reserved.
 //
 
-// Gracefully copied from Kin Foundation
-
 import Foundation
-
 
 // Handy extensions
 
@@ -39,9 +36,8 @@ extension Int32  { var bitWidth: Int { return MemoryLayout.size(ofValue: self) }
 extension Int64  { var bitWidth: Int { return MemoryLayout.size(ofValue: self) } }
 
 
-// KIN
-
 public protocol XDREncodable {
+    var xdr: Data { get }
     func toXDR(count: Int32) -> Data
 }
 
@@ -51,7 +47,102 @@ public protocol XDRDecodable {
 
 public protocol XDRCodable: XDREncodable, XDRDecodable { }
 
+public protocol XDREncodableStruct: XDREncodable { }
+
+
+extension UInt8: XDRCodable {
+    public var xdr: Data { return self.toXDR() }
+    
+    public func toXDR(count: Int32 = 0) -> Data {
+        return Data(bytes: [self])
+    }
+    
+    public init(xdrData: inout Data, count: Int32 = 0) {
+        var n: UInt8 = 0
+        
+        let count = UInt8.bitWidth / UInt8.bitWidth
+        
+        xdrData.withUnsafeBytes { (bp: UnsafePointer<UInt8>) -> Void in
+            for i in 0..<count {
+                //n *= 256
+                n += UInt8(bp.advanced(by: i).pointee)
+            }
+        }
+        
+        self = n
+    }
+}
+
+extension Int16: XDRCodable {
+    public var xdr: Data { return self.toXDR() }
+    
+    public func toXDR(count: Int32 = 0) -> Data {
+        var n = UInt16(bitPattern: self)
+        var a = [UInt8]()
+        
+        let divisor = UInt16(UInt8.max) + 1
+        for _ in 0..<(self.bitWidth / UInt8.bitWidth) {
+            a.append(UInt8(n % divisor))
+            n /= divisor
+        }
+        
+        return Data(bytes: a.reversed())
+    }
+    
+    public init(xdrData: inout Data, count: Int32 = 0) {
+        var n: UInt16 = 0
+        
+        let count = UInt16.bitWidth / UInt8.bitWidth
+        
+        xdrData.withUnsafeBytes { (bp: UnsafePointer<UInt8>) -> Void in
+            for i in 0..<count {
+                n *= 256
+                n += UInt16(bp.advanced(by: i).pointee)
+            }
+        }
+        
+        (0..<count).forEach { _ in xdrData.remove(at: 0) }
+        
+        self = Int16(bitPattern: n)
+    }
+}
+
+extension UInt16: XDRCodable {
+    public var xdr: Data { return self.toXDR() }
+
+    public func toXDR(count: Int32 = 0) -> Data {
+        var val = self
+        let div = UInt16(UInt8.max) + 1
+        var all = [UInt8]()
+        
+        for _ in 0..<(self.bitWidth / UInt8.bitWidth) {
+            all.append(UInt8(val % div))
+            val /= div
+        }
+        
+        return Data(bytes: all.reversed())
+    }
+    
+    public init(xdrData: inout Data, count: Int32 = 0) {
+        var n: UInt16 = 0
+        
+        let count = UInt16.bitWidth / UInt8.bitWidth
+        
+        xdrData.withUnsafeBytes { (bp: UnsafePointer<UInt8>) -> Void in
+            for i in 0..<count {
+                n *= 256
+                n += UInt16(bp.advanced(by: i).pointee)
+            }
+        }
+        
+        (0..<count).forEach { _ in xdrData.remove(at: 0) }
+        
+        self = n
+    }
+}
+
 extension Int32: XDRCodable {
+    public var xdr: Data { return self.toXDR() }
     public func toXDR(count: Int32 = 0) -> Data {
         var n = UInt32(bitPattern: self)
         var a = [UInt8]()
@@ -84,6 +175,7 @@ extension Int32: XDRCodable {
 }
 
 extension UInt32: XDRCodable {
+    public var xdr: Data { return self.toXDR() }
     public func toXDR(count: Int32 = 0) -> Data {
         var n = self
         var a = [UInt8]()
@@ -116,11 +208,12 @@ extension UInt32: XDRCodable {
 }
 
 extension Int64: XDRCodable {
+    public var xdr: Data { return self.toXDR() }
     public func toXDR(count: Int32 = 0) -> Data {
-        var n = self
+        var n = UInt64(bitPattern: self)
         var a = [UInt8]()
         
-        let divisor = Int64(UInt8.max) + 1
+        let divisor = UInt64(UInt8.max) + 1
         for _ in 0..<(self.bitWidth / UInt8.bitWidth) {
             a.append(UInt8(n % divisor))
             n /= divisor
@@ -148,6 +241,7 @@ extension Int64: XDRCodable {
 }
 
 extension UInt64: XDRCodable {
+    public var xdr: Data { return self.toXDR() }
     public func toXDR(count: Int32 = 0) -> Data {
         var n = self
         var a = [UInt8]()
@@ -180,6 +274,7 @@ extension UInt64: XDRCodable {
 }
 
 extension Bool: XDRCodable {
+    public var xdr: Data { return self.toXDR() }
     public func toXDR(count: Int32 = 0) -> Data {
         return Int32(self ? 1 : 0).toXDR()
     }
@@ -191,6 +286,7 @@ extension Bool: XDRCodable {
 }
 
 extension Data: XDRCodable {
+    public var xdr: Data { return self.toXDR() }
     public func toXDR(count: Int32 = 0) -> Data {
         var xdr = Int32(self.count).toXDR()
         xdr.append(self)
@@ -211,6 +307,7 @@ extension Data: XDRCodable {
 }
 
 extension String: XDRCodable {
+    public var xdr: Data { return self.toXDR() }
     public func toXDR(count: Int32 = 0) -> Data {
         let length = Int32(self.lengthOfBytes(using: .utf8))
         
@@ -242,6 +339,7 @@ extension String: XDRCodable {
 }
 
 extension Array: XDREncodable {
+    public var xdr: Data { return self.toXDR() }
     public func toXDR(count: Int32 = 0) -> Data {
         let length = UInt32(self.count)
         
@@ -270,6 +368,7 @@ extension Array where Element: XDRDecodable {
 }
 
 extension Optional: XDREncodable {
+    public var xdr: Data { return self.toXDR() }
     public func toXDR(count: Int32 = 0) -> Data {
         var xdr = Data()
         
@@ -286,22 +385,24 @@ extension Optional: XDREncodable {
     }
 }
 
-public struct FixedLengthArrayWrapper<T: XDREncodable>: Sequence {
-    public private(set) var wrapped: Array<T>
+// Renamed FixedLengthArrayWrapper to ArrayFixed
+
+public struct ArrayFixed<T: XDREncodable>: Sequence {
+    public private(set) var list: Array<T>
     
     public init(_ array: [T]) {
-        wrapped = array
+        self.list = array
     }
     
     public subscript(_ index: Int) -> T {
-        return wrapped[index]
+        return list[index]
     }
     
     public func makeIterator() -> AnyIterator<T> {
         var index = 0
         
         return AnyIterator {
-            let element: T? = index < self.wrapped.count ? self[index] : nil
+            let element: T? = index < self.list.count ? self[index] : nil
             index += 1
             
             return element
@@ -309,46 +410,49 @@ public struct FixedLengthArrayWrapper<T: XDREncodable>: Sequence {
     }
 }
 
-extension FixedLengthArrayWrapper: CustomDebugStringConvertible {
+extension ArrayFixed: CustomDebugStringConvertible {
     public var debugDescription: String {
-        return wrapped.debugDescription
+        return list.debugDescription
     }
 }
 
-extension FixedLengthArrayWrapper: XDREncodable {
+extension ArrayFixed: XDREncodable {
+    public var xdr: Data { return self.toXDR() }
     public func toXDR(count: Int32 = 0) -> Data {
-        return wrapped.toXDR(count: Int32(wrapped.count))
+        return list.toXDR(count: Int32(list.count))
     }
 }
 
-public struct FixedLengthDataWrapper: Equatable {
-    public private(set) var wrapped: Data
+// Renamed FixedLengthDataWrapper to DataFixed
+//typealias FLDW = DataFixed
+
+public struct DataFixed: Equatable {
+    public private(set) var data: Data
     
     public init(_ data: Data) {
-        wrapped = data
+        self.data = data
     }
     
-    public static func ==(lhs: FixedLengthDataWrapper, rhs: FixedLengthDataWrapper) -> Bool {
-        return lhs.wrapped == rhs.wrapped
+    public static func ==(lhs: DataFixed, rhs: DataFixed) -> Bool {
+        return lhs.data == rhs.data
     }
 }
 
-extension FixedLengthDataWrapper: CustomDebugStringConvertible {
+extension DataFixed: CustomDebugStringConvertible {
     public var debugDescription: String {
-        return wrapped.debugDescription
+        return data.debugDescription
     }
 }
 
-extension FixedLengthDataWrapper: XDREncodable {
+extension DataFixed: XDREncodable {
+    public var xdr: Data { return self.toXDR() }
     public func toXDR(count: Int32 = 0) -> Data {
-        return wrapped
+        return data
     }
-}
-
-public protocol XDREncodableStruct: XDREncodable {
 }
 
 extension XDREncodableStruct {
+    public var xdr: Data { return self.toXDR() }
     public func toXDR(count: Int32 = 0) -> Data {
         var xdr = Data()
         
@@ -361,5 +465,6 @@ extension XDREncodableStruct {
         return xdr
     }
 }
+
 
 // END

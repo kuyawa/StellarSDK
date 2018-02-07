@@ -8,45 +8,35 @@
 
 import Foundation
 
-// Second part of StellarTransaction.x
-
 // Operation Results section
 
 // This result is used when offers are taken during an operation
-public struct ClaimOfferAtom {
-    // emitted to identify the offer
+struct ClaimOfferAtom: XDREncodableStruct {
     let sellerID: AccountID // Account that owns the offer
     let offerID: UInt64
-    // amount and asset taken from the owner
-    let assetSold: Asset
+    let assetSold: Asset    // amount and asset taken from the owner
     let amountSold: Int64
-    // amount and asset sent to the owner
-    let assetBought: Asset
+    let assetBought: Asset  // amount and asset sent to the owner
     let amountBought: Int64
 }
 
 // CreateAccount Result
-public enum CreateAccountResultCode: Int8 {
-    // codes considered as "success" for the operation
+enum CreateAccountResultCode: Int32 {
     case Success      =  0  // account was created
-    // codes considered as "failure" for the operation
     case Malformed    = -1  // invalid destination
     case Underfunded  = -2  // not enough funds in source account
     case LowReserve   = -3  // would create an account below the min reserve
     case AlreadyExist = -4  // account already exists
 }
 
-public enum CreateAccountResult {
-    case Success (Void)
-    case Default (Void) // ?
+enum CreateAccountResult {
+    case Success (CreateAccountResultCode)
+    case Failure (CreateAccountResultCode)
 }
 
-/******* Payment Result ********/
-
-public enum PaymentResultCode: Int8 {
-    // codes considered as "success" for the operation
+// Payment Result
+enum PaymentResultCode: Int32 {
     case Success          =  0  // payment successfuly completed
-    // codes considered as "failure" for the operation
     case Malformed        = -1  // bad input
     case Underfunded      = -2  // not enough funds in source account
     case SrcNoTrust       = -3  // no trust line on source account
@@ -58,17 +48,14 @@ public enum PaymentResultCode: Int8 {
     case NoIssuer         = -9  // missing issuer on asset
 }
 
-public enum PaymentResult {
-    case Success (Void)
-    case Default (Void)
+enum PaymentResult {
+    case Success (PaymentResultCode)
+    case Failure (PaymentResultCode)
 }
 
-/******* Payment Result ********/
-
-public enum PathPaymentResultCode: Int8 {
-    // codes considered as "success" for the operation
+// PathPayment Result
+enum PathPaymentResultCode: Int32 {
     case Success          =   0  // success
-    // codes considered as "failure" for the operation
     case Malformed        =  -1  // bad input
     case Underfunded      =  -2  // not enough funds in source account
     case SrcNoTrust       =  -3  // no trust line on source account
@@ -83,29 +70,26 @@ public enum PathPaymentResultCode: Int8 {
     case OverSendmax      = -12  // could not satisfy sendmax
 }
 
-public struct SimplePaymentResult {
+struct SimplePaymentResult {
     let destination: AccountID
     let asset: Asset
     let amount: Int64
 }
 
-public struct PathPaymentSuccess {
+struct PathPaymentSuccess: XDREncodableStruct {
     let offers: [ClaimOfferAtom]
     let last: SimplePaymentResult
 }
 
-public enum PathPaymentResult {
+enum PathPaymentResult {
     case Success  (PathPaymentSuccess)
     case NoIssuer (Asset) // the asset that caused the error
-    case Default  (Void)
+    case Failure  (PathPaymentResultCode)
 }
 
-/******* ManageOffer Result ********/
-
-public enum ManageOfferResultCode: Int8 {
-    // codes considered as "success" for the operation
+// ManageOffer Result
+enum ManageOfferResultCode: Int32 {
     case Success           =   0
-    // codes considered as "failure" for the operation
     case Malformed         =  -1   // generated offer would be invalid
     case SellNoTrust       =  -2   // no trust line for what we're selling
     case BuyNoTrust        =  -3   // no trust line for what we're buying
@@ -116,40 +100,36 @@ public enum ManageOfferResultCode: Int8 {
     case CrossSelf         =  -8   // would cross an offer from the same user
     case SellNoIssuer      =  -9   // no issuer for what we're selling
     case BuyNoIssuer       = -10   // no issuer for what we're buying
-    // update errors
     case NotFound          = -11   // offerID does not match an existing offer
     case LowReserve        = -12   // not enough funds to create a new Offer
 }
 
-public enum ManageOfferEffect {
+enum ManageOfferEffect {
     case Created
     case Updated
     case Deleted
 }
 
-public enum ManageOfferEffectEntry {
-    case Created
+enum ManageOfferEffectEntry {
+    case Created (ManageOfferEffect)
     case Updated (OfferEntry)
     case Default (Void)
 }
 
-public struct ManageOfferSuccessResult {
+struct ManageOfferSuccessResult: XDREncodableStruct {
     // offers that got claimed while creating this offer
     let offersClaimed: [ClaimOfferAtom]
     let offer: ManageOfferEffectEntry  // ?
 }
 
-public enum ManageOfferResult {
+enum ManageOfferResult {
     case Success (ManageOfferSuccessResult)
-    case Default (Void)
+    case Failure (ManageOfferResultCode)
 }
 
-/******* SetOptions Result ********/
-
-public enum SetOptionsResultCode: Int8 {
-    // codes considered as "success" for the operation
+// SetOptions Result
+enum SetOptionsResultCode: Int32 {
     case Success             =  0
-    // codes considered as "failure" for the operation
     case LowReserve          = -1  // not enough funds to add a signer
     case TooManySigners      = -2  // max number of signers already reached
     case BadFlags            = -3  // invalid combination of clear/set flags
@@ -161,17 +141,14 @@ public enum SetOptionsResultCode: Int8 {
     case InvalidHomeDomain   = -9  // malformed home domain
 }
 
-public enum SetOptionsResult {
-    case SET_OPTIONS_SUCCESS (Void)
-    case Default (Void)
+enum SetOptionsResult {
+    case Success (SetOptionsResultCode)
+    case Failure (SetOptionsResultCode)
 }
 
-/******* ChangeTrust Result ********/
-
-public enum ChangeTrustResultCode: Int8 {
-    // codes considered as "success" for the operation
+// ChangeTrust Result
+enum ChangeTrustResultCode: Int32 {
     case Success        =  0
-    // codes considered as "failure" for the operation
     case Malformed      = -1  // bad input
     case NoIssuer       = -2  // could not find issuer
     case InvalidLimit   = -3  // cannot drop limit below balance, cannot create with a limit of 0
@@ -179,18 +156,15 @@ public enum ChangeTrustResultCode: Int8 {
     case SelfNotAllowed = -5  // trusting self is not allowed
 }
 
-public enum ChangeTrustResult {
-    case Success (Void)
-    case Default (Void)
+enum ChangeTrustResult {
+    case Success (ChangeTrustResultCode)
+    case Failure (ChangeTrustResultCode)
 }
 
 
-/******* AllowTrust Result ********/
-
-public enum AllowTrustResultCode: Int8 {
-    // codes considered as "success" for the operation
+// AllowTrust Result
+enum AllowTrustResultCode: Int32 {
     case Success            =  0
-    // codes considered as "failure" for the operation
     case Malformed          = -1  // asset is not ASSET_TYPE_ALPHANUM
     case No_trust_line      = -2  // trustor does not have a trustline
     case Trust_not_required = -3  // source account does not require trust
@@ -198,73 +172,65 @@ public enum AllowTrustResultCode: Int8 {
     case Self_not_allowed   = -5  // trusting self is not allowed
 }
 
-public enum AllowTrustResult {
-    case Success (Void)
-    case Default (Void)
+enum AllowTrustResult {
+    case Success (AllowTrustResultCode)
+    case Failure (AllowTrustResultCode)
 }
 
-/******* AccountMerge Result ********/
-
-public enum AccountMergeResultCode: Int8 {
-    // codes considered as "success" for the operation
+// AccountMerge Result
+enum AccountMergeResultCode: Int32 {
     case Success       =  0
-    // codes considered as "failure" for the operation
     case Malformed     = -1  // can't merge onto itself
     case NoAccount     = -2  // destination does not exist
     case ImmutableSet  = -3  // source account has AUTH_IMMUTABLE set
     case HasSubEntries = -4  // account has trust lines/offers
 }
 
-public enum AccountMergeResult {
+enum AccountMergeResult {
     case Success (Int64)   // how much got transfered from source account
-    case Default (Void)
+    case Failure (AccountMergeResultCode)
 }
 
-/******* Inflation Result ********/
-
-public enum InflationResultCode: Int8 {
-    // codes considered as "success" for the operation
+// Inflation Result
+enum InflationResultCode: Int32 {
     case Success =  0
-    // codes considered as "failure" for the operation
     case NotTime = -1
 }
 
-public struct InflationPayout { // or use PaymentResultAtom to limit types?
+struct InflationPayout: XDREncodableStruct { // or use PaymentResultAtom to limit types?
     let destination: AccountID
     let amount: Int64
 }
 
-public enum InflationResult {
-    case Success ([InflationPayout])
-    case Default (Void)
+typealias InflationPayouts = [InflationPayout]
+
+enum InflationResult {
+    case Success (InflationPayouts)
+    case Failure (InflationResultCode)
 }
 
-/******* ManageData Result ********/
-
-public enum ManageDataResultCode: Int8 {
-    // codes considered as "success" for the operation
+// ManageData Result
+enum ManageDataResultCode: Int32 {
     case Success          =  0
-    // codes considered as "failure" for the operation
     case NotSupportedYyet = -1  // The network hasn't moved to this protocol change yet
     case NameNotFound     = -2  // Trying to remove a Data Entry that isn't there
     case LowReserve       = -3  // not enough funds to create a new Data Entry
     case InvalidName      = -4  // Name not a valid string
 }
 
-public enum ManageDataResult {
-    case Success (Void)
-    case Default (Void)
+enum ManageDataResult {
+    case Success (ManageDataResultCode)
+    case Default (ManageDataResultCode)
 }
 
-/* High level Operation Result */
-
-public enum OperationResultCode: Int8 {
+// High level Operation Result
+enum OperationResultCode: Int32 {
     case Inner     =  0  // inner object result is valid
     case BadAuth   = -1  // too few valid signatures / wrong network
     case NoAccount = -2  // source account was not found
 }
 
-public enum OperationResultType {
+enum OperationResultType {
     case CreateAccount      (CreateAccountResult)
     case Payment            (PaymentResult)
     case PathPayment        (PathPaymentResult)
@@ -278,12 +244,14 @@ public enum OperationResultType {
     case ManageData         (ManageDataResult)
 }
 
-public enum OperationResult {
+enum OperationResult {
     case Inner   (OperationResultType)
-    case Default (Void)
+    case Failure (OperationResultCode)
 }
 
-public enum TransactionResultCode: Int8 {
+typealias OperationResults = [OperationResult]
+
+enum TransactionResultCode: Int32 {
     case Success             =   0  // all operations succeeded
     case Failed              =  -1  // one of the operations failed (none were applied)
     case TooEarly            =  -2  // ledger closeTime before minTime
@@ -298,15 +266,15 @@ public enum TransactionResultCode: Int8 {
     case InternalError       = -11  // an unknown error occured
 }
 
-public enum TransactionResults {
-    case Success ([OperationResult])
-    case Failed  ([OperationResult])
-    case Default (Void)
+enum TransactionResults {
+    case Success (OperationResults)
+    case Failed  (OperationResults)
+    case Failure (TransactionResultCode)
 }
 
-public struct TransactionResult {
+struct TransactionResult: XDREncodableStruct {
     let feeCharged: Int64 // actual fee charged for the transaction
-    let results: TransactionResults
+    let result: TransactionResults
     let ext: Reserved
 }
 

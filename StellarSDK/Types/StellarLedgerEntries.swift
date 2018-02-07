@@ -8,15 +8,15 @@
 
 import Foundation
 
-public typealias AccountID      = String  // Max 56
-public typealias Thresholds     = Data    // Max  4
-public typealias String32       = String  // Max 32
-public typealias String64       = String  // Max 64
-public typealias DataValue      = Data    // Max 64
-public typealias SequenceNumber = UInt64
-public typealias AssetCode4     = String  // Max  4
-public typealias AssetCode12    = String  // Max 12
-public typealias Reserved       = Int     // Reserved for future use
+typealias AccountID      = PublicKey  // Max 56
+typealias Thresholds     = Data       // Max  4
+typealias String32       = String     // Max 32
+typealias String64       = String     // Max 64
+typealias DataValue      = Data       // Max 64
+typealias SequenceNumber = UInt64     // Max UInt64.max
+typealias AssetCode4     = String     // Max  4
+typealias AssetCode12    = String     // Max 12
+typealias Reserved       = Int32      // Reserved for future use
 
 // CONSTANTS
 
@@ -25,46 +25,70 @@ let MASK_TRUSTLINE_FLAGS  = 1    // mask for all trustline flags
 let MASK_OFFERENTRY_FLAGS = 1    // Mask for OfferEntry flags
 
 
-public enum AssetType {
+enum AssetType {
     case Native
     case CreditAlphaNum4
     case CreditAlphaNum12
 }
 
-public struct Asset {
-    public var type      : AssetType
-    public var assetCode : String
-    public var issuer    : AccountID
+struct AssetData: XDREncodableStruct {
+    var assetCode : String?
+    var issuer    : AccountID?
+}
+
+enum Asset {
+    case Native
+    case CreditAlphaNum4  (AssetData)  // 1..4
+    case CreditAlphaNum12 (AssetData)  // 5..12
+    // add other asset types here in the future
+    
+    // TODO: assetcode fixed length, use init, pad codes with zeroes
+    public init?(assetCode: String, issuer: String) {
+        guard let publicKey = KeyPair.getKey(issuer) else { return nil }
+        self.init(assetCode: assetCode, issuer: publicKey)
+    }
+    
+    public init?(assetCode: String, issuer: PublicKey) {
+        if assetCode.characters.count < 5 {
+            let asset = AssetData(assetCode: assetCode, issuer: issuer)
+            self = .CreditAlphaNum4(asset)
+        } else if assetCode.characters.count < 13 {
+            let asset = AssetData(assetCode: assetCode, issuer: issuer)
+            self = .CreditAlphaNum12(asset)
+        } else {
+            self = .Native
+        }
+    }
 }
 
 // Price in fractional representation
-public struct Price {
-    public var n: Int32   // numerator
-    public var d: Int32   // denominator
+struct Price: XDREncodableStruct {
+    var n: Int32   // numerator
+    var d: Int32   // denominator
 }
 
 // 'Thresholds' type is packed uint8_t values defined by these indexes
-public enum ThresholdIndexes {
+enum ThresholdIndexes {
     case MasterWeight
     case Low
     case Med
     case High
 }
 
-public enum LedgerEntryType {
+enum LedgerEntryType {
     case Account
     case TrustLine
     case Offer
     case Data
 }
 
-public struct Signer {
-    public var key    : SignerKey
-    public var weight : UInt32     // really only need 1 byte
+struct Signer: XDREncodableStruct {
+    var key    : SignerKey
+    var weight : UInt32     // really only need 1 byte
 }
 
 // Flags set on issuer accounts
-public enum AccountFlags: UInt8 {
+enum AccountFlags: UInt8 {
     case AuthRequired  = 0x1  // TrustLines are created with authorized set to "false" requiring the issuer to set it for each TrustLine
     case AuthRevocable = 0x2  // If set, the authorized flag in TrustLines can be cleared otherwise, authorization cannot be revoked
     case AuthImmutable = 0x4  // Once set, causes all AUTH_* flags to be read-only
@@ -72,61 +96,61 @@ public enum AccountFlags: UInt8 {
 
 
 /* AccountEntry
-    Main entry representing a user in Stellar. All transactions are
-    performed using an account.
-    Other ledger entries created require an account.
-*/
+ Main entry representing a user in Stellar. All transactions are
+ performed using an account.
+ Other ledger entries created require an account.
+ */
 
-public struct AccountEntry {
-    public var accountID     : AccountID      // master public key for this account
-    public var balance       : Int64          // in stroops
-    public var seqNum        : SequenceNumber // last sequence number used for this account
-    public var numSubEntries : UInt32         // number of sub-entries this account has drives the reserve
-    public var inflationDest : AccountID      // Account to vote for during inflation
-    public var flags         : UInt32         // see AccountFlags
-    public var homeDomain    : String32       // can be used for reverse federation and memo lookup
-    public var thresholds    : Thresholds     // thresholds stores unsigned bytes: [weight of master|low|medium|high]
-    public var signers       : Signer         // Max 20. Possible signers for this account
-    public var ext           : Int            // reserved for future use
+struct AccountEntry: XDREncodableStruct {
+    var accountID     : AccountID      // master key for this account
+    var balance       : Int64          // in stroops
+    var seqNum        : SequenceNumber // last sequence number used for this account
+    var numSubEntries : UInt32         // number of sub-entries this account has drives the reserve
+    var inflationDest : AccountID      // Account to vote for during inflation
+    var flags         : UInt32         // see AccountFlags
+    var homeDomain    : String32       // can be used for reverse federation and memo lookup
+    var thresholds    : Thresholds     // thresholds stores unsigned bytes: [weight of master|low|medium|high]
+    var signers       : [Signer]       // Max 20. Possible signers for this account
+    var ext           : Int            // reserved for future use
 }
 
 /* TrustLineEntry
-    A trust line represents a specific trust relationship with
-    a credit/issuer (limit, authorization)
-    as well as the balance.
-*/
+ A trust line represents a specific trust relationship with
+ a credit/issuer (limit, authorization)
+ as well as the balance.
+ */
 
-public enum TrustLineFlags: UInt8 {
+enum TrustLineFlags: UInt8 {
     case Authorized = 1  // issuer has authorized account to perform transactions with its credit
 }
 
-public struct TrustLineEntry {
-    public var accountID : AccountID  // account this trustline belongs to
-    public var asset     : Asset      // type of asset (with issuer)
-    public var balance   : Int64      // how much of this the: Asset user has. defines: Asset the unit for this
-    public var limit     : Int64      // balance cannot be above this
-    public var flags     : UInt32     // see TrustLineFlags
-    public var ext       : Reserved
+struct TrustLineEntry: XDREncodableStruct {
+    var accountID : AccountID  // account this trustline belongs to
+    var asset     : Asset      // type of asset (with issuer)
+    var balance   : Int64      // how much of this the: Asset user has. defines: Asset the unit for this
+    var limit     : Int64      // balance cannot be above this
+    var flags     : UInt32     // see TrustLineFlags
+    var ext       : Reserved
 }
 
-public enum OfferEntryFlags: UInt8 {
+enum OfferEntryFlags: UInt8 {
     case Passive = 1   // issuer has authorized account to perform transactions with its credit
 }
 
 /* OfferEntry
-    An offer is the building block of the offer book, they are automatically
-    claimed by payments when the price set by the owner is met.
-    For example an Offer is selling 10A where 1A is priced at 1.5B
-*/
-public struct OfferEntry {
-    public var sellerID : AccountID
-    public var offerID  : UInt64
-    public var selling  : Asset   // A
-    public var buying   : Asset   // B
-    public var amount   : Int64   // amount of A
-    public var price    : Price
-    public var flags    : UInt32  // see OfferEntryFlags
-    public var ext      : Reserved
+ An offer is the building block of the offer book, they are automatically
+ claimed by payments when the price set by the owner is met.
+ For example an Offer is selling 10A where 1A is priced at 1.5B
+ */
+struct OfferEntry: XDREncodableStruct {
+    var sellerID : AccountID
+    var offerID  : UInt64
+    var selling  : Asset   // A
+    var buying   : Asset   // B
+    var amount   : Int64   // amount of A
+    var price    : Price
+    var flags    : UInt32  // see OfferEntryFlags
+    var ext      : Reserved
     /* price for this offer:
      price of A in terms of B
      price=AmountB/AmountA=priceNumerator/priceDenominator
@@ -134,27 +158,27 @@ public struct OfferEntry {
      */
 }
 
-public struct DataEntry {
-    public var accountID : AccountID // account this data belongs to
-    public var dataName  : String64
-    public var dataValue : DataValue
-    public var ext       : Reserved
+struct DataEntry: XDREncodableStruct {
+    var accountID : AccountID // account this data belongs to
+    var dataName  : String64
+    var dataValue : DataValue
+    var ext       : Reserved
 }
 
 
-public struct LedgerEntry {
-    public var  lastModifiedLedgerSeq: UInt32 // ledger the LedgerEntry was last changed
-    public enum data {
-      case Account   (AccountEntry)
-      case TrustLine (TrustLineEntry)
-      case Offer     (OfferEntry)
-      case Data      (DataEntry)
+struct LedgerEntry: XDREncodableStruct {
+    var  lastModifiedLedgerSeq: UInt32 // ledger the LedgerEntry was last changed
+    enum data {
+        case Account   (AccountEntry)
+        case TrustLine (TrustLineEntry)
+        case Offer     (OfferEntry)
+        case Data      (DataEntry)
     }
-    public var ext: Reserved
+    var ext: Reserved
 }
 
 // List of all envelope types used in the application those are prefixes used when building signatures for the respective envelopes
-public enum EnvelopeType: UInt8 {
+enum EnvelopeType: Int32 {
     case SCP  = 1
     case TX   = 2
     case AUTH = 3

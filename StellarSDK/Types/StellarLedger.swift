@@ -12,11 +12,11 @@ import Foundation
 // Requires StellarTransaction.swift
 
 
-public typealias UpgradeType = Data  // Max 128
-public typealias LedgerEntryChanges = [LedgerEntryChange]
+typealias UpgradeType = Data  // Max 128
+typealias LedgerEntryChanges = [LedgerEntryChange]
 
 /* StellarValue is the value used by SCP to reach consensus on a given ledger */
-public struct StellarValue {
+struct StellarValue: XDREncodableStruct {
     let txSetHash: Hash   // transaction set to apply to previous ledger
     let closeTime: UInt64 // network close time
     
@@ -31,10 +31,10 @@ public struct StellarValue {
     let ext: Reserved
 }
 
-/* The LedgerHeader is the highest level public structure representing the
+/* The LedgerHeader is the highest level structure representing the
  * state of a ledger, cryptographically linked to previous ledgers.
  */
-public struct LedgerHeader {
+struct LedgerHeader: XDREncodableStruct {
     let ledgerVersion: UInt32    // the protocol version of the ledger
     let previousLedgerHash: Hash // hash of the previous ledger header
     let scpValue: StellarValue   // what consensus agreed to
@@ -62,14 +62,14 @@ public struct LedgerHeader {
  it only contains one entry per LedgerUpgradeType, and entries are sorted
  in ascending order
  */
-public enum LedgerUpgradeType: UInt8 {
+enum LedgerUpgradeType: UInt8 {
     case Version      = 1
     case BaseFee      = 2
     case MaxTxSetSize = 3
     case BaseReserve  = 4
 }
 
-public enum LedgerUpgrade {
+enum LedgerUpgrade {
     case Version      (UInt32)  // update ledgerVersion
     case BaseFee      (UInt32)  // update baseFee
     case MaxTxSetSize (UInt32)  // update maxTxSetSize
@@ -78,73 +78,73 @@ public enum LedgerUpgrade {
 
 /* Entries used to define the bucket list */
 
-public struct LedgerKeyAccount {
+struct LedgerKeyAccount: XDREncodableStruct {
     let accountID: AccountID
 }
 
-public struct LedgerKeyTrustLine {
+struct LedgerKeyTrustLine: XDREncodableStruct {
     let accountID: AccountID
     let asset: Asset
 }
 
-public struct LedgerKeyOffer {
+struct LedgerKeyOffer: XDREncodableStruct {
     let sellerID: AccountID
     let offerID: UInt64
 }
 
-public struct LedgerKeyData {
+struct LedgerKeyData: XDREncodableStruct {
     let accountID: AccountID
     let dataName: String64
 }
 
-public enum LedgerKey {
+enum LedgerKey {
     case Account   (LedgerKeyAccount)
     case TrustLine (LedgerKeyTrustLine)
     case Offer     (LedgerKeyOffer)
     case Data      (LedgerKeyData)
 }
 
-public enum BucketEntryType {
+enum BucketEntryType {
     case LiveEntry
     case DeadEntry
 }
 
-public enum BucketEntry {
+enum BucketEntry {
     case LiveEntry (LedgerEntry)
     case DeadEntry (LedgerKey)
 }
 
 // Transaction sets are the unit used by SCP to decide on transitions between ledgers
-public struct TransactionSet {
+struct TransactionSet: XDREncodableStruct {
     let previousLedgerHash: Hash
     let txs: [TransactionEnvelope]
 }
 
-public struct TransactionResultPair {
+struct TransactionResultPair: XDREncodableStruct {
     let transactionHash: Hash
     let result: TransactionResult // result for the transaction
 }
 
 // TransactionResultSet is used to recover results between ledgers
-public struct TransactionResultSet {
+struct TransactionResultSet: XDREncodableStruct {
     let results: [TransactionResultPair]
 }
 
 // Entries below are used in the historical subsystem
 
-public struct TransactionHistoryEntry {
+struct TransactionHistoryEntry: XDREncodableStruct {
     let ledgerSeq: UInt32
     let txSet: TransactionSet
     let ext: Reserved
 }
 
-public struct TransactionHistoryResultEntry {
+struct TransactionHistoryResultEntry: XDREncodableStruct {
     let ledgerSeq: UInt32
     let txResultSet: TransactionResultSet
     let ext: Reserved
 }
 
-public struct LedgerHeaderHistoryEntry {
+struct LedgerHeaderHistoryEntry: XDREncodableStruct {
     let hash: Hash
     let header: LedgerHeader
     let ext: Reserved
@@ -152,20 +152,20 @@ public struct LedgerHeaderHistoryEntry {
 
 // historical SCP messages
 
-public struct LedgerSCPMessages {
+struct LedgerSCPMessages: XDREncodableStruct {
     let ledgerSeq: UInt32
     let messages: [SCPEnvelope]
 }
 
 // note: ledgerMessages may refer to any quorumSets encountered
 // in the file so far, not just the one from this entry
-public struct SCPHistoryEntryV0 {
+struct SCPHistoryEntryV0: XDREncodableStruct {
     let quorumSets: [SCPQuorumSet]          // additional quorum sets used by ledgerMessages
     let ledgerMessages: LedgerSCPMessages
 }
 
 // SCP history file is an array of these
-public enum SCPHistoryEntry {
+enum SCPHistoryEntry {
     case V0 (SCPHistoryEntryV0)
 }
 
@@ -174,25 +174,25 @@ public enum SCPHistoryEntry {
 // STATE is emitted every time a ledger entry is modified/deleted
 // and the entry was not already modified in the current ledger
 
-public enum LedgerEntryChangeType {
+enum LedgerEntryChangeType {
     case Created  // entry was added to the ledger
     case Updated  // entry was modified in the ledger
     case Removed  // entry was removed from the ledger
     case State    // value of the entry
 }
 
-public enum LedgerEntryChange {
+enum LedgerEntryChange {
     case Created (LedgerEntry)
     case Updated (LedgerEntry)
     case Removed (LedgerKey)
     case State   (LedgerEntry)
 }
 
-public struct OperationMeta {
+struct OperationMeta: XDREncodableStruct {
     let changes: LedgerEntryChanges
 }
 
-public struct TransactionMeta {
+struct TransactionMeta: XDREncodableStruct {
     let operations: [OperationMeta]
 }
 

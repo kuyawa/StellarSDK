@@ -1,9 +1,57 @@
 TODO: MACAPP
 
+- Sign and submit TX
+- Test all ops
 - Cache tx, op, py details since they don't change
 ? Throw errors, define error strategy (code, text)
-- Finish xdr encodable struct
-- Start adding classes
+x Finish xdr encodable struct
+x Start adding classes
 x extension data.base32
 
 ref: http://cryptoswift.io
+
+
+----
+
+public typealias Callback = (_ response: CallbackResult) -> Void
+
+enum CallbackResult {
+  case success (Response)
+  case failure (Failure)
+}
+
+func testRequest(callback: @escaping Callback) {
+    // stuff
+    if ok {
+        callback(CallbackResult.success(status: 200, payload: whatever))
+    } else {
+        callback(CallbackResult.failure(code: 123, text: "Oops"))
+    }
+}
+
+testRequest { response in
+    switch response {
+        case .success(let response) : do stuff
+        case .failure(let failure)  : do stuff
+    }
+}
+
+----
+
+Sodium generates pub32 and sec64 where sec64 = seed32+pub32
+
+keypair {
+  public32
+  seed32
+  secret64 = seed32+pub32
+}
+
+Stellar keys use versioning char G or S plus 2 bytes crc16 ChecksumXmodem prefix+bytes at the end
+
+To get the public from secret64 split/32 get last
+To get seed from secret64 split/32 get first
+To get pub and sec from G123... S123...
+let pub = pubKey.base32DecodedData!.subdata(in: 1..<33)
+let sec = secKey.base32DecodedData!.subdata(in: 1..<33)
+
+use sec64 for signing

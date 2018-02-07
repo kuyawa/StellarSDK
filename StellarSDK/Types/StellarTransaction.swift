@@ -8,23 +8,18 @@
 
 import Foundation
 
-public struct DecoratedSignature {
-    public var hint      : SignatureHint  // last 4 bytes of the public key, used as a hint
-    public var signature : Signature      // actual signature
-}
-
-public enum OperationType {
-    case CREATE_ACCOUNT
-    case PAYMENT
-    case PATH_PAYMENT
-    case MANAGE_OFFER
-    case CREATE_PASSIVE_OFFER
-    case SET_OPTIONS
-    case CHANGE_TRUST
-    case ALLOW_TRUST
-    case ACCOUNT_MERGE
-    case INFLATION
-    case MANAGE_DATA
+enum OperationType: Int32 {
+    case CreateAccount = 0
+    case Payment
+    case PathPayment
+    case ManageOffer
+    case CreatePassiveOffer
+    case SetOptions
+    case ChangeTrust
+    case AllowTrust
+    case AccountMerge
+    case Inflation
+    case ManageData
 }
 
 /*  CreateAccount
@@ -33,9 +28,9 @@ public enum OperationType {
  Result: CreateAccountResult
  */
 
-public struct CreateAccountOp {
-    public var destination     : AccountID // account to create
-    public var startingBalance : Int64     // amount they end up with
+struct CreateAccountOp: XDREncodableStruct {
+    var destination     : PublicKey // account to create
+    var startingBalance : Int64     // amount they end up with
 }
 
 /*  Payment
@@ -44,10 +39,10 @@ public struct CreateAccountOp {
  Result: PaymentResult
  */
 
-public struct PaymentOp {
-    public var destination : AccountID   // recipient of the payment
-    public var asset       : Asset       // what they end up with
-    public var amount      : Int64       // amount they end up with
+struct PaymentOp: XDREncodableStruct {
+    var destination : AccountID   // recipient of the payment
+    var asset       : Asset       // what they end up with
+    var amount      : Int64       // amount they end up with
 }
 
 /*  PathPayment
@@ -60,36 +55,36 @@ public struct PaymentOp {
  Threshold: med
  Result: PathPaymentResult
  */
-public struct PathPaymentOp {
-    public var sendAsset   : Asset     // asset we pay with
-    public var sendMax     : Int64     // the maximum amount of sendAsset to send (excluding fees). The operation will fail if can't be met
-    public var destination : AccountID // recipient of the payment
-    public var destAsset   : Asset     // what they end up with
-    public var destAmount  : Int64     // amount they end up with
-    public var path        : [Asset]   // additional hops it must go through to get there
+struct PathPaymentOp: XDREncodableStruct {
+    var sendAsset   : Asset     // asset we pay with
+    var sendMax     : Int64     // the maximum amount of sendAsset to send (excluding fees). The operation will fail if can't be met
+    var destination : AccountID // recipient of the payment
+    var destAsset   : Asset     // what they end up with
+    var destAmount  : Int64     // amount they end up with
+    var path        : [Asset]   // Max 5. Additional hops it must go through to get there
 }
 
 /* Creates, updates or deletes an offer
  Threshold: med
  Result: ManageOfferResult
  */
-public struct ManageOfferOp {
-    public var selling : Asset
-    public var buying  : Asset
-    public var amount  : Int64  // amount being sold. if set to 0, delete the offer
-    public var price   : Price    // price of thing being sold in terms of what you are buying. 0=create a new offer, otherwise edit an existing offer
-    public var offerID : UInt64
+struct ManageOfferOp: XDREncodableStruct {
+    var selling : Asset
+    var buying  : Asset
+    var amount  : Int64  // amount being sold. if set to 0, delete the offer
+    var price   : Price    // price of thing being sold in terms of what you are buying. 0=create a new offer, otherwise edit an existing offer
+    var offerID : UInt64
 }
 
 /* Creates an offer that doesn't take offers of the same price
  Threshold: med
  Result: CreatePassiveOfferResult
  */
-public struct CreatePassiveOfferOp {
-    public var selling : Asset     // A
-    public var buying  : Asset     // B
-    public var amount  : Int64     // amount taker gets. if set to 0, delete the offer
-    public var price   : Price     // cost of A in terms of B
+struct CreatePassiveOfferOp: XDREncodableStruct {
+    var selling : Asset     // A
+    var buying  : Asset     // B
+    var amount  : Int64     // amount taker gets. if set to 0, delete the offer
+    var price   : Price     // cost of A in terms of B
 }
 
 /* Set Account Options
@@ -98,25 +93,25 @@ public struct CreatePassiveOfferOp {
  Threshold: med or high
  Result: SetOptionsResult
  */
-public struct SetOptionsOp {
-    public var inflationDest : AccountID   // sets the inflation destination
-    public var clearFlags    : UInt32      // which flags to clear
-    public var setFlags      : UInt32      // which flags to set
-    public var masterWeight  : UInt32      // weight of the master account
-    public var lowThreshold  : UInt32
-    public var medThreshold  : UInt32
-    public var highThreshold : UInt32
-    public var homeDomain    : String      // sets the home domain
-    public var signer        : Signer      // Add, update or remove a signer for the account. Signer is deleted if the weight is 0
+struct SetOptionsOp: XDREncodableStruct {
+    var inflationDest : AccountID   // sets the inflation destination
+    var clearFlags    : UInt32      // which flags to clear
+    var setFlags      : UInt32      // which flags to set
+    var masterWeight  : UInt32      // weight of the master account
+    var lowThreshold  : UInt32
+    var medThreshold  : UInt32
+    var highThreshold : UInt32
+    var homeDomain    : String      // sets the home domain
+    var signer        : Signer      // Add, update or remove a signer for the account. Signer is deleted if the weight is 0
 }
 
 /* Creates, updates or deletes a trust line
  Threshold: med
  Result: ChangeTrustResult
  */
-public struct ChangeTrustOp {
-    public var line  : Asset      // if limit is set to 0, deletes the trust line
-    public var limit : Int64
+struct ChangeTrustOp: XDREncodableStruct {
+    var line  : Asset      // if limit is set to 0, deletes the trust line
+    var limit : Int64
 }
 
 /* Updates the "authorized" flag of an existing trust line
@@ -126,18 +121,18 @@ public struct ChangeTrustOp {
  Threshold: low
  Result: AllowTrustResult
  */
-public struct AllowTrustOp {
-    public var trustor : AccountID
-    //public var asset : Asset
+struct AllowTrustOp: XDREncodableStruct {
+    var trustor : AccountID
+    //var asset : Asset
     
-    public enum asset {
+    enum asset {
         // ASSET_TYPE_NATIVE is not allowed
-        case CREDIT_ALPHANUM4  (AssetCode4)
-        case CREDIT_ALPHANUM12 (AssetCode12)
+        case CreditAlphaNum4  (AssetCode4)
+        case CreditAlphaNum12 (AssetCode12)
         // add other asset types here in the future
     }
     
-    public var authorize: Bool
+    var authorize: Bool
 }
 
 /* Inflation
@@ -154,85 +149,190 @@ public struct AllowTrustOp {
 
 /* ManageData
  Adds, Updates, or Deletes a key value pair associated with a particular
-	account.
+ account.
  Threshold: med
  Result: ManageDataResult
  */
-public struct ManageDataOp {
-    public var dataName  : String
-    public var dataValue : DataValue   // set to null to clear
+struct ManageDataOp: XDREncodableStruct {
+    var dataName  : String
+    var dataValue : DataValue   // set to null to clear
 }
 
-/* An operation is the lowest unit of work that a transaction does */
-public struct Operation {
-    public var sourceAccount : AccountID       // sourceAccount is the account used to run the operation, if not set, the runtime defaults to "sourceAccount" specified at the transaction level
-    public var body          : OperationBody
+
+enum OperationBody: XDREncodable {
+    case CreateAccount      (CreateAccountOp)
+    case Payment            (PaymentOp)
+    case PathPayment        (PathPaymentOp)
+    case ManageOffer        (ManageOfferOp)
+    case CreatePassiveOffer (CreatePassiveOfferOp)
+    case SetOptions         (SetOptionsOp)
+    case ChangeTrust        (ChangeTrustOp)
+    case AllowTrust         (AllowTrustOp)
+    case AccountMerge       (AccountID)
+    case Inflation          (Void)
+    case ManageData         (ManageDataOp)
     
-    public enum OperationBody {
-        case CREATE_ACCOUNT       (CreateAccountOp)
-        case PAYMENT              (PaymentOp)
-        case PATH_PAYMENT         (PathPaymentOp)
-        case MANAGE_OFFER         (ManageOfferOp)
-        case CREATE_PASSIVE_OFFER (CreatePassiveOfferOp)
-        case SET_OPTIONS          (SetOptionsOp)
-        case CHANGE_TRUST         (ChangeTrustOp)
-        case ALLOW_TRUST          (AllowTrustOp)
-        case ACCOUNT_MERGE        (AccountID)
-        case INFLATION            (Void)
-        case MANAGE_DATA          (ManageDataOp)
+    var discriminant: Int32 {
+        switch self {
+        case .CreateAccount      : return OperationType.CreateAccount.rawValue
+        case .Payment            : return OperationType.Payment.rawValue
+        case .PathPayment        : return OperationType.PathPayment.rawValue
+        case .ManageOffer        : return OperationType.ManageOffer.rawValue
+        case .CreatePassiveOffer : return OperationType.CreatePassiveOffer.rawValue
+        case .SetOptions         : return OperationType.SetOptions.rawValue
+        case .ChangeTrust        : return OperationType.ChangeTrust.rawValue
+        case .AllowTrust         : return OperationType.AllowTrust.rawValue
+        case .AccountMerge       : return OperationType.AccountMerge.rawValue
+        case .Inflation          : return OperationType.Inflation.rawValue
+        case .ManageData         : return OperationType.ManageData.rawValue
+        }
+    }
+    
+    var xdr: Data { return toXDR() }
+    
+    func toXDR(count: Int32 = 0) -> Data {
+        var xdr = discriminant.xdr
+        
+        switch self {
+        case .CreateAccount(let op)      : xdr.append(op.xdr)
+        case .Payment(let op)            : xdr.append(op.xdr)
+        case .PathPayment(let op)        : xdr.append(op.xdr)
+        case .ManageOffer(let op)        : xdr.append(op.xdr)
+        case .CreatePassiveOffer(let op) : xdr.append(op.xdr)
+        case .SetOptions(let op)         : xdr.append(op.xdr)
+        case .ChangeTrust(let op)        : xdr.append(op.xdr)
+        case .AllowTrust(let op)         : xdr.append(op.xdr)
+        case .AccountMerge(let op)       : xdr.append(op.xdr)
+        case .Inflation                  : break //xdr.append(op.xdr)
+        case .ManageData(let op)         : xdr.append(op.xdr)
+        }
+        
+        //print("BODY",xdr.base64);
+        return xdr
     }
 }
 
-public enum MemoType {
-    case MEMO_NONE
-    case MEMO_TEXT
-    case MEMO_ID
-    case MEMO_HASH
-    case MEMO_RETURN
+/* An operation is the lowest unit of work that a transaction does */
+
+struct Operation: XDREncodableStruct {
+    var sourceAccount: AccountID?       // sourceAccount is the account used to run the operation, if not set, the runtime defaults to "sourceAccount" specified at the transaction level
+    var body: OperationBody
 }
 
-public enum Memo {
-    case MEMO_NONE   (Void)
-    case MEMO_TEXT   (String)   // Max 28
-    case MEMO_ID     (UInt64)
-    case MEMO_HASH   (Hash)     // the hash of what to pull from the content server
-    case MEMO_RETURN (Hash)     // the hash of the tx you are rejecting
+typealias Operations = [Operation]
+
+enum MemoType: Int32 {
+    case None = 0
+    case Text
+    case Id
+    case Hash
+    case Return
 }
 
-public struct TimeBounds {
-    public var minTime: UInt64
-    public var maxTime: UInt64 // 0 here means no maxTime
+enum Memo: XDREncodable {
+    case None   (Void)
+    case Text   (String)   // Max 28
+    case Id     (UInt64)
+    case Hash   (Hash)     // the hash of what to pull from the content server
+    case Return (Hash)     // the hash of the tx you are rejecting
+    
+    var discriminant: Int32 {
+        switch self {
+        case .None:   return MemoType.None.rawValue
+        case .Text:   return MemoType.Text.rawValue
+        case .Id:     return MemoType.Id.rawValue
+        case .Hash:   return MemoType.Hash.rawValue
+        case .Return: return MemoType.Return.rawValue
+        }
+    }
+    
+    var xdr: Data { return toXDR() }
+    
+    func toXDR(count: Int32 = 0) -> Data {
+        var xdr = discriminant.xdr
+        
+        switch self {
+        case .None: break
+        case .Text   (let str) : xdr.append(str.xdr)  // TODO: Trim up to 28 chars?
+        case .Id     (let id)  : xdr.append(  id.xdr)
+        case .Hash   (let hash): xdr.append(hash.xdr)
+        case .Return (let hash): xdr.append(hash.xdr)
+        }
+        //print("MEMO:", xdr.base64, xdr.bytes)
+        return xdr
+    }
+
+    var text: String {
+        switch self {
+        case .None:            return ""
+        case .Text(let str):   return str
+        case .Id(let id):      return id.description
+        case .Hash(let hash):  return hash.data.base64
+        case .Return(let ret): return ret.data.base64
+        }
+    }
+}
+
+struct TimeBounds: XDREncodableStruct {
+    var minTime: UInt64
+    var maxTime: UInt64 // 0 here means no maxTime
 }
 
 /* a transaction is a container for a set of operations
  - is executed by an account
  - fees are collected from the account
  - operations are executed in order as one ACID transaction
- either all operations are applied or none are
- if any returns a failing code
+   either all operations are applied or none are
+   if any returns a failing code
  */
 
-public struct Transaction {
-    public var sourceAccount : AccountID      // account used to run the transaction
-    public var fee           : UInt32         // the fee the sourceAccount will pay
-    public var seqNum        : SequenceNumber // sequence number to consume in the account
-    public var timeBounds    : TimeBounds     // validity range (inclusive) for the last ledger close time
-    public var memo          : Memo
-    public var operations    : Operation      // Max 100
-    public var ext           : Reserved
+struct Transaction: XDREncodableStruct {
+    var sourceAccount : AccountID      // account used to run the transaction
+    var fee           : UInt32         // the fee the sourceAccount will pay
+    var seqNum        : SequenceNumber // sequence number to consume in the account
+    var timeBounds    : TimeBounds?    // validity range (inclusive) for the last ledger close time
+    var memo          : Memo
+    var operations    : [Operation]    // Max 100
+    var ext           : Reserved = 0
 }
 
-public struct TransactionSignaturePayload {
-    public var  networkId: Hash
-    public enum taggedTransaction {
-        case ENVELOPE_TYPE_TX (Transaction) /* All other values of type are invalid */
+enum TaggedTransaction: XDREncodable {
+    case TX (Transaction)  // All other values of type are invalid
+    
+    var discriminant: Int32 {
+        switch self {
+        case .TX: return EnvelopeType.TX.rawValue
+        }
     }
+    
+    var xdr: Data { return toXDR() }
+    
+    func toXDR(count: Int32 = 0) -> Data {
+        var xdr = discriminant.xdr
+        
+        switch self {
+        case .TX (let tx): xdr.append(tx.xdr)
+        }
+        
+        return xdr
+    }
+
+}
+
+struct TransactionSignaturePayload: XDREncodableStruct {
+    var networkId: Hash
+    var taggedTransaction: TaggedTransaction
+}
+
+struct DecoratedSignature: XDREncodableStruct {
+    var hint: SignatureHint   // last 4 bytes of the key, used as a hint
+    var signature: Signature  // actual signature
 }
 
 /* A TransactionEnvelope wraps a transaction with signatures. */
-public struct TransactionEnvelope {
-    public var tx: Transaction
-    public var signatures: DecoratedSignature  // Each decorated signature is a signature over the SHA256 hash of a TransactionSignaturePayload
+struct TransactionEnvelope: XDREncodableStruct {
+    var tx: Transaction
+    var signatures: [DecoratedSignature]  // Max 20. Each decorated signature is a signature over the SHA256 hash of a TransactionSignaturePayload
 }
 
 

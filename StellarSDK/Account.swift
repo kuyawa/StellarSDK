@@ -50,23 +50,26 @@ extension StellarSDK {
         open var server : Horizon?
         open var error  : ErrorMessage?
         
-        open var publicKey = ""
-        open var secretKey = ""
+        var keyPair: KeyPair? = nil  // Crypto public/secret keys
+        open var publicKey = ""  // Stellar public key
+        open var secretKey = ""  // Stellar secret key
         open var sequence  = 0
         open var balance   = 0.0
         
         public init() {}
         
         public init(_ address: String, _ network: Horizon.Network?) {
+            // Read only account
+            // If no secret provided, account can only fetch info until a secret key is provided
             publicKey = address
             if let net = network { self.network = net }
         }
         
         static func random() -> Account {
-            let keyPair = KeyPair.random()
-            let account = Account()
-            account.publicKey = keyPair.publicKey.base32
-            account.secretKey = keyPair.secretKey.base32
+            let account       = Account()
+            account.keyPair   = KeyPair.random()
+            account.publicKey = account.keyPair!.stellarPublicKey
+            account.secretKey = account.keyPair!.stellarSecretKey
             return account
         }
         
@@ -75,8 +78,9 @@ extension StellarSDK {
                 let bytes:[UInt8] = Array(secret)
                 if let keyPair = KeyPair.fromSecret(bytes) {
                     let account = Account()
-                    account.publicKey = keyPair.publicKey.base32
-                    account.secretKey = keyPair.secretKey.base32
+                    account.keyPair   = keyPair
+                    account.publicKey = account.keyPair!.stellarPublicKey
+                    account.secretKey = account.keyPair!.stellarSecretKey
                     return account
                 }
             }
@@ -189,11 +193,11 @@ extension StellarSDK {
         }
         
         public func getAllData(callback: @escaping Callback) {
-            // TODO:
+            // TODO: getInfo, get sequence
         }
         
         public func getSequence(callback: @escaping Callback) {
-            // TODO:
+            // TODO: getInfo, get data field
         }
         
         public func friendbot(callback: @escaping Callback) {
@@ -215,8 +219,60 @@ extension StellarSDK {
             // TODO:
         }
         
-        public func fund(address: String, amount: Double, memo: String?, callback: @escaping Callback) {
-            // TODO:
+        public func fund(address: String, amount: Int64, memo: String?, callback: @escaping Callback) {
+            print("Fund start")
+            guard self.keyPair != nil else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't fund"))
+                return
+            }
+            //guard let source = KeyPair.getKey(self.publicKey) else { return }
+            //guard let secret = KeyPair.getKey(self.secretKey) else { return }
+            guard let source = KeyPair.getKey(self.publicKey)  else { return }
+            guard let fixed  = self.keyPair?.secretHash.data else { return }
+            let secret = DataFixed(fixed.data)
+            // TODO: Utils to get SecretKey from sec64 to DataFixed
+            guard let destin = KeyPair.getKey(address)  else { return }
+            print(source.xdr.base64)
+            print(destin.xdr.base64)
+
+            print("Op start")
+            let inner  = CreateAccountOp(destination: destin, startingBalance: amount)
+            let body   = OperationBody.CreateAccount(inner)
+            let op     = Operation(sourceAccount: source, body: body)
+            print("Op ready")
+            //let server = StellarSDK.Horizon(self.network)
+            //server.loadAccount(publicKey) { account in
+                print("\nAcct loaded")
+                //if account.error != nil {
+                //    print("Server Error")
+                //    callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
+                //    return
+                //}
+                
+                print("\nBuilder at work")
+                //let builder = TransactionBuilder(source, sequence, operation, memo) // Quick builder
+                let builder = TransactionBuilder(source)
+                //builder.setSequence(account.sequence ?? "0")
+                builder.setSequence("30814973009592321")
+                builder.addOperation(op)
+                builder.addMemoText(memo)
+                builder.build()
+                builder.sign(key: secret) // sec64
+                print("\nBuilder done")
+                print("\nEnv:", builder.envelope!)
+                print("\nTX:", builder.txHash)
+                //server.submit(builder.txHash) { response in
+                //    if response.error {
+                //        print("Error submitting transaction to server")
+                //    }
+                //    callback(response)
+                //}
+                
+                // Temp for test
+                print("Get out")
+                callback(Response(status: 200, error: false, message: "Funded", raw: "OK from server", headers: [:], body: "", xdr: "", text: "", json: [:], list: []))
+            //}
+            
         }
         
         public func send(address: String, amount: Double, asset: String? = "native", memo: String?, callback: @escaping Callback) {
@@ -280,6 +336,11 @@ extension StellarSDK {
         open func effects(){}
         open func offers(){}
         open func accountData(){}
+        
+        func getSequence() -> SequenceNumber {
+            guard let seq = sequence, !seq.isEmpty, let num = UInt64(seq) else { return 0 }
+            return num
+        }
     }
     
     public struct AccountLinks {

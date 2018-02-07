@@ -16,6 +16,13 @@ public struct ErrorMessage {
     public var text : String = ""
 }
 
+/*
+ public struct ErrorResponse {
+    let code: Int
+    let message: String
+}
+*/
+
 public enum SortOrder {
     case asc
     case desc
@@ -38,10 +45,13 @@ open class StellarSDK {
         return Horizon(.test)
     }
     
-    class Memo {
-        static func text(_ text: String) -> String {
-            return ""
-        }
+    static func ErrorResponse(code: Int, message: String) -> Response {
+        var response = Response()
+        response.error = true
+        response.status = code
+        response.message = message
+        
+        return response
     }
-    
+
 }

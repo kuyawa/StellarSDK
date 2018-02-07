@@ -10,74 +10,74 @@ import Foundation
 
 // Requires StellarTypes.swift
 
-public typealias Value = Data
+typealias Value = Data
 
-public struct SCPBallot {
-    public let counter: UInt32  // n
-    public let value: Value     // x
+struct SCPBallot: XDREncodableStruct {
+    let counter: UInt32  // n
+    let value: Value     // x
 }
 
-public enum SCPStatementType {
+enum SCPStatementType {
     case Prepare
     case Confirm
     case Externalize
     case Nominate
 }
 
-public struct SCPPrepare {
-    public let quorumSetHash: Hash       // D
-    public let ballot: SCPBallot         // b
-    public let prepared: SCPBallot       // p
-    public let preparedPrime: SCPBallot  // p'
-    public let nC: UInt32                // c.n
-    public let nH: UInt32                // h.n
+struct SCPPrepare: XDREncodableStruct {
+    let quorumSetHash: Hash       // D
+    let ballot: SCPBallot         // b
+    let prepared: SCPBallot       // p
+    let preparedPrime: SCPBallot  // p'
+    let nC: UInt32                // c.n
+    let nH: UInt32                // h.n
 }
 
-public struct SCPConfirm {
-    public let ballot: SCPBallot    // b
-    public let nPrepared: UInt32    // p.n
-    public let nCommit: UInt32      // c.n
-    public let nH: UInt32           // h.n
-    public let quorumSetHash: Hash  // D
+struct SCPConfirm: XDREncodableStruct {
+    let ballot: SCPBallot    // b
+    let nPrepared: UInt32    // p.n
+    let nCommit: UInt32      // c.n
+    let nH: UInt32           // h.n
+    let quorumSetHash: Hash  // D
 }
 
-public struct SCPExternalize {
-    public let commit: SCPBallot               // c
-    public let nH: UInt32                      // h.n
-    public let commitQuorumSetHash: Hash       // D used before EXTERNALIZE
+struct SCPExternalize: XDREncodableStruct {
+    let commit: SCPBallot               // c
+    let nH: UInt32                      // h.n
+    let commitQuorumSetHash: Hash       // D used before EXTERNALIZE
 }
 
-public struct SCPNomination {
-    public let quorumSetHash: Hash  // D
-    public let votes: Value         // X
-    public let accepted: Value      // Y
+struct SCPNomination: XDREncodableStruct {
+    let quorumSetHash: Hash  // D
+    let votes: [Value]       // X
+    let accepted: [Value]    // Y
 }
 
-public enum SCPStatementData {
+enum SCPStatementData {
     case Prepare (SCPPrepare)
     case Confirm (SCPConfirm)
     case Externalize (SCPExternalize)
     case Nominate (SCPNomination)
 }
 
-public struct SCPStatement {
-    public let nodeID: NodeID       // v
-    public let slotIndex: UInt64    // i
-    public let pledges: SCPStatementData
+struct SCPStatement: XDREncodableStruct {
+    let nodeID: NodeID       // v
+    let slotIndex: UInt64    // i
+    let pledges: SCPStatementData
 }
 
-public struct SCPEnvelope {
-    public let statement: SCPStatement
-    public let signature: Signature
+struct SCPEnvelope: XDREncodableStruct {
+    let statement: SCPStatement
+    let signature: Signature
 }
 
 // supports things like: A,B,C,(D,E,F),(G,H,(I,J,K,L))
 // only allows 2 levels of nesting
 // NOTE: Structs can not be nested, use class or hack
-public class SCPQuorumSet {
-    public var threshold: UInt32 = 0
-    public var validators: PublicKey?
-    public var innerSets: SCPQuorumSet? // Nested
+class SCPQuorumSet: XDREncodableStruct {
+    var threshold: UInt32 = 0
+    var validators: [PublicKey]?
+    var innerSets: [SCPQuorumSet]? // Nested
 }
 
 // END

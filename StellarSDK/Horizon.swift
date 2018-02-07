@@ -35,6 +35,11 @@ extension StellarSDK {
         
         public enum Network { case test, live }
         
+        public enum NetworkId: String {
+            case test = "Test SDF Network ; September 2015"
+            case live = "Public Global Stellar Network ; September 2015"
+        }
+        
         let HORIZON_LIVE = "https://horizon.stellar.org"
         let HORIZON_TEST = "https://horizon-testnet.stellar.org"
         
@@ -60,7 +65,6 @@ extension StellarSDK {
             //---- Public methods
             
             static func get(_ uri: String, _ params: Parameters?, _ callback: @escaping Callback) {
-                //print("GET: ", uri)
                 guard let url = URL(string: uri) else {
                     callback(errorResponse(code: 500, text: "Invalid url"))
                     return
@@ -76,8 +80,25 @@ extension StellarSDK {
                 }.resume()
             }
             
-            static func post(_ url: String, _ params: Parameters?, _ callback: @escaping Callback) {
-                // TODO:
+            static func post(_ uri: String, _ params: Parameters, _ callback: @escaping Callback) {
+                guard let url = URL(string: uri) else {
+                    callback(errorResponse(code: 500, text: "Invalid url"))
+                    return
+                }
+                
+                var request   = URLRequest(url: url)
+                let txEncoded = Request.URLEncode(params)
+                let httpBody  = txEncoded.dataUTF8
+                request.httpMethod = "POST"
+                request.httpBody   = httpBody
+                
+                print("POST", request.url!)
+                print("PARAMS", txEncoded)
+
+                URLSession.shared.dataTask(with: request) { data, response, error in
+                    let result = self.handleResponse(data, response, error)
+                    callback(result)
+                }.resume()
             }
             
             
@@ -109,7 +130,7 @@ extension StellarSDK {
                 let query = URLQuery(params)
                 var components = URLComponents()
                 components.queryItems = query
-                
+
                 return components.query!
             }
             
@@ -486,8 +507,8 @@ extension StellarSDK {
             Request.get(url, data, callback)
         }
         
-        public func submit(_ hash: String, _ callback: @escaping Callback) {
-            let data = ["tx": hash]                 // Tx Xdr envelope
+        public func submit(_ txHash: String, _ callback: @escaping Callback) {
+            let data = ["tx": txHash]               // TxEnv.xdr.base64
             let url = serverUrl + "/transactions/"
             Request.post(url, data, callback)       // timeout=20
         }

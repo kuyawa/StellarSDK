@@ -72,8 +72,8 @@ class XdrKitTests: XCTestCase {
         var xdr = ini.toXDR()
         let end = UInt64(xdrData: &xdr)
         print("Ini:", ini)
-        print("Xdr:", xdr.bytes)
-        print("B64:", xdr.base64)
+        print("Xdr:", ini.xdr.bytes)
+        print("B64:", ini.xdr.base64)
         print("End:", end)
         print("Equal", ini==end)
         print()
@@ -110,7 +110,7 @@ class XdrKitTests: XCTestCase {
 */
     func testXdrEncodeInt32() {
         print("\n---- \(#function)\n")
-        let ini = Int32(-12345678)
+        let ini = Int32(-123456)
         var xdr = ini.toXDR()
         let end = Int32(xdrData: &xdr)
         print("Ini:", ini)
@@ -124,12 +124,12 @@ class XdrKitTests: XCTestCase {
     
     func testXdrEncodeInt64() {
         print("\n---- \(#function)\n")
-        let ini = Int64(-1234)
-        var xdr = ini.toXDR()
+        let ini = Int64(-1234567890)
+        var xdr = ini.xdr
         let end = Int64(xdrData: &xdr)
         print("Ini:", ini)
-        print("Xdr:", xdr.bytes)
-        print("B64:", xdr.base64)
+        print("Xdr:", ini.xdr.bytes)
+        print("B64:", ini.xdr.base64)
         print("End:", end)
         print("Equal", ini==end)
         print()
@@ -316,15 +316,55 @@ class XdrKitTests: XCTestCase {
         var xdr = trx.toXDR()
         let end = Transaction(xdrData: &xdr)
         print("Ini:", trx)
-        print("Xdr:", xdr.bytes)
-        print("B64:", xdr.base64)
+        print("Xdr:", trx.xdr.bytes)
+        print("B64:", trx.xdr.base64)
         print("End:", end)
         print("Equal", trx.source==end.source)
         print()
         XCTAssertEqual(trx.source, end.source, "Data not equal")
     }
 
+    func testEncodeCreateAccount() {
+        print("\n---- \(#function)\n")
+        //let pubkey = "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN"
+        let secret   = "SAOEFG5WDZAAIET3QIHR3W5A6YJIMT2EVRJO2ZAJJOI2IAOA4UIIRNOZ"
+        let keyPair  = KeyPair.fromSecret(secret)!
+        let source   = keyPair.publicKey
+        let sourcepk = PublicKey.ED25519(DataFixed(source.data))
+        let destin   = KeyPair.random()
+        let destinG  = destin.stellarPublicKey
+        let destinpk = PublicKey.ED25519(DataFixed(destin.publicKey.data))
 
+        let inner = CreateAccountOp(destination: destinpk, startingBalance: 10)
+        let body  = OperationBody.CreateAccount(inner)
+        let op    = Operation(sourceAccount: sourcepk, body: body)
+
+        let tx = Transaction(sourceAccount: sourcepk,
+                             fee: 100,
+                             seqNum: 99,
+                             //timeBounds: TimeBounds(minTime: 0, maxTime: 0),
+                             timeBounds: nil,
+                             memo: Memo.Text("Test"),
+                             operations: [op],
+                             ext: 0)
+        
+        print("Funding account:", destinG)
+        print()
+        print("Source:", sourcepk.bytes)
+        print("Source32:", sourcepk.base32)
+        print("SourcePK:", sourcepk.xdr.base64)
+        print("Destin:", destinpk.bytes)
+        print("Destin32:", destinpk.base32)
+        print("DestinPK:", destinpk.xdr.base64)
+        print("Inner:", inner.xdr.base64)
+        print("Body:", body.xdr.base64)
+        print("Op:", op.toXDR().base64)
+        print("\n---- TRANSACTION")
+        print("Tx:", tx.xdr.base64)
+        print("\n---- END TRANSACTION")
+        //
+    }
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {

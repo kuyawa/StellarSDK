@@ -8,58 +8,97 @@
 
 import Foundation
 
-public typealias Hash    = Data // Max 32
-public typealias UInt256 = Data // Max 32
-//public typealias unsigned int uint32
-//public typealias int int32
-//public typealias unsigned hyper uint64
-//public typealias hyper int64
-public typealias Signature = Data    // Max 64. Variable size as the size depends on the signature scheme used
-public typealias SignatureHint = Data    // Max  4
-public typealias NodeID  = Data
-//public typealias PublicKey   = NodeID  // Max 56
+typealias Hash = DataFixed           // Max 32
+typealias UInt256 = DataFixed        // Max 32
+typealias Signature = Data           // Max 64. Variable size as the size depends on the signature scheme used
+typealias SignatureHint = DataFixed  // Max  4
+typealias NodeID  = Data
+typealias SecretKey = DataFixed    // Max 64 for signing
 
-public enum CryptoKeyType {
-    case ED25519
-    case AuthTx
-    case HashX
-}
-
-public enum PublicKeyType {
-    case ED25519
-}
-
-public enum SignerKeyType {
-    case ED25519
+enum CryptoKeyType: Int32 {
+    case ED25519 = 0
     case PreAuthTx
     case HashX
 }
 
-//let pk = PublicKey.ED25519("123".data(using: .utf8)!)
-public enum PublicKey {
-    case ED25519   (UInt256)
+enum PublicKeyType: Int32 {
+    case ED25519 = 0
 }
 
-public enum SignerKey {
+enum SignerKeyType: Int32 {
+    case ED25519 = 0
+    case PreAuthTx
+    case HashX
+}
+
+enum PublicKey: XDREncodable, Equatable {
+    case ED25519 (DataFixed) // Vector32
+    
+    var discriminant: Int32 {
+        switch self {
+        case .ED25519: return Int32(PublicKeyType.ED25519.rawValue)
+        }
+    }
+    
+    var xdr: Data { return self.toXDR() }
+    
+    func toXDR(count: Int32 = 0) -> Data {
+        var xdr = discriminant.xdr
+        
+        switch self {
+        case .ED25519 (let key): xdr.append(key.xdr)
+        }
+        
+        return xdr
+    }
+
+    var base32: String {
+        switch self {
+        case .ED25519(let key): return key.data.base32
+        }
+    }
+    
+    var bytes: [UInt8] {
+        switch self {
+        case .ED25519(let key): return key.data.bytes
+        }
+    }
+    
+    var data: Data {
+        switch self {
+        case .ED25519(let key): return key.data
+        }
+    }
+    
+    public static func ==(lhs: PublicKey, rhs: PublicKey) -> Bool {
+        switch (lhs, rhs) {
+        case let (.ED25519(key1), .ED25519(key2)):
+            return key1 == key2
+        }
+    }
+
+}
+
+enum SignerKey {
     case ED25519   (UInt256)
     case PreAuthTx (UInt256)
     case HashX     (UInt256)
 }
 
-public struct Curve25519Secret {
-    public var key: Data = Data(count: 32)
+struct Curve25519Secret {
+    var key: Data = Data(repeating: 0, count: 32)
 }
 
-public struct Curve25519Public {
-    public var key: Data = Data(count: 32)
+struct Curve25519Public {
+    var key: Data = Data(repeating: 0, count: 32)
 }
 
-public struct HmacSha256Key {
-    public var key: Data = Data(count: 32)
+struct HmacSha256Key {
+    var key: Data = Data(repeating: 0, count: 32)
 }
 
-public struct HmacSha256Mac {
-    public var mac: Data //[32]
+struct HmacSha256Mac {
+    var mac: Data = Data(repeating: 0, count: 32)
 }
 
 // END
