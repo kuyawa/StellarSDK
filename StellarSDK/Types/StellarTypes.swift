@@ -8,12 +8,12 @@
 
 import Foundation
 
-typealias Hash = DataFixed           // Max 32
-typealias UInt256 = DataFixed        // Max 32
+typealias Hash = DataFixed           // Size 32
+typealias UInt256 = DataFixed        // Size 32
 typealias Signature = Data           // Max 64. Variable size as the size depends on the signature scheme used
-typealias SignatureHint = DataFixed  // Max  4
+typealias SignatureHint = DataFixed  // Size  4
 typealias NodeID  = Data
-typealias SecretKey = DataFixed    // Max 64 for signing
+typealias SecretKey = DataFixed      // Size 64 for signing
 
 enum CryptoKeyType: Int32 {
     case ED25519 = 0
@@ -32,7 +32,7 @@ enum SignerKeyType: Int32 {
 }
 
 enum PublicKey: XDREncodable, Equatable {
-    case ED25519 (DataFixed) // Vector32
+    case ED25519 (DataFixed) // Size 32
     
     var discriminant: Int32 {
         switch self {

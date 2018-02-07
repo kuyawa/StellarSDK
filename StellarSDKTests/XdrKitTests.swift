@@ -19,6 +19,7 @@ class XdrKitTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
+        print("\n----")
     }
     
     
@@ -324,6 +325,7 @@ class XdrKitTests: XCTestCase {
         XCTAssertEqual(trx.source, end.source, "Data not equal")
     }
 
+    // Builder.build returns a transaction like this one
     func testEncodeCreateAccount() {
         print("\n---- \(#function)\n")
         //let pubkey = "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN"
@@ -363,6 +365,76 @@ class XdrKitTests: XCTestCase {
         print("Tx:", tx.xdr.base64)
         print("\n---- END TRANSACTION")
         //
+    }
+
+    // Builder.sign resturns a TX envelope
+    func testEncodeTxSignature() {
+        print("\n---- \(#function)\n")
+        //let pubkey = "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN"
+        let secret   = "SAOEFG5WDZAAIET3QIHR3W5A6YJIMT2EVRJO2ZAJJOI2IAOA4UIIRNOZ"
+        let keyPair  = KeyPair.fromSecret(secret)!
+        let source   = keyPair.publicKey
+        let sourcepk = PublicKey.ED25519(DataFixed(source.data))
+        let destin   = KeyPair.random()
+        let destinG  = destin.stellarPublicKey
+        let destinpk = PublicKey.ED25519(DataFixed(destin.publicKey.data))
+        
+        let inner = CreateAccountOp(destination: destinpk, startingBalance: 10)
+        let body  = OperationBody.CreateAccount(inner)
+        let op    = Operation(sourceAccount: sourcepk, body: body)
+        
+        let tx = Transaction(sourceAccount: sourcepk,
+                             fee: 100,
+                             seqNum: 99,
+                             //timeBounds: TimeBounds(minTime: 0, maxTime: 0),
+            timeBounds: nil,
+            memo: Memo.Text("Test"),
+            operations: [op],
+            ext: 0)
+        
+        print("Funding account:", destinG)
+        print()
+        /*
+        print("Source:", sourcepk.bytes)
+        print("Source32:", sourcepk.base32)
+        print("SourcePK:", sourcepk.xdr.base64)
+        print("Destin:", destinpk.bytes)
+        print("Destin32:", destinpk.base32)
+        print("DestinPK:", destinpk.xdr.base64)
+        print("Inner:", inner.xdr.base64)
+        print("Body:", body.xdr.base64)
+        print("Op:", op.toXDR().base64)
+         */
+        print("\n---- TRANSACTION")
+        print("Tx:", tx.xdr.base64)
+        print("---- END TRANSACTION")
+        
+        let signKey = keyPair.secretHash
+        print("\nSignerKey", signKey.data.bytes)
+        let hint = DataFixed(signKey.data.bytes.suffix(4).data) // .prefix(upTo: 4))
+        print("\nHint", hint.data.bytes)
+        let networkId = StellarSDK.Horizon.NetworkId.test
+        let netHash = networkId.rawValue.dataUTF8!.sha256()
+        print("\nNethash", netHash.bytes)
+        let tagged = TaggedTransaction.TX(tx)
+        print("\nTagged", tagged)
+        print("\nTagged", tagged.xdr.base64)
+        let payload = TransactionSignaturePayload(networkId: DataFixed(netHash.data), taggedTransaction: tagged)
+        print("\nPayload", payload)
+        print("\nPayload", payload.xdr.base64)
+        let message = payload.xdr.sha256()
+        print("\nMessage", message.bytes)
+        print("\nMessage", message.xdr.base64)
+        let signature = KeyPair.sign(message, DataFixed(signKey.data))
+        print("\nSignature", signature?.bytes ?? "?")
+        print("\nSignature", signature!.xdr.base64)
+        let decorated = DecoratedSignature(hint: hint, signature: signature!)
+        print("\nDecorated", decorated)
+        print("\nDecorated", decorated.xdr.base64 )
+        let envelope = TransactionEnvelope(tx: tx, signatures: [decorated])
+        print("\nEnvelope", envelope)
+        print("\nEnvXDR", envelope.xdr.base64)
+        print()
     }
     
     func testPerformanceExample() {
