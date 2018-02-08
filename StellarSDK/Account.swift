@@ -281,9 +281,63 @@ extension StellarSDK {
             
         }
         
-        //public func send(address: String, amount: Double, asset: String? = "native", memo: String?, callback: @escaping Callback) {
-            // TODO:
-        //}
+        public func pay(address: String, amount: Float, asset: Asset? = Asset.Native, memo: String?, callback: @escaping Callback) {
+            print("Pay start")
+            guard self.keyPair != nil else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't pay"))
+                return
+            }
+            let source = KeyPair.getPublicKey(self.publicKey)!
+            let secret = KeyPair.getSignerKey(self.secretKey)!
+            
+            guard let destinpk = KeyPair.getPublicKey(address) else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Invalid address to send payment"))
+                return
+            }
+            
+            let destin = PublicKey.ED25519(DataFixed(destinpk.data))
+            print(source.xdr.base64)
+            print(destin.xdr.base64)
+            
+            print("Op start")
+            let asset  = asset ?? Asset.Native
+            let inner  = PaymentOp(destination: destin, asset: asset, amount: Int64(amount * 10000000.0)) // Seven decimals
+            let body   = OperationBody.Payment(inner)
+            let op     = Operation(sourceAccount: source, body: body)
+            print("Op ready")
+            
+            let server = StellarSDK.Horizon(self.network)
+            server.loadAccount(publicKey) { account in
+                print("\nAcct loaded")
+                if account.error != nil {
+                    print("Server Error")
+                    callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
+                    return
+                }
+                
+                print("\nBuilder at work")
+                let builder = TransactionBuilder(source)
+                builder.setSequence(account.sequence ?? "0")
+                builder.addOperation(op)
+                builder.addMemoText(memo)
+                builder.build()
+                builder.sign(key: secret) // sec64
+                print("\nBuilder done")
+                print("\nEnv:", builder.envelope!)
+                print("\nTX:", builder.txHash)
+                server.submit(builder.txHash) { response in
+                    if response.error {
+                        print("Error submitting payment to server")
+                        print(response.raw)
+                    }
+                    callback(response)
+                }
+                
+                print("Get out")
+                //callback(Response(status: 200, error: false, message: "Funded", raw: "OK from server", headers: [:], body: "", xdr: "", text: "", json: [:], list: []))
+            }
+            
+        }
         
     }
     

@@ -265,7 +265,40 @@ class XdrKitTests: XCTestCase {
         XCTAssertEqual(ini.name, end.name, "Data not equal")
     }
    
+    func testEncodeAsset() {
+        print("\n---- \(#function)\n")
+        let asset1 = Asset.Native
+        print("AssetN:", asset1.xdr.bytes)
+        print("AssetN:", asset1.xdr.base64)
+        print()
+        
+        print("\nAssetD4----")
+        let assetD4 = AssetData(assetCode: "USD", issuer: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")
+        print("\nAssetD4:", assetD4.xdr.bytes)
+        print("AssetD4:", assetD4.xdr.base64)
 
+        print("\nAssetD12----")
+        let assetD12 = AssetData(assetCode: "SpecialToken", issuer: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")
+        print("\nAssetD12:", assetD12.xdr.bytes)
+        print("AssetD12:", assetD12.xdr.base64)
+
+        //let pk = KeyPair.getPublicKey("GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")!
+        //let code = DataFixed("USD".dataUTF8!, size: 4)
+        //let asset2 = Asset.CreditAlphaNum4(AssetData(assetCode: code, issuer: pk))
+        //let asset2 = Asset.CreditAlphaNum4(AssetData(assetCode: "KASH", issuer: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")!)
+        //let asset2 = Asset(assetCode: "USDX", issuer: pk)
+        // AAAAAQAAAAFVU0QAAAAAAQAAAAAT3gdQ/u57sUs1LNpBfb5WiW2L+w8WoFgNgrhAdSSSlg==
+        print("\nAsset2----")
+        let asset2 = Asset(assetCode: "USDX", issuer: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")
+        print("\nAsset2:", asset2.xdr.bytes)
+        print("Asset2:", asset2.xdr.base64)
+        
+        print("\nAsset3----")
+        let asset3 = Asset(assetCode: "SpecialToken", issuer: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")
+        print("Asset3:", asset3.xdr.bytes)
+        print("Asset3:", asset3.xdr.base64)
+    }
+    
     func testXdrEncodeInflation() {
         struct Transaction: XDREncodableStruct {
             var source      : String = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
@@ -435,6 +468,35 @@ class XdrKitTests: XCTestCase {
         print("\nEnvelope", envelope)
         print("\nEnvXDR", envelope.xdr.base64)
         print()
+    }
+    
+    func testPaymentOp() {
+        print("\n---- \(#function)\n")
+        let pubkey = "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN"
+        //let secret   = "SAOEFG5WDZAAIET3QIHR3W5A6YJIMT2EVRJO2ZAJJOI2IAOA4UIIRNOZ"
+        let sourcepk = KeyPair.getPublicKey(pubkey)!
+        let destin   = KeyPair.random()
+        let destinpk = KeyPair.getPublicKey(destin.stellarPublicKey)!
+        
+        //let inner = PaymentOp(destination: destinpk, asset: Asset.Native, amount: 10 * 10000000)
+        let inner = PaymentOp(destination: destinpk, asset: Asset(assetCode: "USD", issuer: "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN")!, amount: 10 * 10000000)
+        let body  = OperationBody.Payment(inner)
+        let op    = Operation(sourceAccount: sourcepk, body: body)
+        
+        let tx = Transaction(sourceAccount: sourcepk,
+                             fee: 100,
+                             seqNum: 99,
+                             timeBounds: nil,
+                             memo: Memo.Text("Donation"),
+                             operations: [op],
+                             ext: 0)
+        
+        print("Paying account:", destin.stellarPublicKey)
+        print()
+        print("Inner:", inner.xdr.base64)
+        print("Body:", body.xdr.base64)
+        print("Op:", op.toXDR().base64)
+        print("Tx:", tx.xdr.base64)
     }
     
     func testPerformanceExample() {

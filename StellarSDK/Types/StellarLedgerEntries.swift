@@ -25,24 +25,39 @@ let MASK_TRUSTLINE_FLAGS  = 1    // mask for all trustline flags
 let MASK_OFFERENTRY_FLAGS = 1    // Mask for OfferEntry flags
 
 
-enum AssetType: Int32 {
+public enum AssetType: Int32 {
     case Native = 0
     case CreditAlphaNum4
     case CreditAlphaNum12
 }
 
-struct AssetData: XDREncodableStruct {
-    var assetCode : String?
-    var issuer    : AccountID?
+public struct AssetData: XDREncodableStruct, Equatable {
+    var assetCode : DataFixed
+    var issuer    : AccountID
+    
+    public init?(assetCode: String, issuer: String) {
+        guard let publicKey = KeyPair.getPublicKey(issuer) else { return nil }
+        let size = assetCode.characters.count < 5 ? 4 : 12
+        self.assetCode = DataFixed(assetCode.dataUTF8!, size: size)
+        self.issuer = publicKey
+    }
+    
+    public init(assetCode: DataFixed, issuer: PublicKey) {
+        self.assetCode = assetCode
+        self.issuer = issuer
+    }
+    
+    public static func ==(lhs: AssetData, rhs: AssetData) -> Bool {
+        return (lhs.assetCode == rhs.assetCode && lhs.issuer == rhs.issuer)
+    }
 }
 
-enum Asset {
+public enum Asset: XDREncodable, Equatable {
     case Native
     case CreditAlphaNum4  (AssetData)  // 1..4
     case CreditAlphaNum12 (AssetData)  // 5..12
     // add other asset types here in the future
     
-    // TODO: assetcode fixed length, use init, pad codes with zeroes
     public init?(assetCode: String, issuer: String) {
         guard let publicKey = KeyPair.getPublicKey(issuer) else { return nil }
         self.init(assetCode: assetCode, issuer: publicKey)
@@ -50,15 +65,63 @@ enum Asset {
     
     public init?(assetCode: String, issuer: PublicKey) {
         if assetCode.characters.count < 5 {
-            let asset = AssetData(assetCode: assetCode, issuer: issuer)
+            let asset = AssetData(assetCode: DataFixed(assetCode.dataUTF8!, size: 4), issuer: issuer)
             self = .CreditAlphaNum4(asset)
+            print("\nSelf4", self.xdr.bytes)
+            print("Self4", self.xdr.base64)
         } else if assetCode.characters.count < 13 {
-            let asset = AssetData(assetCode: assetCode, issuer: issuer)
+            let asset = AssetData(assetCode: DataFixed(assetCode.dataUTF8!, size: 12), issuer: issuer)
             self = .CreditAlphaNum12(asset)
+            print("\nSelf12", self.xdr.bytes)
+            print("Self12", self.xdr.base64)
         } else {
             self = .Native
         }
     }
+    
+    var discriminant: Int32 {
+        switch self {
+        case .Native: return AssetType.Native.rawValue
+        case .CreditAlphaNum4: return AssetType.CreditAlphaNum4.rawValue
+        case .CreditAlphaNum12: return AssetType.CreditAlphaNum12.rawValue
+        }
+    }
+
+    public func toXDR(count: Int32 = 0) -> Data {
+        var xdr = discriminant.xdr
+        print("Disc",xdr.bytes)
+        
+        switch self {
+        case .Native: break
+        case .CreditAlphaNum4(let alpha4): print("AD4", alpha4.xdr.bytes); xdr.append(alpha4.xdr)
+        case .CreditAlphaNum12(let alpha12): print("AD12", alpha12.xdr.bytes); xdr.append(alpha12.xdr)
+        }
+        
+        //return Data(xdr.suffix(from: 4)) // Weird ahck to avoid first bytes?
+        return xdr
+    }
+    
+    public static func ==(lhs: Asset, rhs: Asset) -> Bool {
+        return lhs.isEqual(asset: rhs)
+    }
+
+    func isEqual(asset: Asset) -> Bool {
+        switch self {
+        case .Native: return asset == .Native
+        case .CreditAlphaNum4(let asset1):
+            if case .CreditAlphaNum4(let asset2) = asset {
+                return asset1 == asset2
+            }
+        case .CreditAlphaNum12(let asset1):
+            if case .CreditAlphaNum12(let asset2) = asset {
+                return asset1 == asset2
+            }
+        }
+        
+        return false
+    }
+    
+
 }
 
 // Price in fractional representation

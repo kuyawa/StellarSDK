@@ -29,7 +29,7 @@ enum OperationType: Int32 {
  */
 
 struct CreateAccountOp: XDREncodableStruct {
-    var destination     : PublicKey // account to create
+    var destination     : AccountID // account to create
     var startingBalance : Int64     // amount they end up with
 }
 
@@ -188,8 +188,6 @@ enum OperationBody: XDREncodable {
         }
     }
     
-    var xdr: Data { return toXDR() }
-    
     func toXDR(count: Int32 = 0) -> Data {
         var xdr = discriminant.xdr
         
@@ -245,8 +243,6 @@ enum Memo: XDREncodable {
         case .Return: return MemoType.Return.rawValue
         }
     }
-    
-    var xdr: Data { return toXDR() }
     
     func toXDR(count: Int32 = 0) -> Data {
         var xdr = discriminant.xdr
@@ -304,8 +300,6 @@ enum TaggedTransaction: XDREncodable {
         case .TX: return EnvelopeType.TX.rawValue
         }
     }
-    
-    var xdr: Data { return toXDR() }
     
     func toXDR(count: Int32 = 0) -> Data {
         var xdr = discriminant.xdr

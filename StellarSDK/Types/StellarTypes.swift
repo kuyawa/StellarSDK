@@ -25,7 +25,7 @@ enum PublicKeyType: Int32 {
     case ED25519 = 0
 }
 
-enum PublicKey: XDREncodable, Equatable {
+public enum PublicKey: XDREncodable, Equatable {
     case ED25519 (DataFixed) // Size 32
     
     var discriminant: Int32 {
@@ -34,9 +34,7 @@ enum PublicKey: XDREncodable, Equatable {
         }
     }
     
-    var xdr: Data { return self.toXDR() }
-    
-    func toXDR(count: Int32 = 0) -> Data {
+    public func toXDR(count: Int32 = 0) -> Data {
         var xdr = discriminant.xdr
         
         switch self {
@@ -46,19 +44,19 @@ enum PublicKey: XDREncodable, Equatable {
         return xdr
     }
 
-    var base32: String {
+    public var base32: String {
         switch self {
         case .ED25519(let key): return key.data.base32
         }
     }
     
-    var bytes: [UInt8] {
+    public var bytes: [UInt8] {
         switch self {
         case .ED25519(let key): return key.data.bytes
         }
     }
     
-    var data: Data {
+    public var data: Data {
         switch self {
         case .ED25519(let key): return key.data
         }

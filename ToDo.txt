@@ -1,5 +1,6 @@
 TODO: MACAPP
 
+- Parse TX results
 - Test all txs
 - Sign and submit TX
 - Test all ops
