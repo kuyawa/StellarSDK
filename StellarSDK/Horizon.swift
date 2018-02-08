@@ -80,14 +80,15 @@ extension StellarSDK {
                 }.resume()
             }
             
-            static func post(_ uri: String, _ params: Parameters, _ callback: @escaping Callback) {
+            static func post(_ uri: String, _ tx: String, _ callback: @escaping Callback) {
                 guard let url = URL(string: uri) else {
                     callback(errorResponse(code: 500, text: "Invalid url"))
                     return
                 }
                 
                 var request   = URLRequest(url: url)
-                let txEncoded = Request.URLEncode(params)
+                //let txEncoded = Request.URLEncode(params)
+                let txEncoded = "tx=" + tx.urlEncoded // Do not encode
                 let httpBody  = txEncoded.dataUTF8
                 request.httpMethod = "POST"
                 request.httpBody   = httpBody
@@ -508,9 +509,9 @@ extension StellarSDK {
         }
         
         public func submit(_ txHash: String, _ callback: @escaping Callback) {
-            let data = ["tx": txHash]               // TxEnv.xdr.base64
+            //let data = ["tx": txHash]               // TxEnv.xdr.base64
             let url = serverUrl + "/transactions/"
-            Request.post(url, data, callback)       // timeout=20
+            Request.post(url, txHash, callback)       // timeout=20
         }
         
         // TESTNET ONLY

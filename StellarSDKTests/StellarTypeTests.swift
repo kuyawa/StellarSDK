@@ -52,7 +52,7 @@ class StellarTypeTests: XCTestCase {
         let key = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         //let key = [143, 229, 1, 145, 211, 203, 190, 90, 238, 141, 49, 32, 176, 222, 181, 99, 81, 179, 150, 163, 9, 204, 10, 85, 138, 67, 103, 15, 17, 140, 118, 156]
         //let seed = Data(key)
-        let publicKey = KeyPair.getKey(key)!
+        let publicKey = KeyPair.getPublicKey(key)!
 
         print("XDR bytes", publicKey.xdr.bytes)
         print("XDR base32", publicKey.base32)
@@ -65,7 +65,7 @@ class StellarTypeTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let testAccount = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
-        let publicKey = KeyPair.getKey(testAccount)!
+        let publicKey = KeyPair.getPublicKey(testAccount)!
         let op = CreateAccountOp(destination: publicKey, startingBalance: 100)
         
         print("XDR bytes", op.xdr.bytes)
@@ -78,7 +78,7 @@ class StellarTypeTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let testAccount = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
-        let publicKey = KeyPair.getKey(testAccount)!
+        let publicKey = KeyPair.getPublicKey(testAccount)!
         let asset = Asset.Native
         //let asset2 = Asset.CreditAlphaNum4(AssetData(assetCode: "USD", issuer: "G1234..."))
         //let asset3 = Asset(assetCode: "USD", issuer: "G1234...") // TODO: Work on this

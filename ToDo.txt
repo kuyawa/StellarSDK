@@ -1,5 +1,6 @@
 TODO: MACAPP
 
+- Test all txs
 - Sign and submit TX
 - Test all ops
 - Cache tx, op, py details since they don't change

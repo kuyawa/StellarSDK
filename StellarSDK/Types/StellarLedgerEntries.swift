@@ -25,8 +25,8 @@ let MASK_TRUSTLINE_FLAGS  = 1    // mask for all trustline flags
 let MASK_OFFERENTRY_FLAGS = 1    // Mask for OfferEntry flags
 
 
-enum AssetType {
-    case Native
+enum AssetType: Int32 {
+    case Native = 0
     case CreditAlphaNum4
     case CreditAlphaNum12
 }
@@ -44,7 +44,7 @@ enum Asset {
     
     // TODO: assetcode fixed length, use init, pad codes with zeroes
     public init?(assetCode: String, issuer: String) {
-        guard let publicKey = KeyPair.getKey(issuer) else { return nil }
+        guard let publicKey = KeyPair.getPublicKey(issuer) else { return nil }
         self.init(assetCode: assetCode, issuer: publicKey)
     }
     

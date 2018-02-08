@@ -53,10 +53,16 @@ class KeyPair {
         return data
     }
     
-    static func getKey(_ key: String) -> PublicKey? {
+    static func getPublicKey(_ key: String) -> PublicKey? {
         guard let seed = getSeed(key) else { return nil }
         let publicKey = PublicKey.ED25519(DataFixed(seed))
         return publicKey
+    }
+    
+    static func getSignerKey(_ secret: String) -> SecretKey? {
+        guard let keyPair = KeyPair.fromSecret(secret) else { return nil }
+        let signerKey = DataFixed(keyPair.secretHash.data)
+        return signerKey
     }
     
     convenience init() {

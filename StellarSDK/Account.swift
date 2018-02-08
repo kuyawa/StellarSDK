@@ -225,35 +225,40 @@ extension StellarSDK {
                 callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't fund"))
                 return
             }
-            //guard let source = KeyPair.getKey(self.publicKey) else { return }
-            //guard let secret = KeyPair.getKey(self.secretKey) else { return }
-            guard let source = KeyPair.getKey(self.publicKey)  else { return }
-            guard let fixed  = self.keyPair?.secretHash.data else { return }
-            let secret = DataFixed(fixed.data)
-            // TODO: Utils to get SecretKey from sec64 to DataFixed
-            guard let destin = KeyPair.getKey(address)  else { return }
+            //let source = PublicKey.ED25519(DataFixed(keyPair!.publicKey.data))
+            //let secret = DataFixed(self.keyPair!.secretHash.data)
+            let source = KeyPair.getPublicKey(self.publicKey)!
+            let secret = KeyPair.getSignerKey(self.secretKey)!
+
+            guard let destinpk = KeyPair.getPublicKey(address) else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Invalid address to be funded"))
+                return
+            }
+            
+            let destin = PublicKey.ED25519(DataFixed(destinpk.data))
             print(source.xdr.base64)
             print(destin.xdr.base64)
 
             print("Op start")
-            let inner  = CreateAccountOp(destination: destin, startingBalance: amount)
+            let inner  = CreateAccountOp(destination: destin, startingBalance: amount * 10000000) // Seven decimals
             let body   = OperationBody.CreateAccount(inner)
             let op     = Operation(sourceAccount: source, body: body)
             print("Op ready")
-            //let server = StellarSDK.Horizon(self.network)
-            //server.loadAccount(publicKey) { account in
+            
+            let server = StellarSDK.Horizon(self.network)
+            server.loadAccount(publicKey) { account in
                 print("\nAcct loaded")
-                //if account.error != nil {
-                //    print("Server Error")
-                //    callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
-                //    return
-                //}
+                if account.error != nil {
+                    print("Server Error")
+                    callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
+                    return
+                }
                 
                 print("\nBuilder at work")
                 //let builder = TransactionBuilder(source, sequence, operation, memo) // Quick builder
                 let builder = TransactionBuilder(source)
-                //builder.setSequence(account.sequence ?? "0")
-                builder.setSequence("30814973009592321")
+                builder.setSequence(account.sequence ?? "0")
+                //builder.setSequence("30814973009592321")
                 builder.addOperation(op)
                 builder.addMemoText(memo)
                 builder.build()
@@ -261,23 +266,24 @@ extension StellarSDK {
                 print("\nBuilder done")
                 print("\nEnv:", builder.envelope!)
                 print("\nTX:", builder.txHash)
-                //server.submit(builder.txHash) { response in
-                //    if response.error {
-                //        print("Error submitting transaction to server")
-                //    }
-                //    callback(response)
-                //}
+                server.submit(builder.txHash) { response in
+                    if response.error {
+                        print("Error submitting transaction to server")
+                        print(response.raw)
+                    }
+                    callback(response)
+                }
                 
                 // Temp for test
                 print("Get out")
-                callback(Response(status: 200, error: false, message: "Funded", raw: "OK from server", headers: [:], body: "", xdr: "", text: "", json: [:], list: []))
-            //}
+                //callback(Response(status: 200, error: false, message: "Funded", raw: "OK from server", headers: [:], body: "", xdr: "", text: "", json: [:], list: []))
+            }
             
         }
         
-        public func send(address: String, amount: Double, asset: String? = "native", memo: String?, callback: @escaping Callback) {
+        //public func send(address: String, amount: Double, asset: String? = "native", memo: String?, callback: @escaping Callback) {
             // TODO:
-        }
+        //}
         
     }
     

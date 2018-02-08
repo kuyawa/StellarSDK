@@ -25,12 +25,6 @@ enum PublicKeyType: Int32 {
     case ED25519 = 0
 }
 
-enum SignerKeyType: Int32 {
-    case ED25519 = 0
-    case PreAuthTx
-    case HashX
-}
-
 enum PublicKey: XDREncodable, Equatable {
     case ED25519 (DataFixed) // Size 32
     
@@ -77,6 +71,12 @@ enum PublicKey: XDREncodable, Equatable {
         }
     }
 
+}
+
+enum SignerKeyType: Int32 {
+    case ED25519 = 0
+    case PreAuthTx
+    case HashX
 }
 
 enum SignerKey {

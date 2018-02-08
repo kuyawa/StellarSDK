@@ -35,12 +35,12 @@ class TransactionBuilder {
     }
     
     func setSequence(_ seq: SequenceNumber) {
-        sequence = SequenceNumber(seq)
+        sequence = SequenceNumber(seq+1)
     }
     
     func setSequence(_ seq: String) {
         let seq = UInt64(seq) ?? 0 // TODO: Guard
-        sequence = SequenceNumber(seq)
+        sequence = SequenceNumber(seq+1)
     }
     
     func addOperation(_ op: Operation) {
@@ -64,6 +64,7 @@ class TransactionBuilder {
         let fee = UInt32(operations.count * baseFee)
         transaction  = Transaction(sourceAccount: source, fee: fee, seqNum: sequence, timeBounds: lapse, memo: memo, operations: operations, ext: 0)
         print("Transaction", transaction ?? "?")
+        print("TXDR", transaction?.xdr.base64 ?? "?")
         return transaction
     }
 

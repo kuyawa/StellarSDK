@@ -10,6 +10,18 @@ import Foundation
 
 extension String {
     var dataUTF8: Data? { return self.data(using: .utf8) }
+
+    var urlEncodedX: String {
+        return self.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+    }
+    
+    var urlEncoded: String {
+        var allowedQueryParamAndKey = NSMutableCharacterSet.urlQueryAllowed
+        allowedQueryParamAndKey.remove(charactersIn: ";/?:@&=+$, ")
+        
+        return self.addingPercentEncoding(withAllowedCharacters: allowedQueryParamAndKey)!
+    }
+
 }
 
 struct Vector<T> : XDREncodable {

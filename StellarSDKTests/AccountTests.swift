@@ -252,7 +252,7 @@ class AccountTests: XCTestCase {
         print("Funding account", destin)
         
         account.useTestNetwork()
-        account.fund(address: destin, amount: 100, memo: "Hello") { response in
+        account.fund(address: destin, amount: 24, memo: "Hello World!") { response in
             print("\nResponse", response.raw)
             XCTAssert(!response.error, "Error funding account")
             expect.fulfill()
