@@ -30,13 +30,14 @@ Operational:
     account.getEffects { effects in ... }
     account.getOffers { offers in ... }
     account.getSequence { sequence in ... }
+    account.getData { value in ... }
     account.friendbot { result in ... }  // Only for testing accounts
 
 Submit:
+    account.createAccount(address, amount, memo) { result in ... }  // Creates new account and funds it
     account.setOptions(options) { result in ... }
     account.setInflation(address, memo) { result in ... }
-    account.fund(address, amount, memo) { result in ... }  // Creates new account and funds it
-    account.send(address, amount, asset, memo) { result in ... }
+    account.payment(address, amount, asset, memo) { result in ... }
     more to come...
 
 */
@@ -65,7 +66,7 @@ extension StellarSDK {
             if let net = network { self.network = net }
         }
         
-        static func random() -> Account {
+        public static func random() -> Account {
             let account       = Account()
             account.keyPair   = KeyPair.random()
             account.publicKey = account.keyPair!.stellarPublicKey
@@ -73,7 +74,7 @@ extension StellarSDK {
             return account
         }
         
-        static func fromSecret(_ secret: String) -> Account? {
+        public static func fromSecret(_ secret: String) -> Account? {
             if  let secret = secret.base32DecodedData {
                 let bytes:[UInt8] = Array(secret)
                 if let keyPair = KeyPair.fromSecret(bytes) {
@@ -200,6 +201,7 @@ extension StellarSDK {
             // TODO: getInfo, get data field
         }
         
+        // Self fund if testnet, use friendbot
         public func friendbot(callback: @escaping Callback) {
             let server = StellarSDK.Horizon.test
             server.friendbot(address: publicKey) { response in
@@ -209,61 +211,44 @@ extension StellarSDK {
         
 
         
-        // ---- SUBMIT 
+        // ---- SUBMIT
         
         public func setOptions(options: AccountOptions, callback: @escaping Callback) {
             // TODO:
         }
 
         public func setInflation(address: String, memo: String?, callback: @escaping Callback) {
-            // TODO:
-        }
-        
-        public func fund(address: String, amount: Int64, memo: String?, callback: @escaping Callback) {
-            print("Fund start")
             guard self.keyPair != nil else {
-                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't fund"))
-                return
-            }
-            //let source = PublicKey.ED25519(DataFixed(keyPair!.publicKey.data))
-            //let secret = DataFixed(self.keyPair!.secretHash.data)
-            let source = KeyPair.getPublicKey(self.publicKey)!
-            let secret = KeyPair.getSignerKey(self.secretKey)!
-
-            guard let destinpk = KeyPair.getPublicKey(address) else {
-                callback(StellarSDK.ErrorResponse(code: 500, message: "Invalid address to be funded"))
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't set inflation"))
                 return
             }
             
-            let destin = PublicKey.ED25519(DataFixed(destinpk.data))
-            print(source.xdr.base64)
-            print(destin.xdr.base64)
+            let source  = KeyPair.getPublicKey(self.publicKey)!
+            let secret  = KeyPair.getSignerKey(self.secretKey)!
+            
+            guard let destin = KeyPair.getPublicKey(address) else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Invalid inflation address"))
+                return
+            }
 
-            print("Op start")
-            let inner  = CreateAccountOp(destination: destin, startingBalance: amount * 10000000) // Seven decimals
-            let body   = OperationBody.CreateAccount(inner)
+            let inner  = SetOptionsOp(inflationDest: destin)
+            let body   = OperationBody.SetOptions(inner)
             let op     = Operation(sourceAccount: source, body: body)
-            print("Op ready")
             
             let server = StellarSDK.Horizon(self.network)
             server.loadAccount(publicKey) { account in
-                print("\nAcct loaded")
                 if account.error != nil {
                     print("Server Error")
                     callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
                     return
                 }
                 
-                print("\nBuilder at work")
-                //let builder = TransactionBuilder(source, sequence, operation, memo) // Quick builder
                 let builder = TransactionBuilder(source)
-                builder.setSequence(account.sequence ?? "0")
-                //builder.setSequence("30814973009592321")
+                builder.setSequence(account.sequence)
                 builder.addOperation(op)
                 builder.addMemoText(memo)
                 builder.build()
-                builder.sign(key: secret) // sec64
-                print("\nBuilder done")
+                builder.sign(key: secret)
                 print("\nEnv:", builder.envelope!)
                 print("\nTX:", builder.txHash)
                 server.submit(builder.txHash) { response in
@@ -273,56 +258,215 @@ extension StellarSDK {
                     }
                     callback(response)
                 }
-                
-                // Temp for test
-                print("Get out")
-                //callback(Response(status: 200, error: false, message: "Funded", raw: "OK from server", headers: [:], body: "", xdr: "", text: "", json: [:], list: []))
             }
-            
         }
         
-        public func pay(address: String, amount: Float, asset: Asset? = Asset.Native, memo: String?, callback: @escaping Callback) {
-            print("Pay start")
+        func allowTrust(address: String, asset: Asset, authorize: Bool, callback: @escaping Callback) {
             guard self.keyPair != nil else {
-                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't pay"))
-                return
-            }
-            let source = KeyPair.getPublicKey(self.publicKey)!
-            let secret = KeyPair.getSignerKey(self.secretKey)!
-            
-            guard let destinpk = KeyPair.getPublicKey(address) else {
-                callback(StellarSDK.ErrorResponse(code: 500, message: "Invalid address to send payment"))
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't fund"))
                 return
             }
             
-            let destin = PublicKey.ED25519(DataFixed(destinpk.data))
-            print(source.xdr.base64)
-            print(destin.xdr.base64)
+            let source  = KeyPair.getPublicKey(self.publicKey)!
+            let secret  = KeyPair.getSignerKey(self.secretKey)!
             
-            print("Op start")
-            let asset  = asset ?? Asset.Native
-            let inner  = PaymentOp(destination: destin, asset: asset, amount: Int64(amount * 10000000.0)) // Seven decimals
-            let body   = OperationBody.Payment(inner)
+            guard let trustor = KeyPair.getPublicKey(address) else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Invalid address to trust"))
+                return
+            }
+            
+            let inner  = AllowTrustOp(trustor: trustor, authorize: authorize)
+            let body   = OperationBody.AllowTrust(inner)
             let op     = Operation(sourceAccount: source, body: body)
-            print("Op ready")
             
             let server = StellarSDK.Horizon(self.network)
             server.loadAccount(publicKey) { account in
-                print("\nAcct loaded")
                 if account.error != nil {
                     print("Server Error")
                     callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
                     return
                 }
                 
-                print("\nBuilder at work")
                 let builder = TransactionBuilder(source)
-                builder.setSequence(account.sequence ?? "0")
+                builder.setSequence(account.sequence)
+                builder.addOperation(op)
+                //builder.addMemoText(memo)
+                builder.build()
+                builder.sign(key: secret)
+                print("\nEnv:", builder.envelope!)
+                print("\nTX:", builder.txHash)
+                server.submit(builder.txHash) { response in
+                    if response.error {
+                        print("Error submitting transaction to server")
+                        print(response.raw)
+                    }
+                    callback(response)
+                }
+            }
+        }
+
+        func changeTrust(asset: Asset, limit: Int64 = Int64.max, callback: @escaping Callback) {
+            guard self.keyPair != nil else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't fund"))
+                return
+            }
+            
+            let source  = KeyPair.getPublicKey(self.publicKey)!
+            let secret  = KeyPair.getSignerKey(self.secretKey)!
+            
+            let inner  = ChangeTrustOp(line: asset, limit: limit)
+            let body   = OperationBody.ChangeTrust(inner)
+            let op     = Operation(sourceAccount: source, body: body)
+            
+            let server = StellarSDK.Horizon(self.network)
+            server.loadAccount(publicKey) { account in
+                if account.error != nil {
+                    print("Server Error")
+                    callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
+                    return
+                }
+                
+                let builder = TransactionBuilder(source)
+                builder.setSequence(account.sequence)
+                builder.addOperation(op)
+                //builder.addMemoText(memo)
+                builder.build()
+                builder.sign(key: secret)
+                print("\nEnv:", builder.envelope!)
+                print("\nTX:", builder.txHash)
+                server.submit(builder.txHash) { response in
+                    if response.error {
+                        print("Error submitting transaction to server")
+                        print(response.raw)
+                    }
+                    callback(response)
+                }
+            }
+        }
+        
+        func merge(address: String, callback: @escaping Callback) {
+            guard self.keyPair != nil else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't be merged"))
+                return
+            }
+            
+            let source  = KeyPair.getPublicKey(self.publicKey)!
+            let secret  = KeyPair.getSignerKey(self.secretKey)!
+            
+            guard let destin = KeyPair.getPublicKey(address) else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Invalid address to be merged"))
+                return
+            }
+
+            //let inner  = AccountMergeOp() // ???
+            let body   = OperationBody.AccountMerge(destin)
+            let op     = Operation(sourceAccount: source, body: body)
+            
+            let server = StellarSDK.Horizon(self.network)
+            server.loadAccount(publicKey) { account in
+                if account.error != nil {
+                    print("Server Error")
+                    callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
+                    return
+                }
+                
+                let builder = TransactionBuilder(source)
+                builder.setSequence(account.sequence)
+                builder.addOperation(op)
+                //builder.addMemoText(memo)
+                builder.build()
+                builder.sign(key: secret)
+                print("\nEnv:", builder.envelope!)
+                print("\nTX:", builder.txHash)
+                server.submit(builder.txHash) { response in
+                    if response.error {
+                        print("Error submitting transaction to server")
+                        print(response.raw)
+                    }
+                    callback(response)
+                }
+            }
+        }
+        
+        public func createAccount(address: String, amount: Int64, memo: String?, callback: @escaping Callback) {
+            guard self.keyPair != nil else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't fund"))
+                return
+            }
+
+            let source = KeyPair.getPublicKey(self.publicKey)!
+            let secret = KeyPair.getSignerKey(self.secretKey)!
+
+            guard let destin = KeyPair.getPublicKey(address) else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Invalid address to be funded"))
+                return
+            }
+            
+            let inner  = CreateAccountOp(destination: destin, startingBalance: amount * 10000000) // Seven decimals
+            let body   = OperationBody.CreateAccount(inner)
+            let op     = Operation(sourceAccount: source, body: body)
+            
+            let server = StellarSDK.Horizon(self.network)
+            server.loadAccount(publicKey) { account in
+                if account.error != nil {
+                    print("Server Error")
+                    callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
+                    return
+                }
+                
+                //let builder = TransactionBuilder(source, sequence, operation, memo) // Quick builder
+                let builder = TransactionBuilder(source)
+                builder.setSequence(account.sequence)
                 builder.addOperation(op)
                 builder.addMemoText(memo)
                 builder.build()
                 builder.sign(key: secret) // sec64
-                print("\nBuilder done")
+                print("\nEnv:", builder.envelope!)
+                print("\nTX:", builder.txHash)
+                server.submit(builder.txHash) { response in
+                    if response.error {
+                        print("Error submitting transaction to server")
+                        print(response.raw)
+                    }
+                    callback(response)
+                }
+            }
+        }
+        
+        public func payment(address: String, amount: Float, asset: Asset? = Asset.Native, memo: String?, callback: @escaping Callback) {
+            guard self.keyPair != nil else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't pay"))
+                return
+            }
+
+            let source = KeyPair.getPublicKey(self.publicKey)!
+            let secret = KeyPair.getSignerKey(self.secretKey)!
+            
+            guard let destin = KeyPair.getPublicKey(address) else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Invalid address to send payment"))
+                return
+            }
+            
+            let asset  = asset ?? Asset.Native
+            let inner  = PaymentOp(destination: destin, asset: asset, amount: Int64(amount * 10000000.0)) // Seven decimals
+            let body   = OperationBody.Payment(inner)
+            let op     = Operation(sourceAccount: source, body: body)
+            print("Amount", Int64(amount * 10000000.0))
+            
+            let server = StellarSDK.Horizon(self.network)
+            server.loadAccount(publicKey) { account in
+                if account.error != nil {
+                    print("Server Error")
+                    callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
+                    return
+                }
+                
+                let builder = TransactionBuilder(source)
+                builder.setSequence(account.sequence)
+                builder.addOperation(op)
+                builder.addMemoText(memo)
+                builder.build()
+                builder.sign(key: secret)
                 print("\nEnv:", builder.envelope!)
                 print("\nTX:", builder.txHash)
                 server.submit(builder.txHash) { response in
@@ -332,12 +476,16 @@ extension StellarSDK {
                     }
                     callback(response)
                 }
-                
-                print("Get out")
-                //callback(Response(status: 200, error: false, message: "Funded", raw: "OK from server", headers: [:], body: "", xdr: "", text: "", json: [:], list: []))
             }
-            
         }
+        
+        // TODO:
+        func manageOffer() {}
+        func createPassiveOffer() {}
+        func setData() {}
+        func getData() {}
+        func setHomeDomain() {}
+        func setSigner() {}
         
     }
     

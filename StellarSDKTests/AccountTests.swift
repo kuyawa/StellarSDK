@@ -252,7 +252,7 @@ class AccountTests: XCTestCase {
         print("Funding account", destin)
         
         account.useTestNetwork()
-        account.fund(address: destin, amount: 24, memo: "Hello World!") { response in
+        account.createAccount(address: destin, amount: 24, memo: "Hello World!") { response in
             print("\nResponse", response.raw)
             XCTAssert(!response.error, "Error funding account")
             expect.fulfill()
@@ -284,6 +284,30 @@ class AccountTests: XCTestCase {
         waitForExpectations(timeout: 20){ error in
             if let error = error { print("Error: \(error.localizedDescription)") }
         }
+    }
+    
+    func testAccountInflation() {
+        print("\n---- \(#function)\n")
+        let expect   = expectation(description: "ACCOUNT PAY")
+        //let source = "GAMMLP3BRHWAIRNNSAKD7UXWFITNI3YODZV4CFQ7FSILIL7E6SKQWTTX"
+        let secret   = "SDS54DFAILKMUWZOVIPN4Q4SSE33T4FEJP2MLOBEBNGFKINO46ZXXZDN"
+        let destin   = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let account  = StellarSDK.Account.fromSecret(secret)!
+        print(account.keyPair!.publicKey)
+        print(account.keyPair!.publicKey.xdr.base64)
+        print("Set inflation to account", destin)
+        
+        account.useTestNetwork()
+        account.setInflation(address: destin, memo: "Inflation") { response in
+            print("\nResponse", response.raw)
+            XCTAssert(!response.error, "Error sending payment")
+            expect.fulfill()
+        }
+        
+        waitForExpectations(timeout: 20){ error in
+            if let error = error { print("Error: \(error.localizedDescription)") }
+        }
+        
     }
     
     func testPerformanceExample() {

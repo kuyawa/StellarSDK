@@ -38,8 +38,8 @@ class TransactionBuilder {
         sequence = SequenceNumber(seq+1)
     }
     
-    func setSequence(_ seq: String) {
-        let seq = UInt64(seq) ?? 0 // TODO: Guard
+    func setSequence(_ seq: String?) {
+        let seq = UInt64(seq ?? "0") ?? 0 // TODO: Guard
         sequence = SequenceNumber(seq+1)
     }
     

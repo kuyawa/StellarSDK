@@ -22,10 +22,10 @@ enum OperationType: Int32 {
     case ManageData
 }
 
-/*  CreateAccount
- Creates and funds a new account with the specified starting balance.
- Threshold: med
- Result: CreateAccountResult
+/* CreateAccount
+   Creates and funds a new account with the specified starting balance.
+   Threshold: med
+   Result: CreateAccountResult
  */
 
 struct CreateAccountOp: XDREncodableStruct {
@@ -33,10 +33,10 @@ struct CreateAccountOp: XDREncodableStruct {
     var startingBalance : Int64     // amount they end up with
 }
 
-/*  Payment
- Send an amount in specified asset to a destination account.
- Threshold: med
- Result: PaymentResult
+/* Payment
+   Send an amount in specified asset to a destination account.
+   Threshold: med
+   Result: PaymentResult
  */
 
 struct PaymentOp: XDREncodableStruct {
@@ -45,15 +45,14 @@ struct PaymentOp: XDREncodableStruct {
     var amount      : Int64       // amount they end up with
 }
 
-/*  PathPayment
+/* PathPayment
+   send an amount to a destination account through a path.
+   (up to sendMax, sendAsset)
+   (X0, Path[0]) .. (Xn, Path[n])
+   (destAmount, destAsset)
  
- send an amount to a destination account through a path.
- (up to sendMax, sendAsset)
- (X0, Path[0]) .. (Xn, Path[n])
- (destAmount, destAsset)
- 
- Threshold: med
- Result: PathPaymentResult
+   Threshold: med
+   Result: PathPaymentResult
  */
 struct PathPaymentOp: XDREncodableStruct {
     var sendAsset   : Asset     // asset we pay with
@@ -65,8 +64,8 @@ struct PathPaymentOp: XDREncodableStruct {
 }
 
 /* Creates, updates or deletes an offer
- Threshold: med
- Result: ManageOfferResult
+   Threshold: med
+   Result: ManageOfferResult
  */
 struct ManageOfferOp: XDREncodableStruct {
     var selling : Asset
@@ -77,8 +76,8 @@ struct ManageOfferOp: XDREncodableStruct {
 }
 
 /* Creates an offer that doesn't take offers of the same price
- Threshold: med
- Result: CreatePassiveOfferResult
+   Threshold: med
+   Result: CreatePassiveOfferResult
  */
 struct CreatePassiveOfferOp: XDREncodableStruct {
     var selling : Asset     // A
@@ -88,38 +87,42 @@ struct CreatePassiveOfferOp: XDREncodableStruct {
 }
 
 /* Set Account Options
- updates "AccountEntry" fields.
- note: updating thresholds or signers requires high threshold
- Threshold: med or high
- Result: SetOptionsResult
+   updates "AccountEntry" fields.
+   note: updating thresholds or signers requires high threshold
+   Threshold: med or high
+   Result: SetOptionsResult
  */
 struct SetOptionsOp: XDREncodableStruct {
-    var inflationDest : AccountID   // sets the inflation destination
-    var clearFlags    : UInt32      // which flags to clear
-    var setFlags      : UInt32      // which flags to set
-    var masterWeight  : UInt32      // weight of the master account
-    var lowThreshold  : UInt32
-    var medThreshold  : UInt32
-    var highThreshold : UInt32
-    var homeDomain    : String      // sets the home domain
-    var signer        : Signer      // Add, update or remove a signer for the account. Signer is deleted if the weight is 0
+    var inflationDest : AccountID? = nil   // sets the inflation destination
+    var clearFlags    : UInt32? = nil      // which flags to clear
+    var setFlags      : UInt32? = nil      // which flags to set
+    var masterWeight  : UInt32? = nil      // weight of the master account
+    var lowThreshold  : UInt32? = nil
+    var medThreshold  : UInt32? = nil
+    var highThreshold : UInt32? = nil
+    var homeDomain    : String? = nil      // sets the home domain
+    var signer        : Signer? = nil      // Add, update or remove a signer for the account. Signer is deleted if the weight is 0
+    
+    init(inflationDest: AccountID) {
+        self.inflationDest = inflationDest
+    }
 }
 
 /* Creates, updates or deletes a trust line
- Threshold: med
- Result: ChangeTrustResult
+   Threshold: med
+   Result: ChangeTrustResult
  */
 struct ChangeTrustOp: XDREncodableStruct {
-    var line  : Asset      // if limit is set to 0, deletes the trust line
-    var limit : Int64
+    var line  : Asset
+    var limit : Int64   // if limit is set to 0, deletes the trust line, if set to Int.max sets no limit
 }
 
 /* Updates the "authorized" flag of an existing trust line
- this is called by the issuer of the related asset.
- note that authorize can only be set (and not cleared) if
- the issuer account does not have the AUTH_REVOCABLE_FLAG set
- Threshold: low
- Result: AllowTrustResult
+   this is called by the issuer of the related asset.
+   note that authorize can only be set (and not cleared) if
+   the issuer account does not have the AUTH_REVOCABLE_FLAG set
+   Threshold: low
+   Result: AllowTrustResult
  */
 struct AllowTrustOp: XDREncodableStruct {
     var trustor : AccountID
@@ -136,22 +139,21 @@ struct AllowTrustOp: XDREncodableStruct {
 }
 
 /* Inflation
- Runs inflation
- Threshold: low
- Result: InflationResult
+   Runs inflation
+   Threshold: low
+   Result: InflationResult
  */
 
 /* AccountMerge
- Transfers native balance to destination account.
- Threshold: high
- Result : AccountMergeResult
+   Transfers native balance to destination account.
+   Threshold: high
+   Result : AccountMergeResult
  */
 
 /* ManageData
- Adds, Updates, or Deletes a key value pair associated with a particular
- account.
- Threshold: med
- Result: ManageDataResult
+   Adds, Updates, or Deletes a key value pair associated with a particular account.
+   Threshold: med
+   Result: ManageDataResult
  */
 struct ManageDataOp: XDREncodableStruct {
     var dataName  : String

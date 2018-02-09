@@ -8,6 +8,8 @@
 
 import Foundation
 
+// Old definitions before using StellarTypes.x
+
 extension StellarSDK {
 
     public typealias JsonType = [String: Any?]
