@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		F408E77F201FBF3100985966 /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = F408E77E201FBF3100985966 /* Effects.swift */; };
 		F408E781201FC9FF00985966 /* Offers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F408E780201FC9FF00985966 /* Offers.swift */; };
-		F41824D820292750009FC337 /* Sodium.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F41824D720292750009FC337 /* Sodium.framework */; };
-		F41824D920292750009FC337 /* Sodium.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F41824D720292750009FC337 /* Sodium.framework */; };
 		F41A867C2017A448008E73ED /* StellarSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F41A86722017A448008E73ED /* StellarSDK.framework */; };
 		F41A86812017A449008E73ED /* StellarSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41A86802017A449008E73ED /* StellarSDKTests.swift */; };
 		F41A86832017A449008E73ED /* StellarSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = F41A86752017A448008E73ED /* StellarSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -72,7 +70,6 @@
 		F408E77E201FBF3100985966 /* Effects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Effects.swift; sourceTree = "<group>"; };
 		F408E780201FC9FF00985966 /* Offers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Offers.swift; sourceTree = "<group>"; };
 		F408E782201FD79900985966 /* UserGuide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = UserGuide.md; path = docs/UserGuide.md; sourceTree = "<group>"; };
-		F41824D720292750009FC337 /* Sodium.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sodium.framework; sourceTree = "<group>"; };
 		F41A86722017A448008E73ED /* StellarSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StellarSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F41A86752017A448008E73ED /* StellarSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StellarSDK.h; sourceTree = "<group>"; };
 		F41A86762017A448008E73ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -115,7 +112,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4AB029D201E092F00C669A4 /* CryptoSwift.framework in Frameworks */,
-				F41824D820292750009FC337 /* Sodium.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +120,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F41A867C2017A448008E73ED /* StellarSDK.framework in Frameworks */,
-				F41824D920292750009FC337 /* Sodium.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,7 +153,6 @@
 			children = (
 				F48EF3AC2025F8AB00F11E35 /* Types */,
 				F4D066E2202D2D4A00932A60 /* Utils */,
-				F41A86762017A448008E73ED /* Info.plist */,
 				F41A86752017A448008E73ED /* StellarSDK.h */,
 				F4D03B8B20198CB60024797E /* StellarSDK.swift */,
 				F4D03B93201992E20024797E /* Account.swift */,
@@ -171,6 +165,7 @@
 				F4D03B91201992960024797E /* Transactions.swift */,
 				F4248D652027DDF8002C71DE /* TransactionBuilder.swift */,
 				F482D925201D221F00ED84E1 /* Types.swift */,
+				F41A86762017A448008E73ED /* Info.plist */,
 			);
 			path = StellarSDK;
 			sourceTree = "<group>";
@@ -178,13 +173,13 @@
 		F41A867F2017A449008E73ED /* StellarSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				F41A86822017A449008E73ED /* Info.plist */,
 				F4AB029E201E1A3D00C669A4 /* AccountTests.swift */,
 				F4D03BA02019A3E10024797E /* HorizonTests.swift */,
 				F41A86802017A449008E73ED /* StellarSDKTests.swift */,
 				F4593FA320266F60004E7C7C /* StellarTypeTests.swift */,
 				F42D80B12029DBB100C18C4D /* UtilsTests.swift */,
 				F49175592025579E0060304A /* XdrKitTests.swift */,
+				F41A86822017A449008E73ED /* Info.plist */,
 			);
 			path = StellarSDKTests;
 			sourceTree = "<group>";
@@ -192,7 +187,6 @@
 		F41A869C2017A77E008E73ED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F41824D720292750009FC337 /* Sodium.framework */,
 				F4AB0294201E08F200C669A4 /* CryptoSwift.xcodeproj */,
 			);
 			path = Frameworks;
@@ -537,6 +531,7 @@
 				INFOPLIST_FILE = StellarSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = Armonia.StellarSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -565,6 +560,7 @@
 				INFOPLIST_FILE = StellarSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = Armonia.StellarSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

@@ -40,6 +40,9 @@ The Account class provides a better implementation of responses from the Horizon
 
 ````Swift
 account.getInfo { info in ... }
+account.getBalance { balance in ... }  // Native
+account.getBalance("EUR") { balance in ... }  // Asset
+account.getBalances { balances in ... } // All
 account.getPayments { payments in ... }
 account.getOperations { operations in ... }
 account.getTransactions { transactions in ... }
@@ -51,8 +54,23 @@ account.getData(key) { value in ... }
 Requests that produce lists of records can accept options like cursor, order and limit: 
 
 ````Swift
-account.getPayments(order: .desc, limit 20) { payments in ... }
-account.getTransactions(limit 50) { transactions in ... }
+account.getPayments(order: .desc, limit: 20) { payments in ... }
+account.getTransactions(limit: 50) { transactions in ... }
+````
+
+Transactions that can be submitted to the network affecting the blockchain and ledgers require the secret key of the originating account:
+
+````Swift
+account.createAccount(address, amount, memo) { result in ... }  // Creates new account and funds it
+account.setOptions(options) { result in ... }
+account.setAuthorization(flags) { result in ... }
+account.setInflation(address, memo) { result in ... }
+account.allowTrust(address, asset, authorize) { result in ... }
+account.changeTrust(asset, limit) { result in ... }
+account.merge(address) { result in ... }
+account.payment(address, amount, asset, memo) { result in ... }
+account.setHomeDomain(url) { result in ... }
+account.setData(key, value) { result in ... }
 ````
 
 ## Horizon Class
@@ -94,10 +112,8 @@ api.operationEffects(hash, options) { response in ... }
 api.payments(options) { response in ... }
 api.assets(options) { response in ... }
 api.friendbot(address) { response in ... }
-//api.submit(tx) { response in ... }
+api.submit(tx) { response in ... }
 ````
-
-\* Right now api.submit is the only method not implemented.
 
 ### API Handlers
 
@@ -112,10 +128,8 @@ server.loadAccountPayments(address, options) { payments in ... }
 server.loadAccountTransactions(address, options) { transactions in ... }
 server.loadAccountEffects(address, options) { effects in ... }
 server.loadAccountOffers(address, options) { offers in ... }
-//server.submitTransaction(tx) { response in ... }
+server.submitTransaction(tx) { response in ... }
 ````
-
-\* Right now server.submitTransaction is the only method not implemented.
 
 Chaining requests is also possible but barely functional:
 

@@ -263,7 +263,7 @@ class AccountTests: XCTestCase {
         }
     }
 
-    func testAccountPay() {
+    func testAccountPayment() {
         print("\n---- \(#function)\n")
         let expect  = expectation(description: "ACCOUNT PAY")
         //let source  = "GAMMLP3BRHWAIRNNSAKD7UXWFITNI3YODZV4CFQ7FSILIL7E6SKQWTTX"
@@ -275,7 +275,7 @@ class AccountTests: XCTestCase {
         print("Funding account", destin)
         
         account.useTestNetwork()
-        account.pay(address: destin, amount: 19.95, memo: "Hello World!") { response in
+        account.payment(address: destin, amount: 15.75, memo: "Hello World!") { response in
             print("\nResponse", response.raw)
             XCTAssert(!response.error, "Error sending payment")
             expect.fulfill()

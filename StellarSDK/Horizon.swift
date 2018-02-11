@@ -93,6 +93,7 @@ extension StellarSDK {
                 request.httpMethod = "POST"
                 request.httpBody   = httpBody
                 
+                print()
                 print("POST", request.url!)
                 print("PARAMS", txEncoded)
 

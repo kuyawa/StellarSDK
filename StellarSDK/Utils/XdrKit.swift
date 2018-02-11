@@ -3,8 +3,33 @@
 //  StellarSDK
 //
 //  Created by Laptop on 2/2/18.
+//  Adapted from StellarKit.XDRCodable.swift
 //  Copyright © 2018 Armonia. All rights reserved.
 //
+//  License from StellarKit
+//
+//  MIT License
+//
+//  Copyright (c) 2018 Kin Foundation
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
+
 
 import Foundation
 
@@ -13,6 +38,8 @@ import Foundation
 extension Data { var base64: String { return self.base64EncodedString() } }
 
 // bitWidth is available in Swift 4.0
+
+// Size of type
 extension UInt   { static var bitWidth:  Int { return MemoryLayout<UInt>.size   } }
 extension UInt8  { static var bitWidth:  Int { return MemoryLayout<UInt8>.size  } }
 extension UInt16 { static var bitWidth:  Int { return MemoryLayout<UInt16>.size } }
@@ -24,6 +51,7 @@ extension Int16  { static var bitWidth:  Int { return MemoryLayout<Int16>.size  
 extension Int32  { static var bitWidth:  Int { return MemoryLayout<Int32>.size  } }
 extension Int64  { static var bitWidth:  Int { return MemoryLayout<Int64>.size  } }
 
+// Size of instance
 extension UInt   { var bitWidth: Int { return MemoryLayout.size(ofValue: self) } }
 extension UInt8  { var bitWidth: Int { return MemoryLayout.size(ofValue: self) } }
 extension UInt16 { var bitWidth: Int { return MemoryLayout.size(ofValue: self) } }

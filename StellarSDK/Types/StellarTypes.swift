@@ -8,12 +8,12 @@
 
 import Foundation
 
-typealias Hash = DataFixed           // Size 32
-typealias UInt256 = DataFixed        // Size 32
-typealias Signature = Data           // Max 64. Variable size as the size depends on the signature scheme used
-typealias SignatureHint = DataFixed  // Size  4
-typealias NodeID  = Data
-typealias SecretKey = DataFixed      // Size 64 for signing
+public typealias Hash = DataFixed           // Size 32
+public typealias UInt256 = DataFixed        // Size 32
+public typealias Signature = Data           // Max 64. Variable size as the size depends on the signature scheme used
+public typealias SignatureHint = DataFixed  // Size  4
+public typealias NodeID  = Data
+public typealias SecretKey = DataFixed      // Size 64 for signing
 
 enum CryptoKeyType: Int32 {
     case ED25519 = 0
@@ -77,7 +77,7 @@ enum SignerKeyType: Int32 {
     case HashX
 }
 
-enum SignerKey {
+public enum SignerKey {
     case ED25519   (UInt256)
     case PreAuthTx (UInt256)
     case HashX     (UInt256)

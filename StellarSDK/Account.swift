@@ -36,8 +36,14 @@ Operational:
 Submit:
     account.createAccount(address, amount, memo) { result in ... }  // Creates new account and funds it
     account.setOptions(options) { result in ... }
+    account.setAuthorization(flags) { result in ... }
     account.setInflation(address, memo) { result in ... }
+    account.allowTrust(address, asset, authorize) { result in ... }
+    account.changeTrust(asset, limit) { result in ... }
+    account.merge(address) { result in ... }
     account.payment(address, amount, asset, memo) { result in ... }
+    account.setHomeDomain(url) { result in ... }
+    account.setData(key, value) { result in ... }
     more to come...
 
 */
@@ -60,8 +66,7 @@ extension StellarSDK {
         public init() {}
         
         public init(_ address: String, _ network: Horizon.Network?) {
-            // Read only account
-            // If no secret provided, account can only fetch info until a secret key is provided
+            // Read only account: If no secret provided, account can only fetch info until a secret key is provided
             publicKey = address
             if let net = network { self.network = net }
         }
@@ -213,10 +218,88 @@ extension StellarSDK {
         
         // ---- SUBMIT
         
-        public func setOptions(options: AccountOptions, callback: @escaping Callback) {
-            // TODO:
+        public func setAuthorization(_ flags: AccountAuthorizationFlags, callback: @escaping Callback) {
+            guard self.keyPair != nil else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't set options"))
+                return
+            }
+            
+            let source = KeyPair.getPublicKey(self.publicKey)!
+            let secret = KeyPair.getSignerKey(self.secretKey)!
+            
+            let inner = SetOptionsOp(clearFlags: flags.off, setFlags: flags.on)
+            let body  = OperationBody.SetOptions(inner)
+            let op    = Operation(sourceAccount: source, body: body)
+            
+            let server = StellarSDK.Horizon(self.network)
+            server.loadAccount(publicKey) { account in
+                if account.error != nil {
+                    print("Server Error")
+                    callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
+                    return
+                }
+                
+                let builder = TransactionBuilder(source)
+                builder.setSequence(account.sequence)
+                builder.addOperation(op)
+                builder.build()
+                builder.sign(key: secret)
+                print("\nEnv:", builder.envelope!)
+                print("\nTX:", builder.txHash)
+                server.submit(builder.txHash) { response in
+                    if response.error {
+                        print("Error submitting transaction to server")
+                        print(response.raw)
+                    }
+                    callback(response)
+                }
+            }
         }
 
+        public func setOptions(_ options: AccountOptions, callback: @escaping Callback) {
+            guard self.keyPair != nil else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't set options"))
+                return
+            }
+            
+            let source = KeyPair.getPublicKey(self.publicKey)!
+            let secret = KeyPair.getSignerKey(self.secretKey)!
+            
+            var inner = SetOptionsOp()
+            inner.inflationDest = options.inflationDest
+            inner.clearFlags    = options.clearFlags
+            inner.setFlags      = options.setFlags
+            inner.masterWeight  = options.masterWeight
+            inner.homeDomain    = options.homeDomain
+            
+            let body = OperationBody.SetOptions(inner)
+            let op   = Operation(sourceAccount: source, body: body)
+            
+            let server = StellarSDK.Horizon(self.network)
+            server.loadAccount(publicKey) { account in
+                if account.error != nil {
+                    print("Server Error")
+                    callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
+                    return
+                }
+                
+                let builder = TransactionBuilder(source)
+                builder.setSequence(account.sequence)
+                builder.addOperation(op)
+                builder.build()
+                builder.sign(key: secret)
+                print("\nEnv:", builder.envelope!)
+                print("\nTX:", builder.txHash)
+                server.submit(builder.txHash) { response in
+                    if response.error {
+                        print("Error submitting transaction to server")
+                        print(response.raw)
+                    }
+                    callback(response)
+                }
+            }
+        }
+        
         public func setInflation(address: String, memo: String?, callback: @escaping Callback) {
             guard self.keyPair != nil else {
                 callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't set inflation"))
@@ -261,9 +344,9 @@ extension StellarSDK {
             }
         }
         
-        func allowTrust(address: String, asset: Asset, authorize: Bool, callback: @escaping Callback) {
+        public func allowTrust(address: String, asset: Asset, authorize: Bool, callback: @escaping Callback) {
             guard self.keyPair != nil else {
-                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't fund"))
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't allow trust"))
                 return
             }
             
@@ -290,7 +373,6 @@ extension StellarSDK {
                 let builder = TransactionBuilder(source)
                 builder.setSequence(account.sequence)
                 builder.addOperation(op)
-                //builder.addMemoText(memo)
                 builder.build()
                 builder.sign(key: secret)
                 print("\nEnv:", builder.envelope!)
@@ -305,14 +387,14 @@ extension StellarSDK {
             }
         }
 
-        func changeTrust(asset: Asset, limit: Int64 = Int64.max, callback: @escaping Callback) {
+        public func changeTrust(asset: Asset, limit: Int64 = Int64.max, callback: @escaping Callback) {
             guard self.keyPair != nil else {
-                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't fund"))
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't change trust"))
                 return
             }
             
-            let source  = KeyPair.getPublicKey(self.publicKey)!
-            let secret  = KeyPair.getSignerKey(self.secretKey)!
+            let source = KeyPair.getPublicKey(self.publicKey)!
+            let secret = KeyPair.getSignerKey(self.secretKey)!
             
             let inner  = ChangeTrustOp(line: asset, limit: limit)
             let body   = OperationBody.ChangeTrust(inner)
@@ -329,7 +411,6 @@ extension StellarSDK {
                 let builder = TransactionBuilder(source)
                 builder.setSequence(account.sequence)
                 builder.addOperation(op)
-                //builder.addMemoText(memo)
                 builder.build()
                 builder.sign(key: secret)
                 print("\nEnv:", builder.envelope!)
@@ -344,7 +425,7 @@ extension StellarSDK {
             }
         }
         
-        func merge(address: String, callback: @escaping Callback) {
+        public func merge(address: String, callback: @escaping Callback) {
             guard self.keyPair != nil else {
                 callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't be merged"))
                 return
@@ -358,7 +439,6 @@ extension StellarSDK {
                 return
             }
 
-            //let inner  = AccountMergeOp() // ???
             let body   = OperationBody.AccountMerge(destin)
             let op     = Operation(sourceAccount: source, body: body)
             
@@ -373,7 +453,6 @@ extension StellarSDK {
                 let builder = TransactionBuilder(source)
                 builder.setSequence(account.sequence)
                 builder.addOperation(op)
-                //builder.addMemoText(memo)
                 builder.build()
                 builder.sign(key: secret)
                 print("\nEnv:", builder.envelope!)
@@ -451,7 +530,6 @@ extension StellarSDK {
             let inner  = PaymentOp(destination: destin, asset: asset, amount: Int64(amount * 10000000.0)) // Seven decimals
             let body   = OperationBody.Payment(inner)
             let op     = Operation(sourceAccount: source, body: body)
-            print("Amount", Int64(amount * 10000000.0))
             
             let server = StellarSDK.Horizon(self.network)
             server.loadAccount(publicKey) { account in
@@ -479,15 +557,61 @@ extension StellarSDK {
             }
         }
         
-        // TODO:
-        func manageOffer() {}
-        func createPassiveOffer() {}
-        func setData() {}
-        func getData() {}
-        func setHomeDomain() {}
-        func setSigner() {}
+        public func setHomeDomain(_ url: String, callback: @escaping Callback) {
+            var options = AccountOptions()
+            options.homeDomain = url
+            setOptions(options, callback: callback)
+        }
         
-    }
+        public func setData(_ key: String, _ value: String, callback: @escaping Callback) {
+            guard self.keyPair != nil else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't set options"))
+                return
+            }
+            
+            guard !key.isEmpty else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Data key is required"))
+                return
+            }
+            
+            let source = KeyPair.getPublicKey(self.publicKey)!
+            let secret = KeyPair.getSignerKey(self.secretKey)!
+            
+            let inner = ManageDataOp(dataName: key, dataValue: value.dataUTF8 ?? Data())
+            let body  = OperationBody.ManageData(inner)
+            let op    = Operation(sourceAccount: source, body: body)
+            
+            let server = StellarSDK.Horizon(self.network)
+            server.loadAccount(publicKey) { account in
+                if account.error != nil {
+                    print("Server Error")
+                    callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
+                    return
+                }
+                
+                let builder = TransactionBuilder(source)
+                builder.setSequence(account.sequence)
+                builder.addOperation(op)
+                builder.build()
+                builder.sign(key: secret)
+                print("\nEnv:", builder.envelope!)
+                print("\nTX:", builder.txHash)
+                server.submit(builder.txHash) { response in
+                    if response.error {
+                        print("Error submitting transaction to server")
+                        print(response.raw)
+                    }
+                    callback(response)
+                }
+            }
+        }
+        
+        // TODO:
+        public func manageOffer() {}
+        public func createPassiveOffer() {}
+        public func setSigner() {}
+        
+    } // Account
     
     open class AccountResponse {
         // Operational
@@ -534,7 +658,6 @@ extension StellarSDK {
         }
         
         func transactions(options: ListOptions?, _ callback: @escaping (_ transactions: TransactionsResponse) -> Void) {
-            print("Calling server for tranxs")
             server?.loadAccountTransactions(address: accountId!, options: options, callback: callback)
         }
         
@@ -574,10 +697,39 @@ extension StellarSDK {
     }
 
     public struct AccountOptions {
-        public var authRequired    : Bool?
-        public var authRevocable   : Bool?
-        public var authImmutable   : Bool?
-        public var inflationDestin : String?
+        public var inflationDest : AccountID? = nil   // sets the inflation destination
+        public var clearFlags    : UInt32? = nil      // which flags to clear
+        public var setFlags      : UInt32? = nil      // which flags to set
+        public var masterWeight  : UInt32? = nil      // weight of the master account
+        public var lowThreshold  : UInt32? = nil
+        public var medThreshold  : UInt32? = nil
+        public var highThreshold : UInt32? = nil
+        public var homeDomain    : String? = nil      // sets the home domain
+        public var signer        : Signer? = nil      // Add, update or remove a signer for the account. Signer is deleted if the weight is 0
+        
+        public init() {}
+    }
+    
+    public struct AccountAuthorizationFlags {
+        public var required  : Bool = false
+        public var revocable : Bool = false
+        public var immutable : Bool = false
+    
+        public var on: UInt32 {
+            return UInt32( (required ? 0x1 : 0x0)  | (revocable ? 0x2 : 0x0) | (immutable ? 0x4 : 0x0) )
+        }
+        
+        public var off: UInt32 {
+            return UInt32( (required ? 0x0 : 0x1)  | (revocable ? 0x0 : 0x2) | (immutable ? 0x0 : 0x4) )
+        }
+        
+        public init() {}
+        
+        public init(required: Bool, revocable: Bool, immutable: Bool) {
+            self.required  = required
+            self.revocable = revocable
+            self.immutable = immutable
+        }
     }
 }
 

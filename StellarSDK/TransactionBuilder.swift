@@ -71,7 +71,24 @@ class TransactionBuilder {
     @discardableResult
     func sign(key: SecretKey) -> TransactionEnvelope? {
         // TODO: Guard all
-        // TODO: Use secret key
+        let hint      = DataFixed(key.data.bytes.suffix(4).data) // .prefix(upTo: 4))
+        let netHash   = self.networkId.rawValue.dataUTF8!.sha256()
+        let tagged    = TaggedTransaction.TX(transaction!)
+        let payload   = TransactionSignaturePayload(networkId: DataFixed(netHash.data), taggedTransaction: tagged)
+        let message   = payload.xdr.sha256()
+        let signature = KeyPair.sign(message, key)
+        let decorated = DecoratedSignature(hint: hint, signature: signature!)
+        
+        envelope = TransactionEnvelope(tx: transaction!, signatures: [decorated])
+        print("\nEnvelope", envelope ?? "?")
+        print("\nEnvXDR", envelope!.xdr.base64)
+        return envelope
+    }
+    
+    @discardableResult
+    func signDebug(key: SecretKey) -> TransactionEnvelope? {
+        // TODO: Guard all
+        // Debugging
         print("\nPublicKey", key.data.bytes)
         let hint = DataFixed(key.data.bytes.suffix(4).data) // .prefix(upTo: 4))
         print("\nHint", hint.data.bytes)

@@ -8,7 +8,6 @@
 
 import Foundation
 import CryptoSwift
-import Sodium
 
 enum VersionBytes: UInt8 {
     case publicKey   = 0x030  // G  48
@@ -17,7 +16,7 @@ enum VersionBytes: UInt8 {
     case sha256hash  = 0x095  // X 149
 }
 
-class KeyPair {
+public class KeyPair {
     var publicKey         : [UInt8] = [0x0]  // 32 ED25519 public bytes
     var secretKey         : [UInt8] = [0x0]  // 32 ED25519 secret bytes
     var secretHash        : [UInt8] = [0x0]  // 64 ED25519 secret+public bytes
@@ -27,56 +26,55 @@ class KeyPair {
     var stellarPublicKey  : String { return stellarPublicHash.base32 }  // G12345...
     var stellarSecretKey  : String { return stellarSecretHash.base32 }  // S98765...
     
-    static func random() -> KeyPair {
+    public static func random() -> KeyPair {
         return KeyPair()
     }
     
-    static func fromSeed(_ seed: [UInt8]) -> KeyPair? {
+    public static func fromSeed(_ seed: [UInt8]) -> KeyPair? {
         return KeyPair(seed: seed)
     }
     
-    static func fromSecret(_ secret: [UInt8]) -> KeyPair? {
+    public static func fromSecret(_ secret: [UInt8]) -> KeyPair? {
         return KeyPair(secret: secret)
     }
     
-    static func fromSecret(_ secret: String) -> KeyPair? {
+    public static func fromSecret(_ secret: String) -> KeyPair? {
         guard secret.characters.count == 56 else { return nil }
         guard let seed = KeyPair.getSeed(secret) else { return nil }
         return KeyPair(seed: seed.bytes)
     }
     
-    static func getSeed(_ key: String) -> Data? {
+    public static func getSeed(_ key: String) -> Data? {
         guard key.characters.count == 56 else { return nil }
         guard let bytes = key.base32DecodedData, bytes.count > 32 else { return nil }
-        //print("Bytes", bytes.bytes)
         let data = bytes.subdata(in: 1..<33)
         return data
     }
     
-    static func getPublicKey(_ key: String) -> PublicKey? {
+    public static func getPublicKey(_ key: String) -> PublicKey? {
         guard let seed = getSeed(key) else { return nil }
         let publicKey = PublicKey.ED25519(DataFixed(seed))
         return publicKey
     }
     
-    static func getSignerKey(_ secret: String) -> SecretKey? {
+    public static func getSignerKey(_ secret: String) -> SecretKey? {
         guard let keyPair = KeyPair.fromSecret(secret) else { return nil }
         let signerKey = DataFixed(keyPair.secretHash.data)
         return signerKey
     }
     
-    convenience init() {
+    public convenience init() {
         let key = Ed25519.generate()
         self.init(key: key)
     }
     
-    convenience init?(seed: [UInt8]) {
+    public convenience init?(seed: [UInt8]) {
         guard seed.count == 32 else { return nil }
         let key = Ed25519.generate(seed: seed)
         self.init(key: key)
     }
     
-    convenience init?(secret: [UInt8]) {
+    public convenience init?(secret: [UInt8]) {
         guard secret.count == 35 else { return nil }
         // Validate prefix 'S'
         let prefix = secret[0]
@@ -94,7 +92,7 @@ class KeyPair {
         self.init(key: key)
     }
     
-    init(key: KeyBase) {
+    public init(key: KeyBase) {
         publicKey  = key.publicKey
         secretKey  = key.startSeed
         secretHash = key.secretKey
@@ -119,22 +117,12 @@ class KeyPair {
         let pByte1   = UInt8(pCrc & 0x00ff)
         let pSuffix  = [pByte1, pByte0]
         let pKey     = pPrefix + pBytes + pSuffix
-        //let pResult  = pKey.base32
         return pKey
     }
     
-    // Sodium
-    // To generate keypair in sodium, use seed: kp.secretkey
-    // To sign in sodium use sk+pk: kp.secrethash
-    static func sign(_ message: Data, _ key: SecretKey) -> Data? {
-        let signature = Sodium()?.sign.signature(message: message, secretKey: key.data)
-        return signature
-    }
-
-    // CryptoSwift
-    static func signx(_ message: Data, _ key: SecretKey) -> Data? {
-        guard let signature = try? HMAC(key: key.data.bytes, variant: .sha256).authenticate(message.bytes) else { return nil }
-        return Data(signature)
+    public static func sign(_ message: Data, _ key: SecretKey) -> Data? {
+        let signature = Sign(key.data.bytes, message.bytes)
+        return signature.data
     }
 
 }

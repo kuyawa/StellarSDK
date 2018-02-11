@@ -8,15 +8,15 @@
 
 import Foundation
 
-typealias AccountID      = PublicKey  // Max 56
-typealias Thresholds     = Data       // Max  4
-typealias String32       = String     // Max 32
-typealias String64       = String     // Max 64
-typealias DataValue      = Data       // Max 64
-typealias SequenceNumber = UInt64     // Max UInt64.max
-typealias AssetCode4     = String     // Max  4
-typealias AssetCode12    = String     // Max 12
-typealias Reserved       = Int32      // Reserved for future use
+public typealias AccountID = PublicKey  // Max 56
+typealias Thresholds       = Data       // Max  4
+typealias String32         = String     // Max 32
+typealias String64         = String     // Max 64
+typealias DataValue        = Data       // Max 64
+typealias SequenceNumber   = UInt64     // Max UInt64.max
+typealias AssetCode4       = String     // Max  4
+typealias AssetCode12      = String     // Max 12
+typealias Reserved         = Int32      // Reserved for future use
 
 // CONSTANTS
 
@@ -67,13 +67,9 @@ public enum Asset: XDREncodable, Equatable {
         if assetCode.characters.count < 5 {
             let asset = AssetData(assetCode: DataFixed(assetCode.dataUTF8!, size: 4), issuer: issuer)
             self = .CreditAlphaNum4(asset)
-            print("\nSelf4", self.xdr.bytes)
-            print("Self4", self.xdr.base64)
         } else if assetCode.characters.count < 13 {
             let asset = AssetData(assetCode: DataFixed(assetCode.dataUTF8!, size: 12), issuer: issuer)
             self = .CreditAlphaNum12(asset)
-            print("\nSelf12", self.xdr.bytes)
-            print("Self12", self.xdr.base64)
         } else {
             self = .Native
         }
@@ -89,12 +85,11 @@ public enum Asset: XDREncodable, Equatable {
 
     public func toXDR(count: Int32 = 0) -> Data {
         var xdr = discriminant.xdr
-        print("Disc",xdr.bytes)
         
         switch self {
         case .Native: break
-        case .CreditAlphaNum4(let alpha4): print("AD4", alpha4.xdr.bytes); xdr.append(alpha4.xdr)
-        case .CreditAlphaNum12(let alpha12): print("AD12", alpha12.xdr.bytes); xdr.append(alpha12.xdr)
+        case .CreditAlphaNum4(let alpha4): xdr.append(alpha4.xdr)
+        case .CreditAlphaNum12(let alpha12): xdr.append(alpha12.xdr)
         }
         
         //return Data(xdr.suffix(from: 4)) // Weird ahck to avoid first bytes?
@@ -145,9 +140,9 @@ enum LedgerEntryType {
     case Data
 }
 
-struct Signer: XDREncodableStruct {
-    var key    : SignerKey
-    var weight : UInt32     // really only need 1 byte
+public struct Signer: XDREncodableStruct {
+    public var key    : SignerKey
+    public var weight : UInt32     // really only need 1 byte
 }
 
 // Flags set on issuer accounts

@@ -9,7 +9,7 @@
 import XCTest
 @testable import StellarSDK
 @testable import CryptoSwift
-@testable import Sodium
+
 
 class StellarSDKTests: XCTestCase {
     

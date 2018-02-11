@@ -9,7 +9,6 @@
 import XCTest
 @testable import StellarSDK
 @testable import CryptoSwift
-@testable import Sodium
 
 class UtilsTests: XCTestCase {
 
@@ -115,7 +114,7 @@ class UtilsTests: XCTestCase {
         
         XCTAssertEqual(iniPub, kp.stellarPublicKey, "Keys don't match")
     }
-    
+/*
     func testSignatureStuff() {
         let testPublic = "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN"
         let testSecret = "SAOEFG5WDZAAIET3QIHR3W5A6YJIMT2EVRJO2ZAJJOI2IAOA4UIIRNOZ"
@@ -136,7 +135,7 @@ class UtilsTests: XCTestCase {
         //let buf = Array(msg.utf8)
         
         let sodium = Sodium()!
-        //let keyPair = sodium.sign.keyPair()!
+        let keyPair = sodium.sign.keyPair()!
         let keyPair = sodium.sign.keyPair(seed: sec)!
         print("---1")
         print(keyPair.publicKey) //32
@@ -295,7 +294,8 @@ class UtilsTests: XCTestCase {
         print(keyPair2.secretKey)
         print(keyPair2.secretKey.bytes)
     }
-    
+*/
+/*
     func testVector() {
         var bytes = Vector<UInt8>(size: 4, value: 0)
         bytes[0] = 1
@@ -320,6 +320,21 @@ class UtilsTests: XCTestCase {
         print(bytes.xdr)
         print(bytes.xdr.bytes)
         print(bytes.xdr.base64)
+    }
+*/
+    
+    func testAccountFlags() {
+        let flags1 = StellarSDK.AccountAuthorizationFlags(required: false, revocable: false, immutable: false)
+        let flags2 = StellarSDK.AccountAuthorizationFlags(required: true,  revocable: false, immutable: false )
+        let flags3 = StellarSDK.AccountAuthorizationFlags(required: false, revocable: false, immutable: true )
+        let flags4 = StellarSDK.AccountAuthorizationFlags(required: true,  revocable: false, immutable: true )
+        let flags5 = StellarSDK.AccountAuthorizationFlags(required: true,  revocable: true,  immutable: true )
+        
+        print(flags1.on, flags1.off)
+        print(flags2.on, flags2.off)
+        print(flags3.on, flags3.off)
+        print(flags4.on, flags4.off)
+        print(flags5.on, flags5.off)
     }
     
     func testPerformanceExample() {

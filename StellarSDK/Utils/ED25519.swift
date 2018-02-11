@@ -19,9 +19,9 @@
 //  limitations under the License.
 
 //  Implements the Ed25519 signature algorithm. See
-// http://ed25519.cr.yp.to/.
+//  http://ed25519.cr.yp.to/.
 
-// This code is a port of the public domain, "ref10" implementation of ed25519 from SUPERCOP.
+//  This code is a port of the public domain, "ref10" implementation of ed25519 from SUPERCOP.
 
 import Foundation
 import CryptoSwift

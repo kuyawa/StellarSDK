@@ -106,6 +106,42 @@ struct SetOptionsOp: XDREncodableStruct {
     init(inflationDest: AccountID) {
         self.inflationDest = inflationDest
     }
+    
+    init(clearFlags: UInt32, setFlags: UInt32) {
+        self.clearFlags = clearFlags
+        self.setFlags   = setFlags
+    }
+    
+    init(clearFlags: UInt32) {
+        self.clearFlags = clearFlags
+    }
+    
+    init(setFlags: UInt32) {
+        self.setFlags = setFlags
+    }
+    
+    init(masterWeight: UInt32) {
+        self.masterWeight = masterWeight
+    }
+    
+    init(low: UInt32, med: UInt32, high: UInt32) {
+        self.lowThreshold  = low
+        self.medThreshold  = med
+        self.highThreshold = high
+    }
+
+    init(homeDomain: String) {
+        self.homeDomain = homeDomain
+    }
+    
+    init(signer: Signer) {
+        self.signer = signer
+    }
+    
+    init() {
+        //
+    }
+
 }
 
 /* Creates, updates or deletes a trust line
@@ -207,7 +243,6 @@ enum OperationBody: XDREncodable {
         case .ManageData(let op)         : xdr.append(op.xdr)
         }
         
-        //print("BODY",xdr.base64);
         return xdr
     }
 }
@@ -229,7 +264,7 @@ enum MemoType: Int32 {
     case Return
 }
 
-enum Memo: XDREncodable {
+public enum Memo: XDREncodable {
     case None   (Void)
     case Text   (String)   // Max 28
     case Id     (UInt64)
@@ -246,7 +281,7 @@ enum Memo: XDREncodable {
         }
     }
     
-    func toXDR(count: Int32 = 0) -> Data {
+    public func toXDR(count: Int32 = 0) -> Data {
         var xdr = discriminant.xdr
         
         switch self {
@@ -256,11 +291,11 @@ enum Memo: XDREncodable {
         case .Hash   (let hash): xdr.append(hash.xdr)
         case .Return (let hash): xdr.append(hash.xdr)
         }
-        //print("MEMO:", xdr.base64, xdr.bytes)
+
         return xdr
     }
 
-    var text: String {
+    public var text: String {
         switch self {
         case .None:            return ""
         case .Text(let str):   return str

@@ -1,9 +1,10 @@
-TODO: MACAPP
+TODO:
 
+- Create nice wrapper class for ED25519
 - Parse TX results
 - Test all txs
-- Sign and submit TX
 - Test all ops
+x Sign and submit TX
 - Cache tx, op, py details since they don't change
 ? Throw errors, define error strategy (code, text)
 x Finish xdr encodable struct
