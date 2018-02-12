@@ -200,3 +200,11 @@ StellarSDK can see further because it's built on the shoulders of giants, includ
 ## License
 
 **StellarSDK** will use the most permissive license yet to be defined. Feel free to use it in your projects, copy, modify, or do whatever you want with it, no retributions required. Software is meant to be shared.
+
+## Donate
+
+Please donate to sponsor development of more awesome apps for the love of coding, thank you!
+
+    GALT5LR4TDTR5TX7GFHYZQIZRDD6HX32YHXYII7CAFG3ZOZALZUYGMZK
+
+:)
