@@ -64,13 +64,13 @@ public class KeyPair {
     }
     
     public convenience init() {
-        let key = Ed25519.generate()
+        let key = ED25519.generate()
         self.init(key: key)
     }
     
     public convenience init?(seed: [UInt8]) {
         guard seed.count == 32 else { return nil }
-        let key = Ed25519.generate(seed: seed)
+        let key = ED25519.generate(seed: seed)
         self.init(key: key)
     }
     
@@ -88,11 +88,11 @@ public class KeyPair {
         let pByte1 = UInt8(crc & 0x00ff)
         let check  = [pByte1, pByte0]
         guard suffix == check else { return nil }
-        let key    = Ed25519.generate(seed: seed)
+        let key    = ED25519.generate(seed: seed)
         self.init(key: key)
     }
     
-    public init(key: KeyBase) {
+    public init(key: ED25519.KeyBase) {
         publicKey  = key.publicKey
         secretKey  = key.startSeed
         secretHash = key.secretKey
@@ -120,8 +120,8 @@ public class KeyPair {
         return pKey
     }
     
-    public static func sign(_ message: Data, _ key: SecretKey) -> Data? {
-        let signature = Sign(key.data.bytes, message.bytes)
+    public static func sign(_ key: SecretKey, _ message: Data) -> Data {
+        let signature = ED25519.sign(key.data, message)
         return signature.data
     }
 

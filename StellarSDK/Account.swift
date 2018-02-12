@@ -63,7 +63,7 @@ extension StellarSDK {
         open var sequence  = 0
         open var balance   = 0.0
         
-        public init() {}
+        public init() { print("Init") }
         
         public init(_ address: String, _ network: Horizon.Network?) {
             // Read only account: If no secret provided, account can only fetch info until a secret key is provided
@@ -309,10 +309,10 @@ extension StellarSDK {
             let source  = KeyPair.getPublicKey(self.publicKey)!
             let secret  = KeyPair.getSignerKey(self.secretKey)!
             
-            guard let destin = KeyPair.getPublicKey(address) else {
-                callback(StellarSDK.ErrorResponse(code: 500, message: "Invalid inflation address"))
-                return
-            }
+            var destin: AccountID? = nil
+            
+            // Allow empty destin to reset inflation
+            if !address.isEmpty { destin = KeyPair.getPublicKey(address) }
 
             let inner  = SetOptionsOp(inflationDest: destin)
             let body   = OperationBody.SetOptions(inner)
@@ -577,9 +577,19 @@ extension StellarSDK {
             let source = KeyPair.getPublicKey(self.publicKey)!
             let secret = KeyPair.getSignerKey(self.secretKey)!
             
-            let inner = ManageDataOp(dataName: key, dataValue: value.dataUTF8 ?? Data())
+            print()
+            print("Source", self.publicKey)
+            print("Secret", self.secretKey)
+            print("Key", key)
+            print("Value", value)
+            print("Value", value.dataUTF8?.base64 ?? "?")
+            
+            let inner = ManageDataOp(dataName: key, dataValue: value.dataUTF8?.pad4)
             let body  = OperationBody.ManageData(inner)
             let op    = Operation(sourceAccount: source, body: body)
+            print("Inner", inner.xdr.base64)
+            print("Body", body.xdr.base64)
+            print("Op", op.xdr.base64)
             
             let server = StellarSDK.Horizon(self.network)
             server.loadAccount(publicKey) { account in
@@ -594,8 +604,8 @@ extension StellarSDK {
                 builder.addOperation(op)
                 builder.build()
                 builder.sign(key: secret)
-                print("\nEnv:", builder.envelope!)
-                print("\nTX:", builder.txHash)
+                //print("\nEnv:", builder.envelope!)
+                print("\nTXSIGN:", builder.txHash)
                 server.submit(builder.txHash) { response in
                     if response.error {
                         print("Error submitting transaction to server")

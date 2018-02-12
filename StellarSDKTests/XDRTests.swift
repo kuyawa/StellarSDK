@@ -14,6 +14,7 @@ class XdrKitTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        // Put setup code here.
     }
     
     
@@ -24,200 +25,174 @@ class XdrKitTests: XCTestCase {
     
     
     //---- XDR
-/*
-    func testXdrEncodeUInt8() {
-        print("\n---- \(#function)\n")
-        let ini = UInt8(123)
-        let xdr = ini.toXDR()
-        let end = UInt8(xdr: xdr)
-        print("Ini:", ini)
-        print("Xdr:", xdr.bytes)
-        print("B64:", xdr.base64)
-        print("End:", end)
-        print("Equal", ini==end)
-        print()
-        XCTAssertEqual(ini, end, "UInt8 not equal")
-    }
 
-    func testXdrEncodeUInt16() {
-        print("\n---- \(#function)\n")
-        let ini = UInt16(12345)
-        let xdr = ini
-        let end = UInt16(xdr: xdr)
-        print("Ini:", ini)
-        print("Xdr:", xdr.bytes)
-        print("B64:", xdr.base64)
-        print("End:", end)
-        print("Equal", ini==end)
-        print()
-        XCTAssertEqual(ini, end, "UInt16 not equal")
-    }
-*/
     func testXdrEncodeUInt32() {
         print("\n---- \(#function)\n")
+        
         let ini = UInt32(12345678)
         var xdr = ini.toXDR()
         let end = UInt32(xdrData: &xdr)
+        
         print("Ini:", ini)
         print("Xdr:", xdr.bytes)
         print("B64:", xdr.base64)
         print("End:", end)
         print("Equal", ini==end)
         print()
+        
         XCTAssertEqual(ini, end, "UInt32 not equal")
     }
     
     func testXdrEncodeUInt64() {
         print("\n---- \(#function)\n")
+        
         let ini = UInt64(1234567890123456789)
         var xdr = ini.toXDR()
         let end = UInt64(xdrData: &xdr)
+        
         print("Ini:", ini)
         print("Xdr:", ini.xdr.bytes)
         print("B64:", ini.xdr.base64)
         print("End:", end)
         print("Equal", ini==end)
         print()
-        XCTAssertEqual(ini, end, "UInt32 not equal")
+        
+        XCTAssertEqual(ini, end, "UInt64 not equal")
     }
-/*
-    func testXdrEncodeInt8() {
-        print("\n---- \(#function)\n")
-        let ini = Int8(-123)
-        let xdr = ini.xdr
-        let end = Int8(xdr: xdr)
-        print("Ini:", ini)
-        print("Xdr:", xdr.bytes)
-        print("B64:", xdr.base64)
-        print("End:", end)
-        print("Equal", ini==end)
-        print()
-        XCTAssertEqual(ini, end, "UInt8 not equal")
-    }
-    
-    func testXdrEncodeInt16() {
-        print("\n---- \(#function)\n")
-        let ini = Int16(-12345)
-        let xdr = ini.xdr
-        let end = Int16(xdr: xdr)
-        print("Ini:", ini)
-        print("Xdr:", xdr.bytes)
-        print("B64:", xdr.base64)
-        print("End:", end)
-        print("Equal", ini==end)
-        print()
-        XCTAssertEqual(ini, end, "UInt16 not equal")
-    }
-*/
+
     func testXdrEncodeInt32() {
         print("\n---- \(#function)\n")
+        
         let ini = Int32(-123456)
         var xdr = ini.toXDR()
         let end = Int32(xdrData: &xdr)
+        
         print("Ini:", ini)
         print("Xdr:", xdr.bytes)
         print("B64:", xdr.base64)
         print("End:", end)
         print("Equal", ini==end)
         print()
-        XCTAssertEqual(ini, end, "UInt32 not equal")
+        
+        XCTAssertEqual(ini, end, "Int32 not equal")
     }
     
     func testXdrEncodeInt64() {
         print("\n---- \(#function)\n")
+        
         let ini = Int64(-1234567890)
         var xdr = ini.xdr
         let end = Int64(xdrData: &xdr)
+        
         print("Ini:", ini)
         print("Xdr:", ini.xdr.bytes)
         print("B64:", ini.xdr.base64)
         print("End:", end)
         print("Equal", ini==end)
         print()
-        XCTAssertEqual(ini, end, "UInt32 not equal")
+        
+        XCTAssertEqual(ini, end, "Int64 not equal")
     }
     
     func testXdrEncodeString() {
         print("\n---- \(#function)\n")
+        
         let ini = "Test with unicode ©∆ end"
         var xdr = ini.toXDR()           // to xdr
         let end = String(xdrData: &xdr)  // and back
+        
         print("Ini:", ini)
         print("Xdr:", xdr.bytes)
         print("B64:", xdr.base64)
         print("End:", end)
         print("Equal", ini==end)
         print()
+        
         XCTAssertEqual(ini, end, "Strings not equal")
     }
     
     func testXdrEncodeBool() {
         print("\n---- \(#function)\n")
+        
         let ini = true
         var xdr = ini.toXDR()
         let end = Bool(xdrData: &xdr)    // and back
+        
         print("Ini:", ini)
         print("Xdr:", xdr.base64)
         print("End:", end)
         print("Equal", ini==end)
         print()
+        
         XCTAssertEqual(ini, end, "Bool not equal")
     }
     
     func testXdrEncodeData() {
         print("\n---- \(#function)\n")
+        
         let ini = Data([0, 1, 30, 255, 0])
         var xdr = ini.toXDR()
         let end = Data(xdrData: &xdr)
+        
         print("Ini:", ini.bytes)
         print("Xdr:", xdr.bytes)
         print("B64:", xdr.base64)
         print("End:", end.bytes)
         print("Equal", ini==end)
         print()
+        
         XCTAssertEqual(ini, end, "Data not equal")
     }
     
     func testXdrEncodeArrayInt() {
         print("\n---- \(#function)\n")
+        
         let ini = Array<Int32>([0, 10, 20, -30, 40, 50, 0])
         var xdr = ini.toXDR()
         let end = Array<Int32>(xdrData: &xdr)
+        
         print("Ini:", ini)
         print("Xdr:", xdr.bytes)
         print("B64:", xdr.base64)
         print("End:", end)
         print("Equal", ini==end)
         print()
+        
         XCTAssertEqual(ini, end, "Int Array not equal")
     }
     
     func testXdrEncodeArrayString() {
         print("\n---- \(#function)\n")
+        
         let ini = Array<String>(["Hello", "Stellar", "World", ".", ""])
         var xdr = ini.toXDR()
         let end = Array<String>(xdrData: &xdr)
+        
         print("Ini:", ini)
         print("Xdr:", xdr.bytes)
         print("B64:", xdr.base64)
         print("End:", end)
         print("Equal", ini==end)
         print()
+        
         XCTAssertEqual(ini, end, "String Array not equal")
     }
     
     
     func testXdrEncodeOptional() {
         print("\n---- \(#function)\n")
+        
         let ini:String? = nil
         var xdr = ini.toXDR()
         let end:String? = String(xdrData: &xdr)
+        
         print("Ini:", ini ?? "?")
         print("Xdr:", xdr.bytes)
         print("B64:", xdr.base64)
         print("End:", end ?? "?")
         print("Equal", ini==end)
         print()
+        
         XCTAssertNil(ini, "Optional not nil")
         XCTAssertEqual(end, "", "String not empty")
     }
@@ -253,20 +228,24 @@ class XdrKitTests: XCTestCase {
         }
         
         print("\n---- \(#function)\n")
+        
         let ini = testStruct(name: "Jill", num1: 123456, num2: 123, num3: 12345, flag: true, list: [22,33,44])
         let xdr = ini.toXDR()
         let end = testStruct(xdrData: xdr)
+        
         print("Ini:", ini)
         print("Xdr:", xdr.bytes)
         print("B64:", xdr.base64)
         print("End:", end)
         print("Equal", ini.name==end.name)
         print()
+        
         XCTAssertEqual(ini.name, end.name, "Data not equal")
     }
    
     func testEncodeAsset() {
         print("\n---- \(#function)\n")
+        
         let asset1 = Asset.Native
         print("AssetN:", asset1.xdr.bytes)
         print("AssetN:", asset1.xdr.base64)
@@ -282,12 +261,6 @@ class XdrKitTests: XCTestCase {
         print("\nAssetD12:", assetD12.xdr.bytes)
         print("AssetD12:", assetD12.xdr.base64)
 
-        //let pk = KeyPair.getPublicKey("GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")!
-        //let code = DataFixed("USD".dataUTF8!, size: 4)
-        //let asset2 = Asset.CreditAlphaNum4(AssetData(assetCode: code, issuer: pk))
-        //let asset2 = Asset.CreditAlphaNum4(AssetData(assetCode: "KASH", issuer: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")!)
-        //let asset2 = Asset(assetCode: "USDX", issuer: pk)
-        // AAAAAQAAAAFVU0QAAAAAAQAAAAAT3gdQ/u57sUs1LNpBfb5WiW2L+w8WoFgNgrhAdSSSlg==
         print("\nAsset2----")
         let asset2 = Asset(assetCode: "USDX", issuer: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")
         print("\nAsset2:", asset2.xdr.bytes)
@@ -343,24 +316,28 @@ class XdrKitTests: XCTestCase {
         }
         
         print("\n---- \(#function)\n")
+        
         let op  = Operation(type: "setOptions", inflationDest: "GACNHBPK6ZC77G545PQSQ2V7RWS5SQ4W56E2DNRBMPDFEQBQMTEH3XFW")
         //let trx = Transaction(source: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ", fee: UInt32(100), sequence: UInt64(1), time_bounds: Int32(0), memo: "Inflation", operations: [op], ext: Int32(0))
         var trx = Transaction()
         trx.operations.append(op)
         var xdr = trx.toXDR()
         let end = Transaction(xdrData: &xdr)
+        
         print("Ini:", trx)
         print("Xdr:", trx.xdr.bytes)
         print("B64:", trx.xdr.base64)
         print("End:", end)
         print("Equal", trx.source==end.source)
         print()
+        
         XCTAssertEqual(trx.source, end.source, "Data not equal")
     }
 
     // Builder.build returns a transaction like this one
     func testEncodeCreateAccount() {
         print("\n---- \(#function)\n")
+        
         //let pubkey = "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN"
         let secret   = "SAOEFG5WDZAAIET3QIHR3W5A6YJIMT2EVRJO2ZAJJOI2IAOA4UIIRNOZ"
         let keyPair  = KeyPair.fromSecret(secret)!
@@ -397,12 +374,12 @@ class XdrKitTests: XCTestCase {
         print("\n---- TRANSACTION")
         print("Tx:", tx.xdr.base64)
         print("\n---- END TRANSACTION")
-        //
     }
 
     // Builder.sign resturns a TX envelope
     func testEncodeTxSignature() {
         print("\n---- \(#function)\n")
+        
         //let pubkey = "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN"
         let secret   = "SAOEFG5WDZAAIET3QIHR3W5A6YJIMT2EVRJO2ZAJJOI2IAOA4UIIRNOZ"
         let keyPair  = KeyPair.fromSecret(secret)!
@@ -412,7 +389,7 @@ class XdrKitTests: XCTestCase {
         let destinG  = destin.stellarPublicKey
         let destinpk = PublicKey.ED25519(DataFixed(destin.publicKey.data))
         
-        let inner = CreateAccountOp(destination: destinpk, startingBalance: 10)
+        let inner = CreateAccountOp(destination: destinpk, startingBalance: 10 * 10000000)
         let body  = OperationBody.CreateAccount(inner)
         let op    = Operation(sourceAccount: sourcepk, body: body)
         
@@ -427,22 +404,11 @@ class XdrKitTests: XCTestCase {
         
         print("Funding account:", destinG)
         print()
-        /*
-        print("Source:", sourcepk.bytes)
-        print("Source32:", sourcepk.base32)
-        print("SourcePK:", sourcepk.xdr.base64)
-        print("Destin:", destinpk.bytes)
-        print("Destin32:", destinpk.base32)
-        print("DestinPK:", destinpk.xdr.base64)
-        print("Inner:", inner.xdr.base64)
-        print("Body:", body.xdr.base64)
-        print("Op:", op.toXDR().base64)
-         */
         print("\n---- TRANSACTION")
         print("Tx:", tx.xdr.base64)
         print("---- END TRANSACTION")
         
-        let signKey = keyPair.secretHash
+        let signKey = KeyPair.getSignerKey(secret)!
         print("\nSignerKey", signKey.data.bytes)
         let hint = DataFixed(signKey.data.bytes.suffix(4).data) // .prefix(upTo: 4))
         print("\nHint", hint.data.bytes)
@@ -458,16 +424,10 @@ class XdrKitTests: XCTestCase {
         let message = payload.xdr.sha256()
         print("\nMessage", message.bytes)
         print("\nMessage", message.xdr.base64)
-        let signature = KeyPair.sign(message, DataFixed(signKey.data))
-        print("\nSignature", signature?.bytes ?? "?")
-        print("\nSignature", signature!.xdr.base64)
-        let signaturey = Sign(signKey, message.bytes)
-        print("\nSignatureY", signaturey )
-        print("\nSignatureY", signaturey.xdr.base64)
-        //let signaturex = KeyPair.signx(message, DataFixed(signKey.data))
-        //print("\nSignatureX", signaturex?.bytes ?? "?")
-        //print("\nSignatureX", signaturex!.xdr.base64)
-        let decorated = DecoratedSignature(hint: hint, signature: signature!)
+        let signature = KeyPair.sign(signKey, message)
+        print("\nSignature", signature )
+        print("\nSignature", signature.xdr.base64)
+        let decorated = DecoratedSignature(hint: hint, signature: signature)
         print("\nDecorated", decorated)
         print("\nDecorated", decorated.xdr.base64 )
         let envelope = TransactionEnvelope(tx: tx, signatures: [decorated])
@@ -478,6 +438,7 @@ class XdrKitTests: XCTestCase {
     
     func testPaymentOp() {
         print("\n---- \(#function)\n")
+        
         let pubkey = "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN"
         //let secret   = "SAOEFG5WDZAAIET3QIHR3W5A6YJIMT2EVRJO2ZAJJOI2IAOA4UIIRNOZ"
         let sourcepk = KeyPair.getPublicKey(pubkey)!

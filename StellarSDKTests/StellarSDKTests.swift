@@ -15,11 +15,11 @@ class StellarSDKTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        // Put setup code here.
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        // Put teardown code here.
         super.tearDown()
         print("\n----\n")
     }
@@ -28,21 +28,25 @@ class StellarSDKTests: XCTestCase {
     func testExample() {
         print("\n---- \(#function)\n")
         print("OK")
+        
         XCTAssert(true)
     }
 
-    func testEd25519() {
+    func testED25519() {
         print("\n---- \(#function)\n")
-        let key = Ed25519.generate()
+        
+        let key = ED25519.generate()
         let pub = key.publicKey
         let sec = key.secretKey
         let sed = key.startSeed
+        
         print("\npub:", pub)
         print("\nsec:", sec)
         print("\nsed:", sed)
         print("pub:", pub.base32)
         print("sec:", sec.base32)
         print("sed:", sed.base32)
+        
         XCTAssert(true)
     }
 
@@ -54,7 +58,7 @@ class StellarSDKTests: XCTestCase {
             case sha256hash  = 0x095  // X 149
         }
         
-        let newKey = Ed25519.generate()
+        let newKey = ED25519.generate()
         
         // Public key
         let pBytes   = Array(newKey.publicKey)
@@ -83,19 +87,24 @@ class StellarSDKTests: XCTestCase {
 
     func testEdReverse() {
         print("\n---- \(#function)\n")
+        
         // Generate random keys
-        let key = Ed25519.generate()
+        let key = ED25519.generate()
         let pub = key.publicKey
         let sec = key.secretKey
         let sed = key.startSeed
+        
         print("pub:", pub.base32)
         print("sec:", sec.base32)
         print("sed:", sed)
+        
         // Generate keys from seed
-        let newkey = Ed25519.generate(seed: sed)
+        let newkey = ED25519.generate(seed: sed)
+        
         print("Public: ", newkey.publicKey.base32)
         print("Secret: ", newkey.secretKey.base32)
         print("Seeder: ", newkey.startSeed)
+        
         // Compare keys, must match
         XCTAssertEqual(key.publicKey, newkey.publicKey)
         XCTAssertEqual(key.secretKey, newkey.secretKey)
@@ -104,24 +113,31 @@ class StellarSDKTests: XCTestCase {
 
     func testKeyBySecret() {
         print("\n---- \(#function)\n")
+        
         // Generate keypair
         let key = KeyPair.random()
         let pub = key.publicKey
         let sec = key.secretKey
         let sed = key.startSeed
+        
         print("Public1:", pub.base32)
         print("Secret1:", sec.base32)
         print("Seeder1:", sed)
-        // Generate keypair from secret key 
+        
+        // Generate keypair from secret key
         let key2 = KeyPair.fromSecret(sec)!
+        
         print("Public2:", key2.publicKey.base32)
         print("Secret2:", key2.secretKey.base32)
         print("Seeder2:", key2.startSeed)
+        
         // Generate keypair from seed
         let key3 = KeyPair.fromSeed(sed)!
+        
         print("Public3:", key3.publicKey.base32)
         print("Secret3:", key3.secretKey.base32)
         print("Seeder3:", key3.startSeed)
+        
         XCTAssertEqual(key.publicKey, key2.publicKey)
         XCTAssertEqual(key.secretKey, key2.secretKey)
         XCTAssertEqual(key.startSeed, key2.startSeed)

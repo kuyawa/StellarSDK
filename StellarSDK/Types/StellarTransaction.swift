@@ -103,7 +103,7 @@ struct SetOptionsOp: XDREncodableStruct {
     var homeDomain    : String? = nil      // sets the home domain
     var signer        : Signer? = nil      // Add, update or remove a signer for the account. Signer is deleted if the weight is 0
     
-    init(inflationDest: AccountID) {
+    init(inflationDest: AccountID?) {
         self.inflationDest = inflationDest
     }
     
@@ -193,7 +193,7 @@ struct AllowTrustOp: XDREncodableStruct {
  */
 struct ManageDataOp: XDREncodableStruct {
     var dataName  : String
-    var dataValue : DataValue   // set to null to clear
+    var dataValue : Data?   // set to null to clear
 }
 
 
@@ -206,7 +206,7 @@ enum OperationBody: XDREncodable {
     case SetOptions         (SetOptionsOp)
     case ChangeTrust        (ChangeTrustOp)
     case AllowTrust         (AllowTrustOp)
-    case AccountMerge       (AccountID)
+    case AccountMerge       (AccountID)  // AccountID not Op
     case Inflation          (Void)
     case ManageData         (ManageDataOp)
     

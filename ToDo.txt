@@ -1,9 +1,12 @@
 TODO:
 
-- Create nice wrapper class for ED25519
+- Launch
+- Prettify tests
+- Remove all secrets and accounts from framework and tests
 - Parse TX results
-- Test all txs
-- Test all ops
+x Test all txs
+x Test all ops
+x Create nice wrapper class for ED25519
 x Sign and submit TX
 - Cache tx, op, py details since they don't change
 ? Throw errors, define error strategy (code, text)
@@ -14,7 +17,7 @@ x extension data.base32
 ref: http://cryptoswift.io
 
 
-----
+---- REDESIGN RESPONSE
 
 public typealias Callback = (_ response: CallbackResult) -> Void
 
@@ -39,11 +42,11 @@ testRequest { response in
     }
 }
 
-----
+---- NOTES
 
-Sodium generates pub32 and sec64 where sec64 = seed32+pub32
+ED25519 generates pub32 and sec64 where sec64 = seed32+pub32
 
-keypair {
+keybase {
   public32
   seed32
   secret64 = seed32+pub32
@@ -58,3 +61,5 @@ let pub = pubKey.base32DecodedData!.subdata(in: 1..<33)
 let sec = secKey.base32DecodedData!.subdata(in: 1..<33)
 
 use sec64 for signing
+
+END

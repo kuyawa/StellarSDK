@@ -1,6 +1,7 @@
 # StellarSDK
 
-Stellar SDK implementation as a Swift Framework to build Mac Apps. It provides a bridge between your app and Stellar Horizon Server to request information and submit transactions to the Stellar Network.
+Stellar SDK is a Swift Framework to build Stellar Apps for the mac platform. It provides a bridge between your app and Stellar Horizon Server to request information and submit transactions to the Stellar Network.
+
 
 ## Quick Start
 
@@ -10,11 +11,19 @@ Just git clone this repo and include the StellarSDK.xcodeproj in your own projec
 import StellarSDK
 
 let account = StellarSDK.Account.random()
-account.friendbot()       // Testing account will be funded with 10,000 XLM
-
 print(account.publicKey)
 print(account.secretKey)
+
+account.friendbot()  // Testing account will be funded with 10,000 XLM
+
+account.getInfo { response in
+    print(response.balances)
+}
+
 ````
+
+\* Stellar uses [CryptoSwift](https://github.com/krzyzanowskim/CryptoSwift) by Marcin Krzyzanowski so you should clone that library too and include it in your app. Will be embedded in the StellarSDK framework in the future.
+
 
 ## Account Class
 
@@ -131,7 +140,7 @@ server.loadAccountOffers(address, options) { offers in ... }
 server.submitTransaction(tx) { response in ... }
 ````
 
-Chaining requests is also possible but barely functional:
+Chaining requests is also possible:
 
 ````Swift
 server.loadAccount(address) { account in
@@ -141,13 +150,16 @@ server.loadAccount(address) { account in
 
 \* Better chaining support will be added in the future.
 
+
 ## User Guide
 
 Refer to the [StellarSDK User Guide](Docs/UserGuide.md) for more in-depth technical specifications.
 
+
 ## Unit tests
 
 StellarSDK comes with a full suit of tests that can be run to validate its functionality.
+
 
 ## Ongoing development
 
@@ -158,10 +170,24 @@ StellarSDK is an ongoing project and will continue to add more functionality to 
 [x] StellarSDK for macOS
 [ ] StellarSDK for iOS
 [ ] StellarSDK for iWatch
+[ ] StellarSDK for tvOS
+
 
 ## External dependencies
 
 [CryptoSwift](https://github.com/krzyzanowskim/CryptoSwift) by Marcin Krzyzanowski is a Crypto library in native Swift with no external dependencies.
+
+## Attribution
+
+StellarSDK can see further because it's built on the shoulders of giants, included in our code:
+
+- All the code and specs from Stellar Foundation
+- CryptoSwift by Marcin Krzyzanowski
+- XDR.swift by Kin Foundation
+- ED25519.swift by Katalysis / Alex Tran Qui
+- ChecksumXmodem.swift by ?
+- Base32.swift by 野村 憲男 Norio Nomura
+
 
 ## License
 

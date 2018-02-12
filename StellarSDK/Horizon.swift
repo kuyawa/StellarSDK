@@ -148,14 +148,14 @@ extension StellarSDK {
                 var result = Response()
                 
                 guard error == nil else {
-                    print("API ERROR: ", error!.localizedDescription)
+                    print("\nAPI ERROR: ", error!.localizedDescription)
                     result.error = true
                     result.message = error!.localizedDescription
                     return result
                 }
                 
                 if let data = data, let text = String(data: data, encoding: .utf8) {
-                    print("API RESPONSE")
+                    print("\nAPI RESPONSE", text)
                     result.raw  = text
                     //result.text = text
                     // Accept both objects or arrays, arrays will be assigned to result.list

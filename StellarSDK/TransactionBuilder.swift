@@ -63,8 +63,8 @@ class TransactionBuilder {
         guard sequence > 0 else { return nil }
         let fee = UInt32(operations.count * baseFee)
         transaction  = Transaction(sourceAccount: source, fee: fee, seqNum: sequence, timeBounds: lapse, memo: memo, operations: operations, ext: 0)
-        print("Transaction", transaction ?? "?")
-        print("TXDR", transaction?.xdr.base64 ?? "?")
+        print("\n", transaction ?? "?")
+        print("\nTXDR", transaction?.xdr.base64 ?? "?")
         return transaction
     }
 
@@ -76,11 +76,11 @@ class TransactionBuilder {
         let tagged    = TaggedTransaction.TX(transaction!)
         let payload   = TransactionSignaturePayload(networkId: DataFixed(netHash.data), taggedTransaction: tagged)
         let message   = payload.xdr.sha256()
-        let signature = KeyPair.sign(message, key)
-        let decorated = DecoratedSignature(hint: hint, signature: signature!)
+        let signature = KeyPair.sign(key, message)
+        let decorated = DecoratedSignature(hint: hint, signature: signature)
         
         envelope = TransactionEnvelope(tx: transaction!, signatures: [decorated])
-        print("\nEnvelope", envelope ?? "?")
+        print("\n", envelope ?? "?")
         print("\nEnvXDR", envelope!.xdr.base64)
         return envelope
     }
@@ -100,9 +100,9 @@ class TransactionBuilder {
         print("\nPayload", payload)
         let message = payload.xdr.sha256()
         print("\nMessage", message.bytes)
-        let signature = KeyPair.sign(message, key)
-        print("\nSignature", signature?.bytes ?? "?")
-        let decorated = DecoratedSignature(hint: hint, signature: signature!)
+        let signature = KeyPair.sign(key, message)
+        print("\nSignature", signature.bytes)
+        let decorated = DecoratedSignature(hint: hint, signature: signature)
         print("\nDecorated", decorated )
         envelope = TransactionEnvelope(tx: transaction!, signatures: [decorated])
         print("\nEnvelope", envelope ?? "?")

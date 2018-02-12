@@ -1,5 +1,5 @@
 //
-//  XdrKit.swift
+//  XDR.swift
 //  StellarSDK
 //
 //  Created by Laptop on 2/2/18.
@@ -36,6 +36,14 @@ import Foundation
 // Handy extensions
 
 extension Data { var base64: String { return self.base64EncodedString() } }
+
+extension Data {
+    var pad4: Data {
+        let pad = self.count % 4
+        let zeroes = Data(repeating: 0, count: pad)
+        return self + zeroes
+    }
+}
 
 // bitWidth is available in Swift 4.0
 

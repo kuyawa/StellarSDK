@@ -219,10 +219,9 @@ struct OfferEntry: XDREncodableStruct {
 struct DataEntry: XDREncodableStruct {
     var accountID : AccountID // account this data belongs to
     var dataName  : String64
-    var dataValue : DataValue
+    var dataValue : DataValue?
     var ext       : Reserved
 }
-
 
 struct LedgerEntry: XDREncodableStruct {
     var  lastModifiedLedgerSeq: UInt32 // ledger the LedgerEntry was last changed

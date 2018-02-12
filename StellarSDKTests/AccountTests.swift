@@ -25,29 +25,37 @@ class AccountTests: XCTestCase {
 
     func testAccountRandom() {
         print("\n---- \(#function)\n")
+        
         let account = StellarSDK.Account.random()
+        
         print("Public key:", account.publicKey)
         print("Secret key:", account.secretKey)
+        
         XCTAssertNotNil(account, "Error generating random account")
     }
     
     func testAccountFromSecret() {
         print("\n---- \(#function)\n")
+        
         let account1 = StellarSDK.Account.random()
+        let account2 = StellarSDK.Account.fromSecret(account1.secretKey)!
+        
         print("#1 Public key:", account1.publicKey)
         print("#1 Secret key:", account1.secretKey)
         print()
-        let account2 = StellarSDK.Account.fromSecret(account1.secretKey)!
         print("#2 Public key:", account2.publicKey)
         print("#2 Secret key:", account2.secretKey)
+        
         XCTAssertEqual(account1.publicKey, account2.publicKey, "Error generating account from secret")
     }
     
     func testAccountInfo() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "ACCOUNT INFO")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let account   = StellarSDK.Account(publicKey, .test)
+        
         account.getInfo { info in
             print("RAW:", info.raw ?? "?")
             print("----")
@@ -65,6 +73,7 @@ class AccountTests: XCTestCase {
             XCTAssertNil(info.error, "Error in server request")
             expect.fulfill()
         }
+        
         waitForExpectations(timeout: 20){ error in
             if let error = error { print("Timeout Error: \(error.localizedDescription)") }
         }
@@ -72,15 +81,18 @@ class AccountTests: XCTestCase {
 
     func testAccountBalance() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "ACCOUNT BALANCE")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let account   = StellarSDK.Account(publicKey, .test)
+        
         account.getBalance { balance in
             //if balance < 0 { print("XLM Balance not found") }
             print("Balance", balance, "XLM")
             XCTAssertGreaterThan(balance, -1, "Balance not found")
             expect.fulfill()
         }
+        
         waitForExpectations(timeout: 20){ error in
             if let error = error { print("Timeout Error: \(error.localizedDescription)") }
         }
@@ -88,15 +100,18 @@ class AccountTests: XCTestCase {
 
     func testAccountBalanceAsset() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "ACCOUNT BALANCE")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let account   = StellarSDK.Account(publicKey, .test)
+        
         account.getBalance(asset: "EUR") { balance in
             if balance < 0 { print("EUR Balance not found") }
             print("Balance", balance, "EUR")
             XCTAssertLessThan(balance, 0, "EUR Balance not found")
             expect.fulfill()
         }
+        
         waitForExpectations(timeout: 20){ error in
             if let error = error { print("Timeout Error: \(error.localizedDescription)") }
         }
@@ -104,9 +119,11 @@ class AccountTests: XCTestCase {
     
     func testAccountBalances() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "ACCOUNT BALANCE")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let account   = StellarSDK.Account(publicKey, .test)
+        
         account.getBalances { balances in
             print(balances.count, "Balances")
             for item in balances {
@@ -115,6 +132,7 @@ class AccountTests: XCTestCase {
             XCTAssertGreaterThan(balances.count, 0, "Balances not found")
             expect.fulfill()
         }
+        
         waitForExpectations(timeout: 20){ error in
             if let error = error { print("Timeout Error: \(error.localizedDescription)") }
         }
@@ -122,9 +140,11 @@ class AccountTests: XCTestCase {
     
     func testAccountOperations() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "ACCOUNT OPERATIONS")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let account   = StellarSDK.Account(publicKey, .test)
+        
         account.getOperations { operations in
             print("RAW:", operations.raw ?? "?")
             print("----")
@@ -143,9 +163,11 @@ class AccountTests: XCTestCase {
     
     func testAccountPayments() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "ACCOUNT PAYMENTS")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let account   = StellarSDK.Account(publicKey, .test)
+        
         account.getPayments { payments in
             print("RAW:", payments.raw ?? "?")
             print("----")
@@ -164,9 +186,11 @@ class AccountTests: XCTestCase {
     
     func testAccountTransactions() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "ACCOUNT TRANSACTIONS")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let account   = StellarSDK.Account(publicKey, .test)
+        
         account.getTransactions { transactions in
             print("RAW:", transactions.raw ?? "?")
             print("----")
@@ -182,9 +206,11 @@ class AccountTests: XCTestCase {
     
     func testAccountEffects() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "ACCOUNT EFFECTS")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let account   = StellarSDK.Account(publicKey, .test)
+        
         account.getEffects { effects in
             print("RAW:", effects.raw ?? "?")
             print("----")
@@ -203,9 +229,11 @@ class AccountTests: XCTestCase {
     
     func testAccountOffers() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "ACCOUNT OFFERS")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let account   = StellarSDK.Account(publicKey, .test)
+        
         account.getOffers { offers in
             print("RAW:", offers.raw ?? "?")
             print("----")
@@ -224,9 +252,11 @@ class AccountTests: XCTestCase {
     
     func testAccountData() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "ACCOUNT DATA")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let account   = StellarSDK.Account(publicKey, .test)
+        
         account.getData(key: "test") { value in
             print("Key", "test")
             print("Value", value)
@@ -241,12 +271,14 @@ class AccountTests: XCTestCase {
     
     func testAccountFund() {
         print("\n---- \(#function)\n")
+        
         let expect  = expectation(description: "ACCOUNT FUND")
         //let source  = "GAMMLP3BRHWAIRNNSAKD7UXWFITNI3YODZV4CFQ7FSILIL7E6SKQWTTX"
         let secret  = "SDS54DFAILKMUWZOVIPN4Q4SSE33T4FEJP2MLOBEBNGFKINO46ZXXZDN"
         let keypair = KeyPair.random()
         let destin  = keypair.stellarPublicKey
         let account = StellarSDK.Account.fromSecret(secret)!
+        
         print(account.keyPair!.publicKey)
         print(account.keyPair!.publicKey.xdr.base64)
         print("Funding account", destin)
@@ -265,11 +297,13 @@ class AccountTests: XCTestCase {
 
     func testAccountPayment() {
         print("\n---- \(#function)\n")
+        
         let expect  = expectation(description: "ACCOUNT PAY")
         //let source  = "GAMMLP3BRHWAIRNNSAKD7UXWFITNI3YODZV4CFQ7FSILIL7E6SKQWTTX"
         let secret   = "SDS54DFAILKMUWZOVIPN4Q4SSE33T4FEJP2MLOBEBNGFKINO46ZXXZDN"
         let destin   = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let account  = StellarSDK.Account.fromSecret(secret)!
+        
         print(account.keyPair!.publicKey)
         print(account.keyPair!.publicKey.xdr.base64)
         print("Funding account", destin)
@@ -288,11 +322,13 @@ class AccountTests: XCTestCase {
     
     func testAccountInflation() {
         print("\n---- \(#function)\n")
+        
         let expect   = expectation(description: "ACCOUNT PAY")
         //let source = "GAMMLP3BRHWAIRNNSAKD7UXWFITNI3YODZV4CFQ7FSILIL7E6SKQWTTX"
         let secret   = "SDS54DFAILKMUWZOVIPN4Q4SSE33T4FEJP2MLOBEBNGFKINO46ZXXZDN"
         let destin   = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let account  = StellarSDK.Account.fromSecret(secret)!
+        
         print(account.keyPair!.publicKey)
         print(account.keyPair!.publicKey.xdr.base64)
         print("Set inflation to account", destin)

@@ -14,10 +14,11 @@ class UtilsTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        // Put setup code here.
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        // Put teardown code here.
         super.tearDown()
         print("\n----")
     }
@@ -54,7 +55,7 @@ class UtilsTests: XCTestCase {
     }
     
     func testEd25519() {
-        let key  = Ed25519.generate() // (public,secret,seed)
+        let key  = ED25519.generate() // (public,secret,seed)
         print("Key: ", key)
     }
 

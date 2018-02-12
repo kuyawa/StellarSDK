@@ -13,19 +13,21 @@ class HorizonTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        // Put setup code here.
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        // Put teardown code here.
         super.tearDown()
     }
 
     func testApiAccount() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "GET ACCOUNT")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let server    = StellarSDK.Horizon.test
+        
         server.account(address: publicKey) { response in
             //print("Raw:", response.raw)
             let account = StellarSDK.AccountResponse(response.json)
@@ -43,16 +45,19 @@ class HorizonTests: XCTestCase {
             XCTAssert(response.status == 200, "Error in server request")
             expect.fulfill()
         }
+        
         waitForExpectations(timeout: 10){ error in
             if let error = error { print("Error: \(error.localizedDescription)") }
         }
     }
 
     func testGetAccount() {
+        
         print("\n---- \(#function)\n")
         let expect    = expectation(description: "GET ACCOUNT")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let server    = StellarSDK.Horizon.test
+        
         server.loadAccount(publicKey) { account in
             //print("Raw:", response.raw)
             //let account = StellarSDK.AccountResponse(response.json)
@@ -75,6 +80,7 @@ class HorizonTests: XCTestCase {
             }
             expect.fulfill()
         }
+        
         waitForExpectations(timeout: 10){ error in
             if let error = error { print("Error: \(error.localizedDescription)") }
         }
@@ -82,9 +88,11 @@ class HorizonTests: XCTestCase {
 
     func testGetAccountTransactions() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "GET ACCOUNT TRANSACTIONS")
         let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
         let server    = StellarSDK.Horizon.test
+        
         server.loadAccount(publicKey) { account in
             print("Account id", account.accountId ?? "?")
             account.transactions(options: nil){ transactions in
@@ -101,14 +109,17 @@ class HorizonTests: XCTestCase {
 
     func testFriendbot() {
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "FUND ACCOUNT")
         let publicKey = KeyPair.random().publicKey.base32
         let server    = StellarSDK.Horizon.test
+        
         server.friendbot(address: publicKey) { response in
             print("Raw:", response.raw)
             XCTAssert(response.status == 200, "Error in server request")
             expect.fulfill()
         }
+        
         waitForExpectations(timeout: 20){ error in
             if let error = error { print("Error: \(error.localizedDescription)") }
         }
