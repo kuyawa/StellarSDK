@@ -151,6 +151,11 @@ server.loadAccount(address) { account in
 \* Better chaining support will be added in the future.
 
 
+## Basic Apps
+
+The most basic app is an address generator and it's available here [StellarAddress](). Download it and play with it so you can taste the power of StellarSDK and learn how to include it in your project.
+
+
 ## User Guide
 
 Refer to the [StellarSDK User Guide](Docs/UserGuide.md) for more in-depth technical specifications.
