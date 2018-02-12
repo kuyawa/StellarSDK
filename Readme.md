@@ -158,7 +158,7 @@ The most basic app is an address generator and it is available here [StellarAddr
 
 ## User Guide
 
-Refer to the [StellarSDK User Guide](./Docs/UserGuide.md) for more in-depth technical specifications.
+Refer to the [StellarSDK User Guide](./docs/UserGuide.md) for more in-depth technical specifications.
 
 
 ## Unit tests
