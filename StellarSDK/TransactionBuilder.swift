@@ -61,10 +61,13 @@ class TransactionBuilder {
     func build() -> Transaction? {
         guard let source = source else { return nil }
         guard sequence > 0 else { return nil }
+        
         let fee = UInt32(operations.count * baseFee)
         transaction  = Transaction(sourceAccount: source, fee: fee, seqNum: sequence, timeBounds: lapse, memo: memo, operations: operations, ext: 0)
-        print("\n", transaction ?? "?")
-        print("\nTXDR", transaction?.xdr.base64 ?? "?")
+        
+        //print("\n", transaction ?? "?")
+        //print("\nTXDR", transaction?.xdr.base64 ?? "?")
+        
         return transaction
     }
 
@@ -80,43 +83,12 @@ class TransactionBuilder {
         let decorated = DecoratedSignature(hint: hint, signature: signature)
         
         envelope = TransactionEnvelope(tx: transaction!, signatures: [decorated])
-        print("\n", envelope ?? "?")
-        print("\nEnvXDR", envelope!.xdr.base64)
+        
+        //print("\n", envelope ?? "?")
+        //print("\nEnvXDR", envelope!.xdr.base64)
+        
         return envelope
     }
-    
-    @discardableResult
-    func signDebug(key: SecretKey) -> TransactionEnvelope? {
-        // TODO: Guard all
-        // Debugging
-        print("\nPublicKey", key.data.bytes)
-        let hint = DataFixed(key.data.bytes.suffix(4).data) // .prefix(upTo: 4))
-        print("\nHint", hint.data.bytes)
-        let netHash = self.networkId.rawValue.dataUTF8!.sha256()
-        print("\nNethash", netHash.bytes)
-        let tagged = TaggedTransaction.TX(transaction!)
-        print("\nTagged", tagged)
-        let payload = TransactionSignaturePayload(networkId: DataFixed(netHash.data), taggedTransaction: tagged)
-        print("\nPayload", payload)
-        let message = payload.xdr.sha256()
-        print("\nMessage", message.bytes)
-        let signature = KeyPair.sign(key, message)
-        print("\nSignature", signature.bytes)
-        let decorated = DecoratedSignature(hint: hint, signature: signature)
-        print("\nDecorated", decorated )
-        envelope = TransactionEnvelope(tx: transaction!, signatures: [decorated])
-        print("\nEnvelope", envelope ?? "?")
-        print("\nEnvXDR", envelope!.xdr.base64)
-        return envelope
-    }
-    
-    func sign(keys: [PublicKey]) {
-        // TODO: Loop signers
-    }
-    
-    func submit(_ network: StellarSDK.Horizon.Network, callback: @escaping Callback) {
-        // TODO: Submit and return response
-    }
-    
+
     
 }

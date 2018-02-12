@@ -1,14 +1,12 @@
 TODO:
 
 - Launch
-- Prettify tests
-- Remove all secrets and accounts from framework and tests
 - Parse TX results
 x Test all txs
 x Test all ops
 x Create nice wrapper class for ED25519
 x Sign and submit TX
-- Cache tx, op, py details since they don't change
+- Cache tx listings since they don't change
 ? Throw errors, define error strategy (code, text)
 x Finish xdr encodable struct
 x Start adding classes

@@ -10,6 +10,8 @@ import XCTest
 @testable import StellarSDK
 @testable import CryptoSwift
 
+let testAddress = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+
 class StellarTypeTests: XCTestCase {
     
     override func setUp() {
@@ -49,7 +51,7 @@ class StellarTypeTests: XCTestCase {
     func testTypePublicKeyString() {
         print("\n---- \(#function)\n")
         
-        let key = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let key = testAddress
         //let key = [143, 229, 1, 145, 211, 203, 190, 90, 238, 141, 49, 32, 176, 222, 181, 99, 81, 179, 150, 163, 9, 204, 10, 85, 138, 67, 103, 15, 17, 140, 118, 156]
         //let seed = Data(key)
         let publicKey = KeyPair.getPublicKey(key)!
@@ -64,7 +66,7 @@ class StellarTypeTests: XCTestCase {
     func testTypeCreateAccountOp() {
         print("\n---- \(#function)\n")
         
-        let testAccount = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let testAccount = testAddress
         let publicKey = KeyPair.getPublicKey(testAccount)!
         let op = CreateAccountOp(destination: publicKey, startingBalance: 100)
         
@@ -77,7 +79,7 @@ class StellarTypeTests: XCTestCase {
     func testTypePaymentOp() {
         print("\n---- \(#function)\n")
         
-        let testAccount = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let testAccount = testAddress
         let publicKey = KeyPair.getPublicKey(testAccount)!
         let asset = Asset.Native
         //let asset2 = Asset.CreditAlphaNum4(AssetData(assetCode: "USD", issuer: "G1234..."))

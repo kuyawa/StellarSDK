@@ -28,7 +28,6 @@ class StellarSDKTests: XCTestCase {
     func testExample() {
         print("\n---- \(#function)\n")
         print("OK")
-        
         XCTAssert(true)
     }
 

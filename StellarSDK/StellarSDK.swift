@@ -8,20 +8,13 @@
 
 import Foundation
 
-public typealias Callback   = (_ response: Response) -> Void
 public typealias Parameters = [String: Any?]
+public typealias Callback   = (_ response: Response) -> Void
 
 public struct ErrorMessage {
     public var code : Int    = 0
     public var text : String = ""
 }
-
-/*
- public struct ErrorResponse {
-    let code: Int
-    let message: String
-}
-*/
 
 public enum SortOrder {
     case asc
@@ -46,9 +39,9 @@ open class StellarSDK {
     }
     
     static func ErrorResponse(code: Int, message: String) -> Response {
-        var response = Response()
-        response.error = true
-        response.status = code
+        var response     = Response()
+        response.error   = true
+        response.status  = code
         response.message = message
         
         return response

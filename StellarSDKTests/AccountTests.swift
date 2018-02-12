@@ -10,6 +10,11 @@ import XCTest
 @testable import StellarSDK
 @testable import CryptoSwift
 
+
+let testAddress = "GAMMLP3BRHWAIRNNSAKD7UXWFITNI3YODZV4CFQ7FSILIL7E6SKQWTTX"
+let testSecret  = "SDS54DFAILKMUWZOVIPN4Q4SSE33T4FEJP2MLOBEBNGFKINO46ZXXZDN"
+let testDestin  = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+
 class AccountTests: XCTestCase {
 
     override func setUp() {
@@ -53,7 +58,7 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect    = expectation(description: "ACCOUNT INFO")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let account   = StellarSDK.Account(publicKey, .test)
         
         account.getInfo { info in
@@ -83,7 +88,7 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect    = expectation(description: "ACCOUNT BALANCE")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let account   = StellarSDK.Account(publicKey, .test)
         
         account.getBalance { balance in
@@ -102,13 +107,13 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect    = expectation(description: "ACCOUNT BALANCE")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let account   = StellarSDK.Account(publicKey, .test)
         
-        account.getBalance(asset: "EUR") { balance in
-            if balance < 0 { print("EUR Balance not found") }
-            print("Balance", balance, "EUR")
-            XCTAssertLessThan(balance, 0, "EUR Balance not found")
+        account.getBalance(asset: "USD") { balance in
+            if balance < 0 { print("USD Balance not found") }
+            print("Balance", balance, "USD")
+            XCTAssertGreaterThan(balance, 0, "USD Balance not found")
             expect.fulfill()
         }
         
@@ -121,7 +126,7 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect    = expectation(description: "ACCOUNT BALANCE")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let account   = StellarSDK.Account(publicKey, .test)
         
         account.getBalances { balances in
@@ -142,7 +147,7 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect    = expectation(description: "ACCOUNT OPERATIONS")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let account   = StellarSDK.Account(publicKey, .test)
         
         account.getOperations { operations in
@@ -165,7 +170,7 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect    = expectation(description: "ACCOUNT PAYMENTS")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let account   = StellarSDK.Account(publicKey, .test)
         
         account.getPayments { payments in
@@ -188,7 +193,7 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect    = expectation(description: "ACCOUNT TRANSACTIONS")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let account   = StellarSDK.Account(publicKey, .test)
         
         account.getTransactions { transactions in
@@ -208,7 +213,7 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect    = expectation(description: "ACCOUNT EFFECTS")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let account   = StellarSDK.Account(publicKey, .test)
         
         account.getEffects { effects in
@@ -231,7 +236,7 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect    = expectation(description: "ACCOUNT OFFERS")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let account   = StellarSDK.Account(publicKey, .test)
         
         account.getOffers { offers in
@@ -254,11 +259,11 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect    = expectation(description: "ACCOUNT DATA")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let account   = StellarSDK.Account(publicKey, .test)
         
-        account.getData(key: "test") { value in
-            print("Key", "test")
+        account.getData(key: "Test") { value in
+            print("Key", "Test")
             print("Value", value)
             XCTAssert(!value.isEmpty, "Error fetching account data")
             expect.fulfill()
@@ -273,8 +278,8 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect  = expectation(description: "ACCOUNT FUND")
-        //let source  = "GAMMLP3BRHWAIRNNSAKD7UXWFITNI3YODZV4CFQ7FSILIL7E6SKQWTTX"
-        let secret  = "SDS54DFAILKMUWZOVIPN4Q4SSE33T4FEJP2MLOBEBNGFKINO46ZXXZDN"
+        //let source  = testAddress
+        let secret  = testSecret
         let keypair = KeyPair.random()
         let destin  = keypair.stellarPublicKey
         let account = StellarSDK.Account.fromSecret(secret)!
@@ -299,9 +304,9 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect  = expectation(description: "ACCOUNT PAY")
-        //let source  = "GAMMLP3BRHWAIRNNSAKD7UXWFITNI3YODZV4CFQ7FSILIL7E6SKQWTTX"
-        let secret   = "SDS54DFAILKMUWZOVIPN4Q4SSE33T4FEJP2MLOBEBNGFKINO46ZXXZDN"
-        let destin   = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        //let source  = testAddress
+        let secret   = testSecret
+        let destin   = testDestin
         let account  = StellarSDK.Account.fromSecret(secret)!
         
         print(account.keyPair!.publicKey)
@@ -324,9 +329,9 @@ class AccountTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect   = expectation(description: "ACCOUNT PAY")
-        //let source = "GAMMLP3BRHWAIRNNSAKD7UXWFITNI3YODZV4CFQ7FSILIL7E6SKQWTTX"
-        let secret   = "SDS54DFAILKMUWZOVIPN4Q4SSE33T4FEJP2MLOBEBNGFKINO46ZXXZDN"
-        let destin   = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        //let source = testAddress
+        let secret   = testSecret
+        let destin   = testDestin
         let account  = StellarSDK.Account.fromSecret(secret)!
         
         print(account.keyPair!.publicKey)

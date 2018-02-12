@@ -72,7 +72,7 @@ extension StellarSDK {
 
                 var request = URLRequest(url: url)
                 if let params = params { request = Request.URLBuild(uri, params) }
-                print("GET", request.url!)
+                //print("GET", request.url!)
                 
                 URLSession.shared.dataTask(with: request) { data, response, error in
                     let result = self.handleResponse(data, response, error)
@@ -93,9 +93,8 @@ extension StellarSDK {
                 request.httpMethod = "POST"
                 request.httpBody   = httpBody
                 
-                print()
-                print("POST", request.url!)
-                print("PARAMS", txEncoded)
+                //print("POST", request.url!)
+                //print("PARAMS", txEncoded)
 
                 URLSession.shared.dataTask(with: request) { data, response, error in
                     let result = self.handleResponse(data, response, error)
@@ -137,9 +136,9 @@ extension StellarSDK {
             }
             
             static private func URLBuild(_ uri: String, _ params: Parameters?) -> URLRequest {
-                //let agent   = "Stellar Bot 1.0"
                 let encoded = URLEncode(uri, params)
                 let request = URLRequest(url: encoded)
+                //let agent = "StellarSDK 1.0"
                 //request.setValue(agent, forHTTPHeaderField: "User-Agent")
                 return request
             }
@@ -155,17 +154,14 @@ extension StellarSDK {
                 }
                 
                 if let data = data, let text = String(data: data, encoding: .utf8) {
-                    print("\nAPI RESPONSE", text)
+                    //print("\nAPI RESPONSE", text)
                     result.raw  = text
-                    //result.text = text
                     // Accept both objects or arrays, arrays will be assigned to result.list
                     let json = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
                     if let dixy = json as? [String:Any] {
                         result.json = dixy
-                        //print(dixy)
                     } else if let list = json as? [Any] {
                         result.list = list
-                        //print(list)
                     }
                 }
                 

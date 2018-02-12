@@ -58,15 +58,15 @@ extension StellarSDK {
         open var error  : ErrorMessage?
         
         var keyPair: KeyPair? = nil  // Crypto public/secret keys
-        open var publicKey = ""  // Stellar public key
-        open var secretKey = ""  // Stellar secret key
+        open var publicKey = ""      // Stellar public key
+        open var secretKey = ""      // Stellar secret key
         open var sequence  = 0
         open var balance   = 0.0
         
-        public init() { print("Init") }
+        public init() { }
         
+        // Read only account: If no secret provided, account can only fetch info
         public init(_ address: String, _ network: Horizon.Network?) {
-            // Read only account: If no secret provided, account can only fetch info until a secret key is provided
             publicKey = address
             if let net = network { self.network = net }
         }
@@ -129,12 +129,12 @@ extension StellarSDK {
             }
         }
         
-        // Returns balance of any asset as double
+        // Returns balance of any symbol as double
         public func getBalance(asset: String, callback: @escaping (_ balance: Double) -> Void) {
             let server = StellarSDK.Horizon(self.network)
             server.loadAccount(publicKey) { account in
                 for balance in account.balances {
-                    if balance.assetType == asset {
+                    if balance.assetCode == asset {
                         callback(Double(balance.balance) ?? -1)
                         return
                     }
@@ -244,8 +244,7 @@ extension StellarSDK {
                 builder.addOperation(op)
                 builder.build()
                 builder.sign(key: secret)
-                print("\nEnv:", builder.envelope!)
-                print("\nTX:", builder.txHash)
+
                 server.submit(builder.txHash) { response in
                     if response.error {
                         print("Error submitting transaction to server")
@@ -288,8 +287,7 @@ extension StellarSDK {
                 builder.addOperation(op)
                 builder.build()
                 builder.sign(key: secret)
-                print("\nEnv:", builder.envelope!)
-                print("\nTX:", builder.txHash)
+
                 server.submit(builder.txHash) { response in
                     if response.error {
                         print("Error submitting transaction to server")
@@ -332,8 +330,7 @@ extension StellarSDK {
                 builder.addMemoText(memo)
                 builder.build()
                 builder.sign(key: secret)
-                print("\nEnv:", builder.envelope!)
-                print("\nTX:", builder.txHash)
+
                 server.submit(builder.txHash) { response in
                     if response.error {
                         print("Error submitting transaction to server")
@@ -375,8 +372,7 @@ extension StellarSDK {
                 builder.addOperation(op)
                 builder.build()
                 builder.sign(key: secret)
-                print("\nEnv:", builder.envelope!)
-                print("\nTX:", builder.txHash)
+
                 server.submit(builder.txHash) { response in
                     if response.error {
                         print("Error submitting transaction to server")
@@ -413,8 +409,7 @@ extension StellarSDK {
                 builder.addOperation(op)
                 builder.build()
                 builder.sign(key: secret)
-                print("\nEnv:", builder.envelope!)
-                print("\nTX:", builder.txHash)
+
                 server.submit(builder.txHash) { response in
                     if response.error {
                         print("Error submitting transaction to server")
@@ -455,8 +450,7 @@ extension StellarSDK {
                 builder.addOperation(op)
                 builder.build()
                 builder.sign(key: secret)
-                print("\nEnv:", builder.envelope!)
-                print("\nTX:", builder.txHash)
+
                 server.submit(builder.txHash) { response in
                     if response.error {
                         print("Error submitting transaction to server")
@@ -500,8 +494,7 @@ extension StellarSDK {
                 builder.addMemoText(memo)
                 builder.build()
                 builder.sign(key: secret) // sec64
-                print("\nEnv:", builder.envelope!)
-                print("\nTX:", builder.txHash)
+
                 server.submit(builder.txHash) { response in
                     if response.error {
                         print("Error submitting transaction to server")
@@ -545,8 +538,7 @@ extension StellarSDK {
                 builder.addMemoText(memo)
                 builder.build()
                 builder.sign(key: secret)
-                print("\nEnv:", builder.envelope!)
-                print("\nTX:", builder.txHash)
+
                 server.submit(builder.txHash) { response in
                     if response.error {
                         print("Error submitting payment to server")
@@ -577,19 +569,10 @@ extension StellarSDK {
             let source = KeyPair.getPublicKey(self.publicKey)!
             let secret = KeyPair.getSignerKey(self.secretKey)!
             
-            print()
-            print("Source", self.publicKey)
-            print("Secret", self.secretKey)
-            print("Key", key)
-            print("Value", value)
-            print("Value", value.dataUTF8?.base64 ?? "?")
-            
+            // FIX: Error encoding string, pad with zeroes multiples of four
             let inner = ManageDataOp(dataName: key, dataValue: value.dataUTF8?.pad4)
             let body  = OperationBody.ManageData(inner)
             let op    = Operation(sourceAccount: source, body: body)
-            print("Inner", inner.xdr.base64)
-            print("Body", body.xdr.base64)
-            print("Op", op.xdr.base64)
             
             let server = StellarSDK.Horizon(self.network)
             server.loadAccount(publicKey) { account in
@@ -604,8 +587,7 @@ extension StellarSDK {
                 builder.addOperation(op)
                 builder.build()
                 builder.sign(key: secret)
-                //print("\nEnv:", builder.envelope!)
-                print("\nTXSIGN:", builder.txHash)
+
                 server.submit(builder.txHash) { response in
                     if response.error {
                         print("Error submitting transaction to server")

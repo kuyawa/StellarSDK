@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Marked for removal
 // Old definitions before using StellarTypes.x
 
 extension StellarSDK {
@@ -15,75 +16,8 @@ extension StellarSDK {
     public typealias JsonType = [String: Any?]
     public typealias JsonList = [Any?]
 
-    open class Types {
+    public class Types {
 
-        open class Operations {
-            
-            open class CreateAccount {
-                var source      = ""
-                var destination = ""
-                var balance     = 0.0
-                
-                init() {}
-                
-                func toXDR() -> Data {
-                    return Data()
-                }
-                
-            }
-            
-            open class Payment {
-                var source  = ""
-                var target  = ""
-                var asset   = ""
-                var amount  = 0.0
-                
-                init() {}
-                
-                func toXDR() -> Data {
-                    return Data()
-                }
-            }
-            
-            open class PathPayment {
-                // TODO:
-            }
-            
-            open class ManageOffer {
-                // TODO:
-            }
-            
-            open class CreatePassiveOffer {
-                // TODO:
-            }
-            
-            open class SetOptions {
-                // TODO:
-            }
-            
-            open class ChangeTrust {
-                // TODO:
-            }
-            
-            open class AllowTrust {
-                // TODO:
-            }
-            
-            open class AccountMerge {
-                // TODO:
-            }
-            
-            open class Inflation {
-                // TODO: 
-            }
-            
-            open class ManageData { 
-                // TODO: 
-            }
-
-
-        }
-        
         public struct Link {
             public var url: String
             public var templated: Bool = false

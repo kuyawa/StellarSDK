@@ -9,6 +9,11 @@
 import XCTest
 @testable import StellarSDK
 
+
+let testAddress = "GAMMLP3BRHWAIRNNSAKD7UXWFITNI3YODZV4CFQ7FSILIL7E6SKQWTTX"
+let testSecret  = "SDS54DFAILKMUWZOVIPN4Q4SSE33T4FEJP2MLOBEBNGFKINO46ZXXZDN"
+let testDestin  = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+
 class HorizonTests: XCTestCase {
 
     override func setUp() {
@@ -25,7 +30,7 @@ class HorizonTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect    = expectation(description: "GET ACCOUNT")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let server    = StellarSDK.Horizon.test
         
         server.account(address: publicKey) { response in
@@ -52,15 +57,13 @@ class HorizonTests: XCTestCase {
     }
 
     func testGetAccount() {
-        
         print("\n---- \(#function)\n")
+        
         let expect    = expectation(description: "GET ACCOUNT")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let server    = StellarSDK.Horizon.test
         
         server.loadAccount(publicKey) { account in
-            //print("Raw:", response.raw)
-            //let account = StellarSDK.AccountResponse(response.json)
             if account.error != nil {
                 print(account.error!.text)
                 XCTAssertTrue(account.error!.code > 0)
@@ -90,7 +93,7 @@ class HorizonTests: XCTestCase {
         print("\n---- \(#function)\n")
         
         let expect    = expectation(description: "GET ACCOUNT TRANSACTIONS")
-        let publicKey = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+        let publicKey = testAddress
         let server    = StellarSDK.Horizon.test
         
         server.loadAccount(publicKey) { account in

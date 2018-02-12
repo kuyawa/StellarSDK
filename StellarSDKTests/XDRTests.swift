@@ -10,6 +10,12 @@ import XCTest
 @testable import StellarSDK
 @testable import CryptoSwift
 
+
+let testAddress = "GAMMLP3BRHWAIRNNSAKD7UXWFITNI3YODZV4CFQ7FSILIL7E6SKQWTTX"
+let testSecret  = "SDS54DFAILKMUWZOVIPN4Q4SSE33T4FEJP2MLOBEBNGFKINO46ZXXZDN"
+let testDestin  = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+let testIssuer  = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+
 class XdrKitTests: XCTestCase {
     
     override func setUp() {
@@ -252,29 +258,29 @@ class XdrKitTests: XCTestCase {
         print()
         
         print("\nAssetD4----")
-        let assetD4 = AssetData(assetCode: "USD", issuer: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")
+        let assetD4 = AssetData(assetCode: "USD", issuer: testIssuer)
         print("\nAssetD4:", assetD4.xdr.bytes)
         print("AssetD4:", assetD4.xdr.base64)
 
         print("\nAssetD12----")
-        let assetD12 = AssetData(assetCode: "SpecialToken", issuer: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")
+        let assetD12 = AssetData(assetCode: "SpecialToken", issuer: testIssuer)
         print("\nAssetD12:", assetD12.xdr.bytes)
         print("AssetD12:", assetD12.xdr.base64)
 
         print("\nAsset2----")
-        let asset2 = Asset(assetCode: "USDX", issuer: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")
+        let asset2 = Asset(assetCode: "USDX", issuer: testIssuer)
         print("\nAsset2:", asset2.xdr.bytes)
         print("Asset2:", asset2.xdr.base64)
         
         print("\nAsset3----")
-        let asset3 = Asset(assetCode: "SpecialToken", issuer: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ")
+        let asset3 = Asset(assetCode: "SpecialToken", issuer: testIssuer)
         print("Asset3:", asset3.xdr.bytes)
         print("Asset3:", asset3.xdr.base64)
     }
     
     func testXdrEncodeInflation() {
         struct Transaction: XDREncodableStruct {
-            var source      : String = "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ"
+            var source      : String = testAddress
             var fee         : UInt32 = 100
             var sequence    : UInt64 = 1
             var timeBounds  : Int32  = 0
@@ -299,7 +305,7 @@ class XdrKitTests: XCTestCase {
         
         struct Operation: XDRDecodable, XDREncodableStruct {
             var type: String = "setOptions"
-            var inflationDest: String = "GACNHBPK6ZC77G545PQSQ2V7RWS5SQ4W56E2DNRBMPDFEQBQMTEH3XFW"
+            var inflationDest: String = ""
             
             init(type: String, inflationDest: String) {
                 self.type = type
@@ -317,8 +323,8 @@ class XdrKitTests: XCTestCase {
         
         print("\n---- \(#function)\n")
         
-        let op  = Operation(type: "setOptions", inflationDest: "GACNHBPK6ZC77G545PQSQ2V7RWS5SQ4W56E2DNRBMPDFEQBQMTEH3XFW")
-        //let trx = Transaction(source: "GAJ54B2Q73XHXMKLGUWNUQL5XZLIS3ML7MHRNICYBWBLQQDVESJJNNMJ", fee: UInt32(100), sequence: UInt64(1), time_bounds: Int32(0), memo: "Inflation", operations: [op], ext: Int32(0))
+        let op  = Operation(type: "setOptions", inflationDest: testDestin)
+        //let trx = Transaction(source: testDestin, fee: UInt32(100), sequence: UInt64(1), time_bounds: Int32(0), memo: "Inflation", operations: [op], ext: Int32(0))
         var trx = Transaction()
         trx.operations.append(op)
         var xdr = trx.toXDR()
@@ -338,8 +344,8 @@ class XdrKitTests: XCTestCase {
     func testEncodeCreateAccount() {
         print("\n---- \(#function)\n")
         
-        //let pubkey = "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN"
-        let secret   = "SAOEFG5WDZAAIET3QIHR3W5A6YJIMT2EVRJO2ZAJJOI2IAOA4UIIRNOZ"
+        //let pubkey = testAddress
+        let secret   = testSecret
         let keyPair  = KeyPair.fromSecret(secret)!
         let source   = keyPair.publicKey
         let sourcepk = PublicKey.ED25519(DataFixed(source.data))
@@ -380,8 +386,8 @@ class XdrKitTests: XCTestCase {
     func testEncodeTxSignature() {
         print("\n---- \(#function)\n")
         
-        //let pubkey = "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN"
-        let secret   = "SAOEFG5WDZAAIET3QIHR3W5A6YJIMT2EVRJO2ZAJJOI2IAOA4UIIRNOZ"
+        //let pubkey = testAddress
+        let secret   = testSecret
         let keyPair  = KeyPair.fromSecret(secret)!
         let source   = keyPair.publicKey
         let sourcepk = PublicKey.ED25519(DataFixed(source.data))
@@ -439,14 +445,14 @@ class XdrKitTests: XCTestCase {
     func testPaymentOp() {
         print("\n---- \(#function)\n")
         
-        let pubkey = "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN"
-        //let secret   = "SAOEFG5WDZAAIET3QIHR3W5A6YJIMT2EVRJO2ZAJJOI2IAOA4UIIRNOZ"
+        let pubkey = testAddress
+        //let secret  = testSecret
         let sourcepk = KeyPair.getPublicKey(pubkey)!
         let destin   = KeyPair.random()
         let destinpk = KeyPair.getPublicKey(destin.stellarPublicKey)!
         
         //let inner = PaymentOp(destination: destinpk, asset: Asset.Native, amount: 10 * 10000000)
-        let inner = PaymentOp(destination: destinpk, asset: Asset(assetCode: "USD", issuer: "GDAKK4UKQM73BOE7ITYUM5YIWFT7YCZLNJBMDQVREMRWUUTBN7566HMN")!, amount: 10 * 10000000)
+        let inner = PaymentOp(destination: destinpk, asset: Asset(assetCode: "USD", issuer: testIssuer)!, amount: 10 * 10000000)
         let body  = OperationBody.Payment(inner)
         let op    = Operation(sourceAccount: sourcepk, body: body)
         

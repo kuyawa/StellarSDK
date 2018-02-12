@@ -10,37 +10,6 @@ import Foundation
 
 extension StellarSDK {
 
-/*
-    open class Transaction {
-        public var id       = ""
-        public var hash     = ""
-        public var envelope = ""
-        
-        init(_ account: Account) {
-            //
-        }
-        
-        func addOperation(_ operation: Operation) {
-            //
-        }
-        
-        func addMemo(_ text: String) {
-            //
-        }
-        
-        func build() {
-            //
-        }
-        
-        func sign(_ account: Account) {
-            //
-        }
-        
-        func submit() {
-            //
-        }
-    }
-*/
     open class TransactionsResponse {
         public var server    : Horizon?
         public var error     : ErrorMessage?
