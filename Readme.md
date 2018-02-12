@@ -1,6 +1,6 @@
 # StellarSDK
 
-Stellar SDK is a Swift Framework to build Stellar Apps for the mac platform. It provides a bridge between your app and Stellar Horizon Server to request information and submit transactions to the Stellar Network.
+Stellar SDK is a Swift Framework for building Stellar Apps for the mac platform. It provides a bridge between your app and Stellar Horizon Servers to request information and submit transactions to the Stellar Network.
 
 
 ## Quick Start
@@ -71,13 +71,13 @@ Transactions that can be submitted to the network affecting the blockchain and l
 
 ````Swift
 account.createAccount(address, amount, memo) { result in ... }  // Creates new account and funds it
+account.payment(address, amount, asset, memo) { result in ... }
 account.setOptions(options) { result in ... }
 account.setAuthorization(flags) { result in ... }
 account.setInflation(address, memo) { result in ... }
 account.allowTrust(address, asset, authorize) { result in ... }
 account.changeTrust(asset, limit) { result in ... }
 account.merge(address) { result in ... }
-account.payment(address, amount, asset, memo) { result in ... }
 account.setHomeDomain(url) { result in ... }
 account.setData(key, value) { result in ... }
 ````
@@ -153,12 +153,12 @@ server.loadAccount(address) { account in
 
 ## Basic Apps
 
-The most basic app is an address generator and it's available here [StellarAddress](). Download it and play with it so you can taste the power of StellarSDK and learn how to include it in your project.
+The most basic app is an address generator and it is available here [StellarAddress](). Download it and play with it so you can taste the power of StellarSDK and learn how to include it in your project.
 
 
 ## User Guide
 
-Refer to the [StellarSDK User Guide](Docs/UserGuide.md) for more in-depth technical specifications.
+Refer to the [StellarSDK User Guide](./Docs/UserGuide.md) for more in-depth technical specifications.
 
 
 ## Unit tests
@@ -172,10 +172,10 @@ StellarSDK is an ongoing project and will continue to add more functionality to 
 
 ### TODO List:
 
-[x] StellarSDK for macOS
-[ ] StellarSDK for iOS
-[ ] StellarSDK for iWatch
-[ ] StellarSDK for tvOS
+- [x] StellarSDK for macOS
+- [ ] StellarSDK for iOS
+- [ ] StellarSDK for iWatch
+- [ ] StellarSDK for tvOS
 
 
 ## External dependencies
