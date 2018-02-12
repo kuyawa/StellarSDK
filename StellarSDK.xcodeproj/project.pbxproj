@@ -73,7 +73,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F408E77B201F633700985966 /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
+		F408E77B201F633700985966 /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; wrapsLines = 1; };
 		F408E77E201FBF3100985966 /* Effects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Effects.swift; sourceTree = "<group>"; };
 		F408E780201FC9FF00985966 /* Offers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Offers.swift; sourceTree = "<group>"; };
 		F408E782201FD79900985966 /* UserGuide.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = UserGuide.md; path = docs/UserGuide.md; sourceTree = "<group>"; };

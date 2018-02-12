@@ -1,10 +1,10 @@
 # StellarSDK
 
-Stellar SDK is a Swift Framework for building Stellar Apps for the mac platform. It provides a bridge between your app and Stellar Horizon Servers to request information and submit transactions to the Stellar Network.
+**Stellar SDK** is a Swift Framework for building Stellar Apps for the mac platform. It provides a bridge between your app and Stellar Horizon Servers to request information and submit transactions to the Stellar Network.
 
 ### Platform
 
-StellarSDK is built using Xcode 8.2 and Swift 3.2 targeting macOS 10.10 and above, next version will be ported to Swift 4 in Xcode 9.
+**StellarSDK** is built using Xcode 8.2 and Swift 3.2 targeting macOS 10.10 and above, next version will be ported to Swift 4 in Xcode 9.
 
 ## Quick Start
 
@@ -25,7 +25,7 @@ account.getInfo { response in
 
 ````
 
-\* StellarSDK uses [CryptoSwift](https://github.com/krzyzanowskim/CryptoSwift) by Marcin Krzyzanowski so you should clone that library too and include it in your app. Will be embedded in the StellarSDK framework in the future.
+\* **StellarSDK** uses [CryptoSwift](https://github.com/krzyzanowskim/CryptoSwift) by Marcin Krzyzanowski so you should clone that library too and include it in your app. Will be embedded in the StellarSDK framework in the future.
 
 
 ## Account Class
@@ -156,7 +156,7 @@ server.loadAccount(address) { account in
 
 ## Basic Apps
 
-The most basic app is an address generator and it is available here [StellarAddress](https://github.com/kuyawa/StellarAddress). Download it and play with it so you can taste the power of StellarSDK and learn how to include it in your project.
+The most basic app is an address generator and it is available here [StellarAddress](https://github.com/kuyawa/StellarAddress). Download it and play with it so you can taste the power of **StellarSDK** and learn how to include it in your project.
 
 
 ## User Guide
@@ -166,12 +166,12 @@ Refer to the [StellarSDK User Guide](./docs/UserGuide.md) for more in-depth tech
 
 ## Unit tests
 
-StellarSDK comes with a full suit of tests that can be run to validate its functionality.
+**StellarSDK** comes with a full suit of tests that can be run to validate its functionality.
 
 
 ## Ongoing development
 
-StellarSDK is an ongoing project and will continue to add more functionality to bring it to par with other SDKs from different languages. Come back soon for more updates.
+**StellarSDK** is an ongoing project and will continue to add more functionality to bring it to par with other SDKs from different languages. Come back soon for more updates.
 
 ### TODO List:
 
@@ -193,10 +193,10 @@ StellarSDK can see further because it's built on the shoulders of giants, includ
 - CryptoSwift by Marcin Krzyzanowski
 - XDR.swift by Kin Foundation
 - ED25519.swift by Katalysis / Alex Tran Qui
-- ChecksumXmodem.swift by ?
 - Base32.swift by 野村 憲男 Norio Nomura
+- ChecksumXmodem.swift by ?
 
 
 ## License
 
-StellarSDK will use the most permissive license yet to be defined.
+**StellarSDK** will use the most permissive license yet to be defined. Feel free to use it in your projects, copy, modify, or do whatever you want with it, no retributions required. Software is meant to be shared.
