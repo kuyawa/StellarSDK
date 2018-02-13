@@ -35,7 +35,9 @@ import Foundation
 
 // Handy extensions
 
-extension Data { var base64: String { return self.base64EncodedString() } }
+extension Data {
+    var base64: String { return self.base64EncodedString() }
+}
 
 extension Data {
     var pad4: Data {

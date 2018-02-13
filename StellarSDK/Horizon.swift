@@ -57,6 +57,7 @@ extension StellarSDK {
         }
         
         
+        
         // HTTP Request
         
         private class Request {
@@ -367,10 +368,6 @@ extension StellarSDK {
             }
         }
         
-        //func submitTransaction(_ tranx: StellarSDK.Transaction, _ callback: @escaping Callback) {
-        //  TODO:
-        //}
-
         
         
         //---- API Methods
@@ -506,7 +503,6 @@ extension StellarSDK {
         }
         
         public func submit(_ txHash: String, _ callback: @escaping Callback) {
-            //let data = ["tx": txHash]               // TxEnv.xdr.base64
             let url = serverUrl + "/transactions/"
             Request.post(url, txHash, callback)       // timeout=20
         }

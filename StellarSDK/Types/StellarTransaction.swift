@@ -193,7 +193,7 @@ struct AllowTrustOp: XDREncodableStruct {
  */
 struct ManageDataOp: XDREncodableStruct {
     var dataName  : String
-    var dataValue : Data?   // set to null to clear
+    var dataValue : String?   // set to null to clear
 }
 
 

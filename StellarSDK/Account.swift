@@ -198,19 +198,32 @@ extension StellarSDK {
             }
         }
         
-        public func getAllData(callback: @escaping Callback) {
-            // TODO: getInfo, get sequence
+        public func getAllData(callback: @escaping (_ data: [String: String]) -> Void) {
+            let server = StellarSDK.Horizon(self.network)
+            server.loadAccount(publicKey) { account in
+                var dixy = account.data
+                for (key, val) in dixy {
+                    let data  = Data(base64Encoded: val) ?? Data()
+                    let text  = String(data: data, encoding: .utf8) ?? ""
+                    dixy[key] = text
+                }
+                callback(dixy)
+            }
         }
         
-        public func getSequence(callback: @escaping Callback) {
-            // TODO: getInfo, get data field
+        public func getSequence(callback: @escaping (_ seq: String?) -> Void) {
+            let server = StellarSDK.Horizon(self.network)
+            server.loadAccount(publicKey) { account in
+                callback(account.sequence)
+            }
         }
         
-        // Self fund if testnet, use friendbot
-        public func friendbot(callback: @escaping Callback) {
+        // Self fund if testnet
+        public func friendbot(callback: @escaping (_ ok: Bool) -> Void) {
             let server = StellarSDK.Horizon.test
             server.friendbot(address: publicKey) { response in
-                callback(response) // TODO: Return true or false
+                let ok = !(response.error || response.status == 400)
+                callback(ok)
             }
         }
         
@@ -555,7 +568,7 @@ extension StellarSDK {
             setOptions(options, callback: callback)
         }
         
-        public func setData(_ key: String, _ value: String, callback: @escaping Callback) {
+        public func setData(_ key: String, _ value: String?, callback: @escaping Callback) {
             guard self.keyPair != nil else {
                 callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't set options"))
                 return
@@ -569,8 +582,10 @@ extension StellarSDK {
             let source = KeyPair.getPublicKey(self.publicKey)!
             let secret = KeyPair.getSignerKey(self.secretKey)!
             
-            // FIX: Error encoding string, pad with zeroes multiples of four
-            let inner = ManageDataOp(dataName: key, dataValue: value.dataUTF8?.pad4)
+            var text:String? = value
+            if let value = value, value.isEmpty { text = nil } // If empty, make null to remove
+            
+            let inner = ManageDataOp(dataName: key, dataValue: text)
             let body  = OperationBody.ManageData(inner)
             let op    = Operation(sourceAccount: source, body: body)
             
