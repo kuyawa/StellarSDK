@@ -6,7 +6,7 @@
 //  Copyright © 2018 Armonia. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for StellarSDK.
 FOUNDATION_EXPORT double StellarSDKVersionNumber;

@@ -17,6 +17,107 @@
 		F42D80B22029DBB100C18C4D /* UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D80B12029DBB100C18C4D /* UtilsTests.swift */; };
 		F4593FA420266F60004E7C7C /* StellarTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4593FA320266F60004E7C7C /* StellarTypeTests.swift */; };
 		F4692378201E504200F948E9 /* Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4692377201E504200F948E9 /* Payments.swift */; };
+		F46E790520348879003A6474 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F46E79022034886F003A6474 /* CryptoSwift.framework */; };
+		F479BECC2034E3D700C61595 /* StellarSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = F41A86752017A448008E73ED /* StellarSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F479BECD2034E3D800C61595 /* StellarSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = F41A86752017A448008E73ED /* StellarSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F479BECE2034E3D800C61595 /* StellarSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = F41A86752017A448008E73ED /* StellarSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F479BECF2034E3DA00C61595 /* StellarSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = F41A86752017A448008E73ED /* StellarSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F479BED02034E41900C61595 /* StellarSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8B20198CB60024797E /* StellarSDK.swift */; };
+		F479BED12034E41900C61595 /* StellarSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8B20198CB60024797E /* StellarSDK.swift */; };
+		F479BED22034E41A00C61595 /* StellarSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8B20198CB60024797E /* StellarSDK.swift */; };
+		F479BED32034E41B00C61595 /* StellarSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8B20198CB60024797E /* StellarSDK.swift */; };
+		F479BED42034E42D00C61595 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B93201992E20024797E /* Account.swift */; };
+		F479BED52034E42D00C61595 /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = F408E77E201FBF3100985966 /* Effects.swift */; };
+		F479BED62034E42D00C61595 /* Horizon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8720198C480024797E /* Horizon.swift */; };
+		F479BED72034E42D00C61595 /* KeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41A86C92017EA54008E73ED /* KeyPair.swift */; };
+		F479BED82034E42D00C61595 /* Offers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F408E780201FC9FF00985966 /* Offers.swift */; };
+		F479BED92034E42D00C61595 /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8D20198E5C0024797E /* Operations.swift */; };
+		F479BEDA2034E42D00C61595 /* Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4692377201E504200F948E9 /* Payments.swift */; };
+		F479BEDB2034E42D00C61595 /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B91201992960024797E /* Transactions.swift */; };
+		F479BEDC2034E42D00C61595 /* TransactionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4248D652027DDF8002C71DE /* TransactionBuilder.swift */; };
+		F479BEDD2034E42D00C61595 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = F482D925201D221F00ED84E1 /* Types.swift */; };
+		F479BEDE2034E42E00C61595 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B93201992E20024797E /* Account.swift */; };
+		F479BEDF2034E42E00C61595 /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = F408E77E201FBF3100985966 /* Effects.swift */; };
+		F479BEE02034E42E00C61595 /* Horizon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8720198C480024797E /* Horizon.swift */; };
+		F479BEE12034E42E00C61595 /* KeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41A86C92017EA54008E73ED /* KeyPair.swift */; };
+		F479BEE22034E42E00C61595 /* Offers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F408E780201FC9FF00985966 /* Offers.swift */; };
+		F479BEE32034E42E00C61595 /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8D20198E5C0024797E /* Operations.swift */; };
+		F479BEE42034E42E00C61595 /* Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4692377201E504200F948E9 /* Payments.swift */; };
+		F479BEE52034E42E00C61595 /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B91201992960024797E /* Transactions.swift */; };
+		F479BEE62034E42E00C61595 /* TransactionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4248D652027DDF8002C71DE /* TransactionBuilder.swift */; };
+		F479BEE72034E42E00C61595 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = F482D925201D221F00ED84E1 /* Types.swift */; };
+		F479BEE82034E42E00C61595 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B93201992E20024797E /* Account.swift */; };
+		F479BEE92034E42E00C61595 /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = F408E77E201FBF3100985966 /* Effects.swift */; };
+		F479BEEA2034E42E00C61595 /* Horizon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8720198C480024797E /* Horizon.swift */; };
+		F479BEEB2034E42E00C61595 /* KeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41A86C92017EA54008E73ED /* KeyPair.swift */; };
+		F479BEEC2034E42E00C61595 /* Offers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F408E780201FC9FF00985966 /* Offers.swift */; };
+		F479BEED2034E42E00C61595 /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8D20198E5C0024797E /* Operations.swift */; };
+		F479BEEE2034E42E00C61595 /* Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4692377201E504200F948E9 /* Payments.swift */; };
+		F479BEEF2034E42E00C61595 /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B91201992960024797E /* Transactions.swift */; };
+		F479BEF02034E42E00C61595 /* TransactionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4248D652027DDF8002C71DE /* TransactionBuilder.swift */; };
+		F479BEF12034E42E00C61595 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = F482D925201D221F00ED84E1 /* Types.swift */; };
+		F479BEF22034E42F00C61595 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B93201992E20024797E /* Account.swift */; };
+		F479BEF32034E42F00C61595 /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = F408E77E201FBF3100985966 /* Effects.swift */; };
+		F479BEF42034E42F00C61595 /* Horizon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8720198C480024797E /* Horizon.swift */; };
+		F479BEF52034E42F00C61595 /* KeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41A86C92017EA54008E73ED /* KeyPair.swift */; };
+		F479BEF62034E42F00C61595 /* Offers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F408E780201FC9FF00985966 /* Offers.swift */; };
+		F479BEF72034E42F00C61595 /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B8D20198E5C0024797E /* Operations.swift */; };
+		F479BEF82034E42F00C61595 /* Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4692377201E504200F948E9 /* Payments.swift */; };
+		F479BEF92034E42F00C61595 /* Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D03B91201992960024797E /* Transactions.swift */; };
+		F479BEFA2034E42F00C61595 /* TransactionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4248D652027DDF8002C71DE /* TransactionBuilder.swift */; };
+		F479BEFB2034E42F00C61595 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = F482D925201D221F00ED84E1 /* Types.swift */; };
+		F479BEFC2034E44100C61595 /* Base32.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E7202D2E2300932A60 /* Base32.swift */; };
+		F479BEFD2034E44100C61595 /* ChecksumXmodem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E5202D2DBE00932A60 /* ChecksumXmodem.swift */; };
+		F479BEFE2034E44100C61595 /* ED25519.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E9202D2EA100932A60 /* ED25519.swift */; };
+		F479BEFF2034E44100C61595 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066EB202D323B00932A60 /* Utils.swift */; };
+		F479BF002034E44100C61595 /* XDR.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066EC202D323B00932A60 /* XDR.swift */; };
+		F479BF012034E44100C61595 /* Base32.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E7202D2E2300932A60 /* Base32.swift */; };
+		F479BF022034E44100C61595 /* ChecksumXmodem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E5202D2DBE00932A60 /* ChecksumXmodem.swift */; };
+		F479BF032034E44100C61595 /* ED25519.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E9202D2EA100932A60 /* ED25519.swift */; };
+		F479BF042034E44100C61595 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066EB202D323B00932A60 /* Utils.swift */; };
+		F479BF052034E44100C61595 /* XDR.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066EC202D323B00932A60 /* XDR.swift */; };
+		F479BF062034E44200C61595 /* Base32.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E7202D2E2300932A60 /* Base32.swift */; };
+		F479BF072034E44200C61595 /* ChecksumXmodem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E5202D2DBE00932A60 /* ChecksumXmodem.swift */; };
+		F479BF082034E44200C61595 /* ED25519.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E9202D2EA100932A60 /* ED25519.swift */; };
+		F479BF092034E44200C61595 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066EB202D323B00932A60 /* Utils.swift */; };
+		F479BF0A2034E44200C61595 /* XDR.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066EC202D323B00932A60 /* XDR.swift */; };
+		F479BF0B2034E44300C61595 /* Base32.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E7202D2E2300932A60 /* Base32.swift */; };
+		F479BF0C2034E44300C61595 /* ChecksumXmodem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E5202D2DBE00932A60 /* ChecksumXmodem.swift */; };
+		F479BF0D2034E44300C61595 /* ED25519.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E9202D2EA100932A60 /* ED25519.swift */; };
+		F479BF0E2034E44300C61595 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066EB202D323B00932A60 /* Utils.swift */; };
+		F479BF0F2034E44300C61595 /* XDR.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066EC202D323B00932A60 /* XDR.swift */; };
+		F479BF102034E44A00C61595 /* StellarLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B72026411E00F11E35 /* StellarLedger.swift */; };
+		F479BF112034E44A00C61595 /* StellarLedgerEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3AD2025F8AB00F11E35 /* StellarLedgerEntries.swift */; };
+		F479BF122034E44A00C61595 /* StellarOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B520263A3500F11E35 /* StellarOverlay.swift */; };
+		F479BF132034E44A00C61595 /* StellarSCP.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B3202631A700F11E35 /* StellarSCP.swift */; };
+		F479BF142034E44A00C61595 /* StellarTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B12026110700F11E35 /* StellarTransaction.swift */; };
+		F479BF152034E44A00C61595 /* StellarTransactionResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B92026456400F11E35 /* StellarTransactionResults.swift */; };
+		F479BF162034E44A00C61595 /* StellarTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3AF2025FCCC00F11E35 /* StellarTypes.swift */; };
+		F479BF172034E44B00C61595 /* StellarLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B72026411E00F11E35 /* StellarLedger.swift */; };
+		F479BF182034E44B00C61595 /* StellarLedgerEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3AD2025F8AB00F11E35 /* StellarLedgerEntries.swift */; };
+		F479BF192034E44B00C61595 /* StellarOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B520263A3500F11E35 /* StellarOverlay.swift */; };
+		F479BF1A2034E44B00C61595 /* StellarSCP.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B3202631A700F11E35 /* StellarSCP.swift */; };
+		F479BF1B2034E44B00C61595 /* StellarTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B12026110700F11E35 /* StellarTransaction.swift */; };
+		F479BF1C2034E44B00C61595 /* StellarTransactionResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B92026456400F11E35 /* StellarTransactionResults.swift */; };
+		F479BF1D2034E44B00C61595 /* StellarTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3AF2025FCCC00F11E35 /* StellarTypes.swift */; };
+		F479BF1E2034E44B00C61595 /* StellarLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B72026411E00F11E35 /* StellarLedger.swift */; };
+		F479BF1F2034E44B00C61595 /* StellarLedgerEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3AD2025F8AB00F11E35 /* StellarLedgerEntries.swift */; };
+		F479BF202034E44B00C61595 /* StellarOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B520263A3500F11E35 /* StellarOverlay.swift */; };
+		F479BF212034E44B00C61595 /* StellarSCP.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B3202631A700F11E35 /* StellarSCP.swift */; };
+		F479BF222034E44B00C61595 /* StellarTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B12026110700F11E35 /* StellarTransaction.swift */; };
+		F479BF232034E44B00C61595 /* StellarTransactionResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B92026456400F11E35 /* StellarTransactionResults.swift */; };
+		F479BF242034E44B00C61595 /* StellarTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3AF2025FCCC00F11E35 /* StellarTypes.swift */; };
+		F479BF252034E44C00C61595 /* StellarLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B72026411E00F11E35 /* StellarLedger.swift */; };
+		F479BF262034E44C00C61595 /* StellarLedgerEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3AD2025F8AB00F11E35 /* StellarLedgerEntries.swift */; };
+		F479BF272034E44C00C61595 /* StellarOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B520263A3500F11E35 /* StellarOverlay.swift */; };
+		F479BF282034E44C00C61595 /* StellarSCP.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B3202631A700F11E35 /* StellarSCP.swift */; };
+		F479BF292034E44C00C61595 /* StellarTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B12026110700F11E35 /* StellarTransaction.swift */; };
+		F479BF2A2034E44C00C61595 /* StellarTransactionResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3B92026456400F11E35 /* StellarTransactionResults.swift */; };
+		F479BF2B2034E44C00C61595 /* StellarTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3AF2025FCCC00F11E35 /* StellarTypes.swift */; };
+		F479BF2C2034E4A000C61595 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F46E79022034886F003A6474 /* CryptoSwift.framework */; };
+		F479BF2D2034E4A600C61595 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F46E79022034886F003A6474 /* CryptoSwift.framework */; };
+		F479BF2E2034E4AC00C61595 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F46E79022034886F003A6474 /* CryptoSwift.framework */; };
+		F479BF2F2034E4B300C61595 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F46E79022034886F003A6474 /* CryptoSwift.framework */; };
 		F482D926201D221F00ED84E1 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = F482D925201D221F00ED84E1 /* Types.swift */; };
 		F48EF3AE2025F8AB00F11E35 /* StellarLedgerEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3AD2025F8AB00F11E35 /* StellarLedgerEntries.swift */; };
 		F48EF3B02025FCCC00F11E35 /* StellarTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EF3AF2025FCCC00F11E35 /* StellarTypes.swift */; };
@@ -38,7 +139,6 @@
 		F4D066EA202D2EA100932A60 /* ED25519.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066E9202D2EA100932A60 /* ED25519.swift */; };
 		F4D066ED202D323B00932A60 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066EB202D323B00932A60 /* Utils.swift */; };
 		F4D066EE202D323B00932A60 /* XDR.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D066EC202D323B00932A60 /* XDR.swift */; };
-		F4F99A8D2031263A004E4020 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4AB029A201E08F200C669A4 /* CryptoSwift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,23 +149,23 @@
 			remoteGlobalIDString = F41A86712017A448008E73ED;
 			remoteInfo = StellarSDK;
 		};
-		F4AB0299201E08F200C669A4 /* PBXContainerItemProxy */ = {
+		F46E79012034886F003A6474 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = F4AB0294201E08F200C669A4 /* CryptoSwift.xcodeproj */;
+			containerPortal = F46E78FC2034886F003A6474 /* CryptoSwift.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 754BE45519693E190098E6F3;
 			remoteInfo = CryptoSwift;
 		};
-		F4AB029B201E08F200C669A4 /* PBXContainerItemProxy */ = {
+		F46E79032034886F003A6474 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = F4AB0294201E08F200C669A4 /* CryptoSwift.xcodeproj */;
+			containerPortal = F46E78FC2034886F003A6474 /* CryptoSwift.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 754BE46019693E190098E6F3;
 			remoteInfo = Tests;
 		};
-		F4F99ABC20313488004E4020 /* PBXContainerItemProxy */ = {
+		F46E790620348936003A6474 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = F4AB0294201E08F200C669A4 /* CryptoSwift.xcodeproj */;
+			containerPortal = F46E78FC2034886F003A6474 /* CryptoSwift.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 754BE45419693E190098E6F3;
 			remoteInfo = CryptoSwift;
@@ -89,6 +189,16 @@
 		F42D80B12029DBB100C18C4D /* UtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilsTests.swift; sourceTree = "<group>"; };
 		F4593FA320266F60004E7C7C /* StellarTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StellarTypeTests.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		F4692377201E504200F948E9 /* Payments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Payments.swift; sourceTree = "<group>"; };
+		F46E78FC2034886F003A6474 /* CryptoSwift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CryptoSwift.xcodeproj; path = ../../CryptoSwift3/CryptoSwift.xcodeproj; sourceTree = "<group>"; };
+		F46E790D2034898C003A6474 /* StellarSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StellarSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F479BEA22034DF2200C61595 /* StellarSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StellarSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F479BEAF2034DF3700C61595 /* StellarSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StellarSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F479BEBC2034DFB200C61595 /* StellarSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StellarSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F479BEC42034E1C100C61595 /* Info_ios.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info_ios.plist; sourceTree = "<group>"; };
+		F479BEC52034E1C100C61595 /* Info_macos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info_macos.plist; sourceTree = "<group>"; };
+		F479BEC62034E1C100C61595 /* Info_tvos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info_tvos.plist; sourceTree = "<group>"; };
+		F479BEC72034E1C100C61595 /* Info_watchos.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info_watchos.plist; sourceTree = "<group>"; };
+		F479BF302034E51700C61595 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		F482D925201D221F00ED84E1 /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		F48EF3AD2025F8AB00F11E35 /* StellarLedgerEntries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StellarLedgerEntries.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		F48EF3AF2025FCCC00F11E35 /* StellarTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StellarTypes.swift; sourceTree = "<group>"; wrapsLines = 0; };
@@ -98,7 +208,6 @@
 		F48EF3B72026411E00F11E35 /* StellarLedger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StellarLedger.swift; sourceTree = "<group>"; };
 		F48EF3B92026456400F11E35 /* StellarTransactionResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StellarTransactionResults.swift; sourceTree = "<group>"; };
 		F49175592025579E0060304A /* XDRTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XDRTests.swift; sourceTree = "<group>"; wrapsLines = 0; };
-		F4AB0294201E08F200C669A4 /* CryptoSwift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CryptoSwift.xcodeproj; path = ../../CryptoSwift3/CryptoSwift.xcodeproj; sourceTree = "<group>"; };
 		F4AB029E201E1A3D00C669A4 /* AccountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		F4D03B8720198C480024797E /* Horizon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Horizon.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		F4D03B8B20198CB60024797E /* StellarSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StellarSDK.swift; sourceTree = "<group>"; };
@@ -118,7 +227,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4F99A8D2031263A004E4020 /* CryptoSwift.framework in Frameworks */,
+				F46E790520348879003A6474 /* CryptoSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +236,38 @@
 			buildActionMask = 2147483647;
 			files = (
 				F41A867C2017A448008E73ED /* StellarSDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F46E79092034898C003A6474 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F479BF2C2034E4A000C61595 /* CryptoSwift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F479BE9E2034DF2200C61595 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F479BF2F2034E4B300C61595 /* CryptoSwift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F479BEAB2034DF3700C61595 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F479BF2E2034E4AC00C61595 /* CryptoSwift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F479BEB82034DFB200C61595 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F479BF2D2034E4A600C61595 /* CryptoSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +280,7 @@
 				F41A86C12017B905008E73ED /* ToDo.txt */,
 				F408E77B201F633700985966 /* Readme.md */,
 				F408E782201FD79900985966 /* UserGuide.md */,
+				F479BF302034E51700C61595 /* Package.swift */,
 				F41A86742017A448008E73ED /* StellarSDK */,
 				F41A867F2017A449008E73ED /* StellarSDKTests */,
 				F41A869C2017A77E008E73ED /* Frameworks */,
@@ -151,6 +293,10 @@
 			children = (
 				F41A86722017A448008E73ED /* StellarSDK.framework */,
 				F41A867B2017A448008E73ED /* StellarSDKTests.xctest */,
+				F46E790D2034898C003A6474 /* StellarSDK.framework */,
+				F479BEA22034DF2200C61595 /* StellarSDK.framework */,
+				F479BEAF2034DF3700C61595 /* StellarSDK.framework */,
+				F479BEBC2034DFB200C61595 /* StellarSDK.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -158,6 +304,11 @@
 		F41A86742017A448008E73ED /* StellarSDK */ = {
 			isa = PBXGroup;
 			children = (
+				F41A86762017A448008E73ED /* Info.plist */,
+				F479BEC42034E1C100C61595 /* Info_ios.plist */,
+				F479BEC52034E1C100C61595 /* Info_macos.plist */,
+				F479BEC62034E1C100C61595 /* Info_tvos.plist */,
+				F479BEC72034E1C100C61595 /* Info_watchos.plist */,
 				F48EF3AC2025F8AB00F11E35 /* Types */,
 				F4D066E2202D2D4A00932A60 /* Utils */,
 				F41A86752017A448008E73ED /* StellarSDK.h */,
@@ -172,7 +323,6 @@
 				F4D03B91201992960024797E /* Transactions.swift */,
 				F4248D652027DDF8002C71DE /* TransactionBuilder.swift */,
 				F482D925201D221F00ED84E1 /* Types.swift */,
-				F41A86762017A448008E73ED /* Info.plist */,
 			);
 			path = StellarSDK;
 			sourceTree = "<group>";
@@ -194,9 +344,18 @@
 		F41A869C2017A77E008E73ED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F4AB0294201E08F200C669A4 /* CryptoSwift.xcodeproj */,
+				F46E78FC2034886F003A6474 /* CryptoSwift.xcodeproj */,
 			);
 			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		F46E78FD2034886F003A6474 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F46E79022034886F003A6474 /* CryptoSwift.framework */,
+				F46E79042034886F003A6474 /* Tests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		F48EF3AC2025F8AB00F11E35 /* Types */ = {
@@ -211,15 +370,6 @@
 				F48EF3AF2025FCCC00F11E35 /* StellarTypes.swift */,
 			);
 			path = Types;
-			sourceTree = "<group>";
-		};
-		F4AB0295201E08F200C669A4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F4AB029A201E08F200C669A4 /* CryptoSwift.framework */,
-				F4AB029C201E08F200C669A4 /* Tests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		F4D066E2202D2D4A00932A60 /* Utils */ = {
@@ -245,6 +395,38 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F46E790A2034898C003A6474 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F479BECC2034E3D700C61595 /* StellarSDK.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F479BE9F2034DF2200C61595 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F479BECF2034E3DA00C61595 /* StellarSDK.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F479BEAC2034DF3700C61595 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F479BECE2034E3D800C61595 /* StellarSDK.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F479BEB92034DFB200C61595 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F479BECD2034E3D800C61595 /* StellarSDK.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -260,7 +442,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				F4F99ABD20313488004E4020 /* PBXTargetDependency */,
+				F46E790720348936003A6474 /* PBXTargetDependency */,
 			);
 			name = StellarSDK;
 			productName = StellarSDK;
@@ -285,6 +467,78 @@
 			productReference = F41A867B2017A448008E73ED /* StellarSDKTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		F46E790C2034898C003A6474 /* StellarSDKios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F46E79122034898C003A6474 /* Build configuration list for PBXNativeTarget "StellarSDKios" */;
+			buildPhases = (
+				F46E79082034898C003A6474 /* Sources */,
+				F46E79092034898C003A6474 /* Frameworks */,
+				F46E790A2034898C003A6474 /* Headers */,
+				F46E790B2034898C003A6474 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StellarSDKios;
+			productName = StellarSDKios;
+			productReference = F46E790D2034898C003A6474 /* StellarSDK.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		F479BEA12034DF2200C61595 /* StellarSDKwatchos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F479BEA72034DF2200C61595 /* Build configuration list for PBXNativeTarget "StellarSDKwatchos" */;
+			buildPhases = (
+				F479BE9D2034DF2200C61595 /* Sources */,
+				F479BE9E2034DF2200C61595 /* Frameworks */,
+				F479BE9F2034DF2200C61595 /* Headers */,
+				F479BEA02034DF2200C61595 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StellarSDKwatchos;
+			productName = StellarSDKwatchos;
+			productReference = F479BEA22034DF2200C61595 /* StellarSDK.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		F479BEAE2034DF3700C61595 /* StellarSDKtvos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F479BEB42034DF3700C61595 /* Build configuration list for PBXNativeTarget "StellarSDKtvos" */;
+			buildPhases = (
+				F479BEAA2034DF3700C61595 /* Sources */,
+				F479BEAB2034DF3700C61595 /* Frameworks */,
+				F479BEAC2034DF3700C61595 /* Headers */,
+				F479BEAD2034DF3700C61595 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StellarSDKtvos;
+			productName = StellarSDKtvos;
+			productReference = F479BEAF2034DF3700C61595 /* StellarSDK.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		F479BEBB2034DFB200C61595 /* StellarSDKmacos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F479BEC12034DFB200C61595 /* Build configuration list for PBXNativeTarget "StellarSDKmacos" */;
+			buildPhases = (
+				F479BEB72034DFB200C61595 /* Sources */,
+				F479BEB82034DFB200C61595 /* Frameworks */,
+				F479BEB92034DFB200C61595 /* Headers */,
+				F479BEBA2034DFB200C61595 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StellarSDKmacos;
+			productName = StellarSDKmacos;
+			productReference = F479BEBC2034DFB200C61595 /* StellarSDK.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -306,6 +560,26 @@
 						DevelopmentTeam = W7PMV9XFGM;
 						ProvisioningStyle = Automatic;
 					};
+					F46E790C2034898C003A6474 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = W7PMV9XFGM;
+						ProvisioningStyle = Automatic;
+					};
+					F479BEA12034DF2200C61595 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = W7PMV9XFGM;
+						ProvisioningStyle = Automatic;
+					};
+					F479BEAE2034DF3700C61595 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = W7PMV9XFGM;
+						ProvisioningStyle = Automatic;
+					};
+					F479BEBB2034DFB200C61595 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = W7PMV9XFGM;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = F41A866C2017A448008E73ED /* Build configuration list for PBXProject "StellarSDK" */;
@@ -320,31 +594,35 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = F4AB0295201E08F200C669A4 /* Products */;
-					ProjectRef = F4AB0294201E08F200C669A4 /* CryptoSwift.xcodeproj */;
+					ProductGroup = F46E78FD2034886F003A6474 /* Products */;
+					ProjectRef = F46E78FC2034886F003A6474 /* CryptoSwift.xcodeproj */;
 				},
 			);
 			projectRoot = "";
 			targets = (
 				F41A86712017A448008E73ED /* StellarSDK */,
+				F46E790C2034898C003A6474 /* StellarSDKios */,
+				F479BEBB2034DFB200C61595 /* StellarSDKmacos */,
+				F479BEAE2034DF3700C61595 /* StellarSDKtvos */,
+				F479BEA12034DF2200C61595 /* StellarSDKwatchos */,
 				F41A867A2017A448008E73ED /* StellarSDKTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		F4AB029A201E08F200C669A4 /* CryptoSwift.framework */ = {
+		F46E79022034886F003A6474 /* CryptoSwift.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = CryptoSwift.framework;
-			remoteRef = F4AB0299201E08F200C669A4 /* PBXContainerItemProxy */;
+			remoteRef = F46E79012034886F003A6474 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		F4AB029C201E08F200C669A4 /* Tests.xctest */ = {
+		F46E79042034886F003A6474 /* Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = Tests.xctest;
-			remoteRef = F4AB029B201E08F200C669A4 /* PBXContainerItemProxy */;
+			remoteRef = F46E79032034886F003A6474 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -358,6 +636,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		F41A86792017A448008E73ED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F46E790B2034898C003A6474 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F479BEA02034DF2200C61595 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F479BEAD2034DF3700C61595 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F479BEBA2034DFB200C61595 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -410,6 +716,126 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F46E79082034898C003A6474 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F479BED82034E42D00C61595 /* Offers.swift in Sources */,
+				F479BED02034E41900C61595 /* StellarSDK.swift in Sources */,
+				F479BF002034E44100C61595 /* XDR.swift in Sources */,
+				F479BF142034E44A00C61595 /* StellarTransaction.swift in Sources */,
+				F479BEDA2034E42D00C61595 /* Payments.swift in Sources */,
+				F479BEFE2034E44100C61595 /* ED25519.swift in Sources */,
+				F479BF162034E44A00C61595 /* StellarTypes.swift in Sources */,
+				F479BF122034E44A00C61595 /* StellarOverlay.swift in Sources */,
+				F479BED62034E42D00C61595 /* Horizon.swift in Sources */,
+				F479BEFF2034E44100C61595 /* Utils.swift in Sources */,
+				F479BF112034E44A00C61595 /* StellarLedgerEntries.swift in Sources */,
+				F479BEDC2034E42D00C61595 /* TransactionBuilder.swift in Sources */,
+				F479BED92034E42D00C61595 /* Operations.swift in Sources */,
+				F479BF102034E44A00C61595 /* StellarLedger.swift in Sources */,
+				F479BF132034E44A00C61595 /* StellarSCP.swift in Sources */,
+				F479BED72034E42D00C61595 /* KeyPair.swift in Sources */,
+				F479BEFC2034E44100C61595 /* Base32.swift in Sources */,
+				F479BEDB2034E42D00C61595 /* Transactions.swift in Sources */,
+				F479BEFD2034E44100C61595 /* ChecksumXmodem.swift in Sources */,
+				F479BED52034E42D00C61595 /* Effects.swift in Sources */,
+				F479BEDD2034E42D00C61595 /* Types.swift in Sources */,
+				F479BED42034E42D00C61595 /* Account.swift in Sources */,
+				F479BF152034E44A00C61595 /* StellarTransactionResults.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F479BE9D2034DF2200C61595 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F479BEF62034E42F00C61595 /* Offers.swift in Sources */,
+				F479BED32034E41B00C61595 /* StellarSDK.swift in Sources */,
+				F479BF0F2034E44300C61595 /* XDR.swift in Sources */,
+				F479BF292034E44C00C61595 /* StellarTransaction.swift in Sources */,
+				F479BEF82034E42F00C61595 /* Payments.swift in Sources */,
+				F479BF0D2034E44300C61595 /* ED25519.swift in Sources */,
+				F479BF2B2034E44C00C61595 /* StellarTypes.swift in Sources */,
+				F479BF272034E44C00C61595 /* StellarOverlay.swift in Sources */,
+				F479BEF42034E42F00C61595 /* Horizon.swift in Sources */,
+				F479BF0E2034E44300C61595 /* Utils.swift in Sources */,
+				F479BF262034E44C00C61595 /* StellarLedgerEntries.swift in Sources */,
+				F479BEFA2034E42F00C61595 /* TransactionBuilder.swift in Sources */,
+				F479BEF72034E42F00C61595 /* Operations.swift in Sources */,
+				F479BF252034E44C00C61595 /* StellarLedger.swift in Sources */,
+				F479BF282034E44C00C61595 /* StellarSCP.swift in Sources */,
+				F479BEF52034E42F00C61595 /* KeyPair.swift in Sources */,
+				F479BF0B2034E44300C61595 /* Base32.swift in Sources */,
+				F479BEF92034E42F00C61595 /* Transactions.swift in Sources */,
+				F479BF0C2034E44300C61595 /* ChecksumXmodem.swift in Sources */,
+				F479BEF32034E42F00C61595 /* Effects.swift in Sources */,
+				F479BEFB2034E42F00C61595 /* Types.swift in Sources */,
+				F479BEF22034E42F00C61595 /* Account.swift in Sources */,
+				F479BF2A2034E44C00C61595 /* StellarTransactionResults.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F479BEAA2034DF3700C61595 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F479BEEC2034E42E00C61595 /* Offers.swift in Sources */,
+				F479BED22034E41A00C61595 /* StellarSDK.swift in Sources */,
+				F479BF0A2034E44200C61595 /* XDR.swift in Sources */,
+				F479BF222034E44B00C61595 /* StellarTransaction.swift in Sources */,
+				F479BEEE2034E42E00C61595 /* Payments.swift in Sources */,
+				F479BF082034E44200C61595 /* ED25519.swift in Sources */,
+				F479BF242034E44B00C61595 /* StellarTypes.swift in Sources */,
+				F479BF202034E44B00C61595 /* StellarOverlay.swift in Sources */,
+				F479BEEA2034E42E00C61595 /* Horizon.swift in Sources */,
+				F479BF092034E44200C61595 /* Utils.swift in Sources */,
+				F479BF1F2034E44B00C61595 /* StellarLedgerEntries.swift in Sources */,
+				F479BEF02034E42E00C61595 /* TransactionBuilder.swift in Sources */,
+				F479BEED2034E42E00C61595 /* Operations.swift in Sources */,
+				F479BF1E2034E44B00C61595 /* StellarLedger.swift in Sources */,
+				F479BF212034E44B00C61595 /* StellarSCP.swift in Sources */,
+				F479BEEB2034E42E00C61595 /* KeyPair.swift in Sources */,
+				F479BF062034E44200C61595 /* Base32.swift in Sources */,
+				F479BEEF2034E42E00C61595 /* Transactions.swift in Sources */,
+				F479BF072034E44200C61595 /* ChecksumXmodem.swift in Sources */,
+				F479BEE92034E42E00C61595 /* Effects.swift in Sources */,
+				F479BEF12034E42E00C61595 /* Types.swift in Sources */,
+				F479BEE82034E42E00C61595 /* Account.swift in Sources */,
+				F479BF232034E44B00C61595 /* StellarTransactionResults.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F479BEB72034DFB200C61595 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F479BEE22034E42E00C61595 /* Offers.swift in Sources */,
+				F479BED12034E41900C61595 /* StellarSDK.swift in Sources */,
+				F479BF052034E44100C61595 /* XDR.swift in Sources */,
+				F479BF1B2034E44B00C61595 /* StellarTransaction.swift in Sources */,
+				F479BEE42034E42E00C61595 /* Payments.swift in Sources */,
+				F479BF032034E44100C61595 /* ED25519.swift in Sources */,
+				F479BF1D2034E44B00C61595 /* StellarTypes.swift in Sources */,
+				F479BF192034E44B00C61595 /* StellarOverlay.swift in Sources */,
+				F479BEE02034E42E00C61595 /* Horizon.swift in Sources */,
+				F479BF042034E44100C61595 /* Utils.swift in Sources */,
+				F479BF182034E44B00C61595 /* StellarLedgerEntries.swift in Sources */,
+				F479BEE62034E42E00C61595 /* TransactionBuilder.swift in Sources */,
+				F479BEE32034E42E00C61595 /* Operations.swift in Sources */,
+				F479BF172034E44B00C61595 /* StellarLedger.swift in Sources */,
+				F479BF1A2034E44B00C61595 /* StellarSCP.swift in Sources */,
+				F479BEE12034E42E00C61595 /* KeyPair.swift in Sources */,
+				F479BF012034E44100C61595 /* Base32.swift in Sources */,
+				F479BEE52034E42E00C61595 /* Transactions.swift in Sources */,
+				F479BF022034E44100C61595 /* ChecksumXmodem.swift in Sources */,
+				F479BEDF2034E42E00C61595 /* Effects.swift in Sources */,
+				F479BEE72034E42E00C61595 /* Types.swift in Sources */,
+				F479BEDE2034E42E00C61595 /* Account.swift in Sources */,
+				F479BF1C2034E44B00C61595 /* StellarTransactionResults.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -418,10 +844,10 @@
 			target = F41A86712017A448008E73ED /* StellarSDK */;
 			targetProxy = F41A867D2017A448008E73ED /* PBXContainerItemProxy */;
 		};
-		F4F99ABD20313488004E4020 /* PBXTargetDependency */ = {
+		F46E790720348936003A6474 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = CryptoSwift;
-			targetProxy = F4F99ABC20313488004E4020 /* PBXContainerItemProxy */;
+			targetProxy = F46E790620348936003A6474 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -471,6 +897,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -517,6 +944,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -537,17 +965,13 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks",
-				);
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = StellarSDK/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = Armonia.StellarSDK;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "Armonia.$(PROJECT_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -567,17 +991,13 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks",
-				);
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = StellarSDK/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = Armonia.StellarSDK;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "Armonia.$(PROJECT_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
 			};
@@ -623,6 +1043,189 @@
 			};
 			name = Release;
 		};
+		F46E79132034898C003A6474 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = W7PMV9XFGM;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = StellarSDK/Info_ios.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Armonia.$(PROJECT_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F46E79142034898C003A6474 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = W7PMV9XFGM;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = StellarSDK/Info_ios.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Armonia.$(PROJECT_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F479BEA82034DF2200C61595 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = W7PMV9XFGM;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = StellarSDK/Info_watchos.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Armonia.$(PROJECT_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.2;
+			};
+			name = Debug;
+		};
+		F479BEA92034DF2200C61595 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = W7PMV9XFGM;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = StellarSDK/Info_watchos.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Armonia.$(PROJECT_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 3.2;
+			};
+			name = Release;
+		};
+		F479BEB52034DF3700C61595 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = W7PMV9XFGM;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = StellarSDK/Info_tvos.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Armonia.$(PROJECT_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.2;
+			};
+			name = Debug;
+		};
+		F479BEB62034DF3700C61595 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = W7PMV9XFGM;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = StellarSDK/Info_tvos.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Armonia.$(PROJECT_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F479BEC22034DFB200C61595 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = W7PMV9XFGM;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = StellarSDK/Info_macos.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "Armonia.$(PROJECT_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		F479BEC32034DFB200C61595 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = W7PMV9XFGM;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = StellarSDK/Info_macos.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "Armonia.$(PROJECT_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -652,6 +1255,39 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		F46E79122034898C003A6474 /* Build configuration list for PBXNativeTarget "StellarSDKios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F46E79132034898C003A6474 /* Debug */,
+				F46E79142034898C003A6474 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F479BEA72034DF2200C61595 /* Build configuration list for PBXNativeTarget "StellarSDKwatchos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F479BEA82034DF2200C61595 /* Debug */,
+				F479BEA92034DF2200C61595 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		F479BEB42034DF3700C61595 /* Build configuration list for PBXNativeTarget "StellarSDKtvos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F479BEB52034DF3700C61595 /* Debug */,
+				F479BEB62034DF3700C61595 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		F479BEC12034DFB200C61595 /* Build configuration list for PBXNativeTarget "StellarSDKmacos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F479BEC22034DFB200C61595 /* Debug */,
+				F479BEC32034DFB200C61595 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

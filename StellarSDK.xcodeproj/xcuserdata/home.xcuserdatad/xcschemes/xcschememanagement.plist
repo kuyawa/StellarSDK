@@ -4,10 +4,30 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>StellarSDK.xcscheme</key>
+		<key>StellarSDK.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
+		</dict>
+		<key>StellarSDKios.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>StellarSDKmacos.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+		<key>StellarSDKtvos.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>StellarSDKwatchos.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -18,6 +38,26 @@
 			<true/>
 		</dict>
 		<key>F41A867A2017A448008E73ED</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F46E790C2034898C003A6474</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F479BEA12034DF2200C61595</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F479BEAE2034DF3700C61595</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F479BEBB2034DFB200C61595</key>
 		<dict>
 			<key>primary</key>
 			<true/>
