@@ -1272,6 +1272,7 @@
 				F479BEA92034DF2200C61595 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F479BEB42034DF3700C61595 /* Build configuration list for PBXNativeTarget "StellarSDKtvos" */ = {
 			isa = XCConfigurationList;
@@ -1280,6 +1281,7 @@
 				F479BEB62034DF3700C61595 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F479BEC12034DFB200C61595 /* Build configuration list for PBXNativeTarget "StellarSDKmacos" */ = {
 			isa = XCConfigurationList;
@@ -1288,6 +1290,7 @@
 				F479BEC32034DFB200C61595 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

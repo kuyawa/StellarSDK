@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F479BEAE2034DF3700C61595"
-               BuildableName = "StellarSDKtvos.framework"
+               BuildableName = "StellarSDK.framework"
                BlueprintName = "StellarSDKtvos"
                ReferencedContainer = "container:StellarSDK.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F479BEAE2034DF3700C61595"
-            BuildableName = "StellarSDKtvos.framework"
+            BuildableName = "StellarSDK.framework"
             BlueprintName = "StellarSDKtvos"
             ReferencedContainer = "container:StellarSDK.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F479BEAE2034DF3700C61595"
-            BuildableName = "StellarSDKtvos.framework"
+            BuildableName = "StellarSDK.framework"
             BlueprintName = "StellarSDKtvos"
             ReferencedContainer = "container:StellarSDK.xcodeproj">
          </BuildableReference>

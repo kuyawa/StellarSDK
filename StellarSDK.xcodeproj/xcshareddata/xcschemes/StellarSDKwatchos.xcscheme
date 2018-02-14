@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F479BEA12034DF2200C61595"
-               BuildableName = "StellarSDKwatchos.framework"
+               BuildableName = "StellarSDK.framework"
                BlueprintName = "StellarSDKwatchos"
                ReferencedContainer = "container:StellarSDK.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F479BEA12034DF2200C61595"
-            BuildableName = "StellarSDKwatchos.framework"
+            BuildableName = "StellarSDK.framework"
             BlueprintName = "StellarSDKwatchos"
             ReferencedContainer = "container:StellarSDK.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F479BEA12034DF2200C61595"
-            BuildableName = "StellarSDKwatchos.framework"
+            BuildableName = "StellarSDK.framework"
             BlueprintName = "StellarSDKwatchos"
             ReferencedContainer = "container:StellarSDK.xcodeproj">
          </BuildableReference>
