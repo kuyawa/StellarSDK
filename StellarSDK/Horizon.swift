@@ -147,6 +147,7 @@ extension StellarSDK {
             static private func handleResponse(_ data: Data?, _ response: URLResponse?, _ error: Error?) -> Response {
                 var result = Response()
                 
+                // Transport error
                 guard error == nil else {
                     print("\nAPI ERROR: ", error!.localizedDescription)
                     result.error = true
@@ -154,6 +155,7 @@ extension StellarSDK {
                     return result
                 }
                 
+                // Parse response
                 if let data = data, let text = String(data: data, encoding: .utf8) {
                     //print("\nAPI RESPONSE", text)
                     result.raw  = text
@@ -164,6 +166,12 @@ extension StellarSDK {
                     } else if let list = json as? [Any] {
                         result.list = list
                     }
+                }
+                
+                // Catch tx errors
+                if let code = result.json["status"] as? Int {
+                    if code == 500 { return errorResponse(code: 500, text: "Stellar server error. Try again later") }
+                    return errorInfo(result.raw)
                 }
                 
                 return result
@@ -179,6 +187,22 @@ extension StellarSDK {
                 
                 return result
             }
+            
+            static private func errorInfo(_ text: String) -> Response {
+                // TODO: Improve
+                guard let result = Utils.Json(text) else { return errorResponse(code: 900, text: "Unknown error") }
+                let extras = result["extras"] as! [String: Any]
+                let codes  = extras["result_codes"] as! [String: Any]
+                let ops    = codes["operations"] as! [String]
+                let txMsg  = codes["transaction"] as! String  // "Transaction failed"
+                var opMsg  = ops[0] // "Operation failed"
+                if ops.count > 1 { opMsg = "op_multiple_failures" }
+                let code   = result["status"] as? Int ?? 900
+                let message = txMsg + " - " + opMsg
+                return errorResponse(code: code, text: message)
+            }
+            
+
             
         }
         

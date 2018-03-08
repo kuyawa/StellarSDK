@@ -120,7 +120,7 @@ public enum Asset: XDREncodable, Equatable {
 }
 
 // Price in fractional representation
-struct Price: XDREncodableStruct {
+public struct Price: XDREncodableStruct {
     var n: Int32   // numerator
     var d: Int32   // denominator
 }

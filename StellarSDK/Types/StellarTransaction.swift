@@ -70,9 +70,9 @@ struct PathPaymentOp: XDREncodableStruct {
 struct ManageOfferOp: XDREncodableStruct {
     var selling : Asset
     var buying  : Asset
-    var amount  : Int64  // amount being sold. if set to 0, delete the offer
-    var price   : Price    // price of thing being sold in terms of what you are buying. 0=create a new offer, otherwise edit an existing offer
-    var offerID : UInt64
+    var amount  : Int64    // amount being sold. if set to 0, delete the offer
+    var price   : Price    // price of thing being sold in terms of what you are buying.
+    var offerID : UInt64   // 0 to create a new offer, otherwise edit an existing offer
 }
 
 /* Creates an offer that doesn't take offers of the same price

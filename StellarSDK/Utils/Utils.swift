@@ -39,6 +39,36 @@ extension Bool {
     var byte: UInt8 { return self ? 0x1 : 0x0 }
 }
 
+extension Double {
+    var decs: Int {
+        let text  = String(self)
+        let trim  = text.trimmingCharacters(in: CharacterSet(charactersIn: "0"))
+        let split = trim.components(separatedBy: ".")
+        if split.count > 0 {
+            return split[1].characters.count
+        }
+        return 0
+    }
+}
+
+
+// Simplify fractions
+func simplify(_ num: Int32, _ den: Int32) -> (Int32, Int32) {
+    var x = num
+    var y = den
+    
+    while (y != 0) {
+        let buffer = y
+        y = x % y
+        x = buffer
+    }
+    
+    let hcfVal = x
+    let newNum: Int32 = (num / hcfVal)
+    let newDen: Int32 = (den / hcfVal)
+    
+    return (newNum, newDen)
+}
 
 
 // END

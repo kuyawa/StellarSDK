@@ -42,6 +42,7 @@ Submit:
     account.changeTrust(asset, limit) { result in ... }
     account.merge(address) { result in ... }
     account.payment(address, amount, asset, memo) { result in ... }
+    account.manageOffer(offerId, buying, selling, amount, price)
     account.setHomeDomain(url) { result in ... }
     account.setData(key, value) { result in ... }
     more to come...
@@ -518,7 +519,7 @@ extension StellarSDK {
             }
         }
         
-        public func payment(address: String, amount: Float, asset: Asset? = Asset.Native, memo: String?, callback: @escaping Callback) {
+        public func payment(address: String, amount: Double, asset: Asset? = Asset.Native, memo: String?, callback: @escaping Callback) {
             guard self.keyPair != nil else {
                 callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't pay"))
                 return
@@ -613,8 +614,49 @@ extension StellarSDK {
             }
         }
         
+
+        public func manageOffer(offerId: Int, buying: Asset, selling: Asset, amount: Double, price: Price, callback: @escaping Callback) {
+            guard self.keyPair != nil else {
+                callback(StellarSDK.ErrorResponse(code: 500, message: "Account in read only mode, can't make offers"))
+                return
+            }
+            
+            let source = KeyPair.getPublicKey(self.publicKey)!
+            let secret = KeyPair.getSignerKey(self.secretKey)!
+            
+            let inner  = ManageOfferOp(selling: selling, buying: buying, amount: Int64(amount * 10000000.0), price: price, offerID: UInt64(offerId))
+            let body   = OperationBody.ManageOffer(inner)
+            let op     = Operation(sourceAccount: source, body: body)
+            
+            let server = StellarSDK.Horizon(self.network)
+            server.loadAccount(publicKey) { account in
+                if account.error != nil {
+                    print("Server error loading account info")
+                    callback(StellarSDK.ErrorResponse(code: account.error!.code, message: account.error!.text))
+                    return
+                }
+                
+                let builder = TransactionBuilder(source)
+                builder.setSequence(account.sequence)
+                builder.addOperation(op)
+                builder.build()
+                builder.sign(key: secret)
+                
+                server.submit(builder.txHash) { response in
+                    if response.error {
+                        print("Error submitting offer to server")
+                        print(response.raw)
+                        //let errorInfo = StellarSDK.errorInfo(response.raw)
+                        //callback(errorInfo)
+                        //callback(StellarSDK.ErrorResponse(code: 400, message: "Error submitting offer to server"))
+                        //return
+                    }
+                    callback(response)
+                }
+            }
+        }
+        
         // TODO:
-        public func manageOffer() {}
         public func createPassiveOffer() {}
         public func setSigner() {}
         
