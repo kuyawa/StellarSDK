@@ -1,6 +1,6 @@
 TODO:
 
-- Launch
+
 - Parse TX results
 x Test all txs
 x Test all ops
